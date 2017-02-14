@@ -1,4 +1,5 @@
 import sys
+from binascii import unhexlify
 
 class Bytes:
 
@@ -12,6 +13,7 @@ class Bytes:
             B.close()
         except:
             print("Archivo(s) inválido(s)")
+        self.pol = int("100011011", 2)
 
     def beetlejuice(self, arch, dif):
         if dif != 0:
@@ -33,15 +35,23 @@ class Bytes:
         return res
         
     def xor(self):
+        res = None
         if len(self.bytesA) > len(self.bytesB):
             beetB = self.beetlejuice(self.bytesB, len(self.bytesA) - len(self.bytesB))
             res = self.xor_aux(self.bytesA, beetB)
-            self.escribe_archivo("xor.out", res)
+            #self.imprime(beetB, self.bytesA, res)
         else:
             beetA = self.beetlejuice(self.bytesA, len(self.bytesB) - len(self.bytesA))
             res = self.xor_aux(self.bytesB, beetA)
-            self.escribe_archivo("xor.out", res)
+            #self.imprime(beetA, self.bytesB, res)
+        self.escribe_archivo("xor.out", res)
 
+    '''
+    def imprime(self, a, b, res):
+        for i in range(len(res)):
+            print(bin(a[i])[2:].zfill(8) + "\n" + bin(b[i])[2:].zfill(8) + "\n"
+                  + bin(res[i])[2:].zfill(8) + "\n")
+    '''
     
     def escribe_archivo(self, nom, ba):
         try:
@@ -50,9 +60,41 @@ class Bytes:
             na.close()
         except:
             print("Error al crear archivo " + nom)
-        
+
+    def get_grado(self, i):
+        g = 0
+        while i > 1:
+            i >>= 1
+            g += 1
+        return g
+    
+    def redu(self, a):
+        k = 0
+        g = self.get_grado(a)
+        while g >= 8:
+            aux = 0
+            if a & (1 << g):
+                aux = 1 << g - 8
+            aux = self.mult_aux(self.pol, aux)
+            a ^= aux
+            g = self.get_grado(a)
+        return a
+    
+    def mult_aux(self, bmult, b):
+        res = 0
+        i = 1
+        for x in range(self.get_grado(bmult) + 1):
+            if bmult & i:
+                res ^= b << x
+            i <<= 1
+        return res
+    
     def mult(self):
-        return None
+        bmult = int("AA", 16)
+        res = bytearray()
+        for b in self.bytesA:
+            res.append(self.redu(self.mult_aux(bmult, b)))
+        self.escribe_archivo("multiplicacion.out", res)
 
 if len(sys.argv) != 3:
     print("Uso del programa:\npython3 bytes.py archivo1 archivo2")
