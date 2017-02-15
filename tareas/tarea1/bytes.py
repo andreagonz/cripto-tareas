@@ -1,5 +1,4 @@
 import sys
-from binascii import unhexlify
 
 class Bytes:
 
@@ -15,7 +14,10 @@ class Bytes:
             print("Archivo(s) inválido(s)")
         self.pol = int("100011011", 2)
 
-    def beetlejuice(self, arch, dif):
+    def beetlejuice(self, a, dif):
+        arch = bytearray()
+        for b in a:
+            arch.append(b)
         if dif != 0:
             relleno = bytearray("beetlejuice", "utf-8")
             i = 1
@@ -28,10 +30,7 @@ class Bytes:
     def xor_aux(self, bA, bB):
         res = bytearray()
         for i in range(len(bA)):
-            if bA[i] != bB[i]:
-                res.append(bA[i] ^ bB[i])
-            else:
-                res.append(bA[i])
+            res.append(bA[i] ^ bB[i])
         return res
         
     def xor(self):
@@ -39,19 +38,10 @@ class Bytes:
         if len(self.bytesA) > len(self.bytesB):
             beetB = self.beetlejuice(self.bytesB, len(self.bytesA) - len(self.bytesB))
             res = self.xor_aux(self.bytesA, beetB)
-            #self.imprime(beetB, self.bytesA, res)
         else:
             beetA = self.beetlejuice(self.bytesA, len(self.bytesB) - len(self.bytesA))
             res = self.xor_aux(self.bytesB, beetA)
-            #self.imprime(beetA, self.bytesB, res)
         self.escribe_archivo("xor.out", res)
-
-    '''
-    def imprime(self, a, b, res):
-        for i in range(len(res)):
-            print(bin(a[i])[2:].zfill(8) + "\n" + bin(b[i])[2:].zfill(8) + "\n"
-                  + bin(res[i])[2:].zfill(8) + "\n")
-    '''
     
     def escribe_archivo(self, nom, ba):
         try:
@@ -92,8 +82,11 @@ class Bytes:
     def mult(self):
         bmult = int("AA", 16)
         res = bytearray()
+        i  = 0
         for b in self.bytesA:
+            print(str(i) + " Byte origen: " + bin(self.bytesA[i]) + " Byte a muliplicar: " + bin(bmult))
             res.append(self.redu(self.mult_aux(bmult, b)))
+            i += 1
         self.escribe_archivo("multiplicacion.out", res)
 
 if len(sys.argv) != 3:
@@ -102,3 +95,42 @@ else:
     by = Bytes(sys.argv[1], sys.argv[2])
     by.xor()
     by.mult()
+
+try:
+    A = open("xor.out", "rb")
+    bytesA = bytearray(A.read())
+    A.close()
+    B = open("ejemplo1/xor.out", "rb")
+    bytesB = bytearray(B.read())
+    B.close()
+
+    '''
+    if len(bytesA) != len(bytesB):
+        print("Longitud xors distinta: " + len(bytesA) + " " + len(bytesB))
+        sys.exit(0)
+    
+    for i in range(len(bytesA)):
+        if bytesA[i] != bytesB[i]:
+            print("XOR error " + str(bytesA[i]) + " " + str(bytesB[i]))
+    print("XOR correcto")
+    '''
+    
+    C = open("ejemplo1/multiplicacion.out", "rb")
+    bytesC = bytearray(C.read())
+    C.close()
+    D = open("multiplicacion.out", "rb")
+    bytesD = bytearray(D.read())
+    D.close()
+
+    if len(bytesC) != len(bytesD):
+        print("Longitud mult distinta: " + str(len(bytesC)) + " " + str(len(bytesD)))
+        sys.exit(0)
+    for i in range(len(bytesC)):
+        if i == 658399:
+            if bytesC[i] != bytesD[i]:
+                print(str(i) + " Multiplicacion error: Miau: " + str(bin(bytesC[i])) + " Kihui: " + str(bin(bytesD[i])))
+            else:
+                print(str(i) + " Multiplicacion correcta Miau: " + str(bin(bytesC[i])) + " Kihui: " + str(bin(bytesD[i])))
+
+except:
+    print("Archivo(s) de prueba inválido(s)")
