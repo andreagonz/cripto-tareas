@@ -1,3 +1,7 @@
+'''
+Andrea Itzel González Vargas
+Carlos Gerardo Acosta Hernández
+'''
 import sys
 
 class Bytes:
@@ -229,6 +233,18 @@ if len(sys.argv) != 3:
     print("Uso del programa:\npython3 bytes.py archivo1 archivo2")
 else:
     by = Bytes(sys.argv[1], sys.argv[2])
+    
+    '''
+    Ejercicio 1 a)
+    '''
     by.xor()
+    
+    '''
+    Ejercicio 1 b)
+    '''
     by.mult()
+    
+    '''
+    Ejercicio 1 c)
+    '''
     by.mult_poli()
