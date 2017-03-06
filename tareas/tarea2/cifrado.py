@@ -43,10 +43,28 @@ class Cifrado:
         return res
                 
     def cifra_cesar(self):
-        return ""
+        out = ""
+        for x in self.entrada:
+            ni = ord(x) + int(self.clave)
+            if ni > 255:
+                out = out+chr(self.modulo(ni))
+                #out = out+chr(ni%256)
+            else:
+                out = out+chr(ni)
+        print("res: "+out)
+        return out
 
     def descifra_cesar(self):
-        return ""
+        out = ""
+        for x in self.entrada:
+            ni = ord(x) - int(self.clave)
+            if ni < 0:
+                out = out+chr(self.modulo(ni))
+                #out = out+chr(ni%256)
+            else:
+                out = out+chr(ni)
+        print("res: "+out)
+        return out
 
     def cifra_afin(self):
         return ""
@@ -65,6 +83,15 @@ class Cifrado:
 
     def descifra_vigenere(self):
         return ""
+
+    def modulo(self,a):
+        a = (a >> 16) + (a & 0xFFFF); #sum base 2**16 digitos
+        a = (a >>  8) + (a & 0xFF);   #sum base 2**8 digitos 
+        if (a < 255):
+            return a;
+        if (a < (2 * 255)):
+            return a - 255;
+        return a - (2 * 255);
     
 
 def escribe_archivo(nom, arch):
