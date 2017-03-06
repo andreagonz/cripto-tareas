@@ -5,6 +5,7 @@ Carlos Gerardo Acosta Hernández
 
 import sys
 import os
+from math import floor
 
 class Cifrado:
 
@@ -66,13 +67,47 @@ class Cifrado:
         print("res: "+out)
         return out
 
-    def cifra_afin(self):
+    def mcd(self, a, b):
+        if b == 0:
+            return a
+        else:
+            return self.mcd(b, a % b)
+
+    def inverso(self, a):
+        for i in range(256):
+            if (a * i) % 256 == 1:
+                return i
+        return 0
         
-        print(clave)
-        return ""
+    def cifra_afin(self):
+        lst = self.clave.replace(" ", "").replace("\n", "").split(',')
+        if len(lst) < 2 or not lst[0].isdigit() or not lst[1].isdigit():
+            print("Clave inválida")
+            sys.exit(0)
+        r = int(lst[0])
+        k = int(lst[1])
+        if self.mcd(r, 256) != 1:
+            print("El primer número de la clave debe ser primo relativo con 256")
+            sys.exit(0)
+        res = ""
+        for c in self.entrada:
+            res += chr((r * ord(c) + k) % 256)
+        return res
 
     def descifra_afin(self):
-        return ""
+        lst = self.clave.replace(" ", "").replace("\n", "").split(',')
+        if len(lst) < 2 or not lst[0].isdigit() or not lst[1].isdigit():
+            print("Clave inválida")
+            sys.exit(0)
+        r = int(lst[0])
+        k = int(lst[1])
+        if self.mcd(r, 256) != 1:
+            print("El primer número de la clave debe ser primo relativo con 256")
+            sys.exit(0)
+        res = ""
+        for c in self.entrada:
+            res += chr(((ord(c) - k) * self.inverso(r)) % 256)
+        return res
 
     def cifra_mezclado(self):
         dicc = {}
