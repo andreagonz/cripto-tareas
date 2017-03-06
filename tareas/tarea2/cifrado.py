@@ -49,16 +49,54 @@ class Cifrado:
         return ""
 
     def cifra_afin(self):
+        
+        print(clave)
         return ""
 
     def descifra_afin(self):
         return ""
 
     def cifra_mezclado(self):
-        return ""
+        dicc = {}
+        res = ""
+        lst = self.clave.split('\n')
+        if len(lst) < 2 or len(lst[0]) != len(lst[1]):
+            print("Clave inválida")
+            sys.exit(0)
+        for i in range(len(lst[0])):
+            k = {lst[0][i] : lst[1][i]}
+            if dicc.get(lst[0][i], None) != None:
+                print("No repetir carácteres en la clave")
+                sys.exit(0)
+            dicc.update(k)
+        print(dicc)
+        for c in self.entrada:
+            if dicc.get(c, None) != None:
+                res += dicc.get(c)
+            else:
+                res += c
+        return res
 
     def descifra_mezclado(self):
-        return ""
+        dicc = {}
+        res = ""
+        lst = self.clave.split('\n')
+        if len(lst) < 2 or len(lst[0]) != len(lst[1]):
+            print("Clave inválida")
+            sys.exit(0)
+        for i in range(len(lst[0])):
+            k = {lst[1][i] : lst[0][i]}
+            if dicc.get(lst[1][i], None) != None:
+                print("No repetir carácteres en la clave")
+                sys.exit(0)
+            dicc.update(k)
+        print(dicc)
+        for c in self.entrada:
+            if dicc.get(c, None) != None:
+                res += dicc.get(c)
+            else:
+                res += c
+        return res
 
     def cifra_vigenere(self):
         return ""
@@ -76,7 +114,7 @@ def escribe_archivo(nom, arch):
         print("Error al crear archivo " + nom)
         
 if len(sys.argv) < 5:
-    print("Uso del programa:\npython3 cifrado.py [c|d] [cesar | afin | mezclado | vigenere ] <archivoClave> <archivoEntrada>")
+    print("Uso del programa:\npython3 cifrado.py [c|d] [cesar|afin|mezclado|vigenere] <archivoClave> <archivoEntrada>")
     
 else:
     cd = sys.argv[1]
