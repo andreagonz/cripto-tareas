@@ -1,0 +1,2 @@
+La aproximacion que se logro con python3 es muy buena, probamos con 1000 pares la funcion random.randrange(1000), la cual nos da un numero entero positivo menor a 1000.
+El resultado fue que el porcentaje de numeros aleatorios que fueron primos relativos fue muy cercano a 6/pi^2, siempre rondaba entre 0.57 y 0.63, y la aproximacion que obtuvimos de pi llego a ser tan buena como 0.3141592653589793.
