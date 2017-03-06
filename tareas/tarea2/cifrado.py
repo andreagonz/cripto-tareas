@@ -117,10 +117,38 @@ class Cifrado:
         return res
 
     def cifra_vigenere(self):
-        return ""
+        out = ""
+        m = len(self.clave) 
+        pos = 0
+        for x in self.entrada:
+            if pos > m-1:
+                pos = 0
+            ni = ord(x) + ord(self.clave[pos])
+            if ni > 255:
+                out = out+chr(self.modulo(ni))
+                #out = out+chr(ni%256)
+            else:
+                out = out+chr(ni)
+            pos += 1
+        print("res: "+out)
+        return out        
 
     def descifra_vigenere(self):
-        return ""
+        out = ""
+        m = len(self.clave) 
+        pos = 0
+        for x in self.entrada:
+            if pos > m-1:
+                pos = 0
+            ni = ord(x) - ord(self.clave[pos])
+            if ni < 0:
+                out = out+chr(self.modulo(ni))
+                #out = out+chr(ni%256)
+            else:
+                out = out+chr(ni)
+            pos += 1
+        print("res: "+out)
+        return out      
 
     def modulo(self,a):
         a = (a >> 16) + (a & 0xFFFF); #sum base 2**16 digitos
