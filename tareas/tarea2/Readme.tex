@@ -1,0 +1,45 @@
+%Especificacion
+\documentclass[12pt]{article}
+
+%Paquetes
+\usepackage[left=2cm,right=2cm,top=3cm,bottom=3cm,letterpaper]{geometry}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,activeacute]{babel}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{enumerate}
+%\usepackage{tabularx}
+%\usepackage{wasysym}
+\usepackage{graphicx}
+%\graphicspath { {tarea01/media/} }
+%\usepackage{pifont}
+
+%Preambulo
+\title{Criptografía y seguridad \\ Tarea 2: Readme}
+\author{Andrea Itzel González Vargas \\ Carlos Gerardo Acosta Hernández}
+\date{Entrega: 06/03/17 \\ Facultad de Ciencias UNAM}
+
+\setlength\parindent{0pt}
+
+\begin{document}
+\maketitle
+Para la realización de esta tarea utilizamos \textbf{Python 3}, por lo que es muy importante utilizar el intérprete de dicha versión y no su antecesor para que el programa funcione como esperamos.
+
+\subsubsection*{Ejercicio 4}
+El código de éste ejercicio está en el directorio $src/ej4$. \\
+Decidimos seguir la sintáxis propuesta en los lineamientos para la ejecución del programa. Una ejecución debe verse entonces como:
+\begin{verbatim}
+$ python3 cifrado.py [c|d] [cesar|mezclado|afin|vigenere] <archivoClave> <archivoEntrada>
+\end{verbatim}
+
+\subsubsection*{Ejercicio 5}
+La aproximación que se logró con python3 es muy buena, probamos con 1000 pares
+la función $random.randrange(1000)$, la cual nos da un número entero positivo menor a 1000. \\
+El resultado fue que el porcentaje de números aleatorios que fueron primos
+relativos fue muy cercano a 6/$\pi^2$ = 0.6079271, siempre rondaba entre 0.57 y 0.63, y en algunas corridas la
+aproximación que obtuvimos de $\pi$ llegó a ser tan buena como 0.3141592653589793. \\
+El código de éste ejercicio está en el directorio $src/ej5$. \\
+
+\end{document}
