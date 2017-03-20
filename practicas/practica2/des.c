@@ -198,11 +198,7 @@ int getRow(unsigned char c) {
 void applySi(unsigned char* elements, unsigned char* result, int i, int* Si) {
     unsigned char c = getChar(elements, (i - 1) * 6, (i - 1) * 6 + 6);
     int s = Si[getCol(c) + getRow(c) * 16];
-    imprime_n(getCol(c));
-    imprime_n(getRow(c));
-    printf("%d\n",s);
-    imprime_n(s);
-    int j, m = 1 << 3;
+   int j, m = 1 << 3;
     for(j = 0; j < 4; j++) {
         if((m & s) != 0)
             setBit(result, (i - 1) * 4 + j, 1);
@@ -238,12 +234,39 @@ unsigned char* fun(unsigned char *elements, unsigned char* key) {
     return result;
 }
 
-//DES encryption (1 block)
-unsigned char * encryption(unsigned char *elements, unsigned char* key) { //return cipher text
+// Reliza la chamba de cifrado y decifrado segun el booleano decrypt
+unsigned char * encryption_aux(unsigned char *elements, unsigned char* key, int decrypt) { //return cipher text
     unsigned char *ip = applyPermutation(elements, IP, 64);
     unsigned char *l = substr(ip, 0, 32);
     unsigned char *r = substr(ip, 32, 64);
-    free(ip);    
+    unsigned char **keys = splitKeys(key);
+    free(ip);
+    int i, j;
+    for(i = 0, j = 15; i < 16; i++, j--) {
+        unsigned char *f;
+        if(decrypt)
+            f = fun(r, keys[j]);
+        else
+            f = fun(r, keys[i]);
+        unsigned char *ls = r;
+        unsigned char *rs = applyFunction(xorFunction, l, f, 32);
+        free(f);
+        free(l);
+        l = ls;
+        r = rs;
+    }
+    unsigned char *rl =catstr(r, l, 32, 32);
+    unsigned char *result = applyPermutation(rl, IP_INV, 64);
+    free(rl);
+    free(l);
+    free(r);
+    free_keys(keys);
+    return result;
+}
+
+//DES encryption (1 block)
+unsigned char * encryption(unsigned char *elements, unsigned char* key) {
+    return encryption_aux(elements, key, 0);
 }
 
 //Read file and normalize
@@ -262,7 +285,11 @@ unsigned char * encryptionFile(unsigned char *file_name, unsigned char* strK) {
 }
 
 //DES decrypt (1 block)
-unsigned char * decrypt(unsigned char* elements , unsigned char *key);
+
+unsigned char * decrypt(unsigned char* elements , unsigned char *key) {
+    return encryption_aux(elements, key, 1);
+}
+
 
 //Read file and normalize
 unsigned char * decryptFile(unsigned char *file_name, unsigned char* strK) {
@@ -359,6 +386,18 @@ int main(int argc, char **args) {
     unsigned char *f = fun(r, key);
     imprime(f, 32);
     free(f);
+    */
+
+    //Prueba encryption decrypt
+    /*
+    unsigned char k[8] = {19,52,87,121,155,188,223,241};
+    unsigned char m[8] = {1,35,69,103,137,171,205,239};
+    unsigned char *e = encryption(m,k);
+    imprime(e, 64);
+    unsigned char *d = decrypt(e, k);
+    imprime(d, 64);
+    free(e);
+    free(d);
     */
     return 0;
 }
