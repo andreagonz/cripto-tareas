@@ -399,5 +399,15 @@ int main(int argc, char **args) {
     free(e);
     free(d);
     */
+
+    unsigned char k[8] = {14,50,146,50,234,109,13,115};
+    unsigned char m[8] = {135, 135, 135, 135, 135, 135, 135, 135};
+    imprime(m, 64);
+    unsigned char *e = encryption(m,k);
+    imprime(e, 64);
+    unsigned char *d = decrypt(e, k);
+    imprime(d, 64);
+    free(e);
+    free(d);
     return 0;
 }
