@@ -45,6 +45,19 @@ void imprime_ks(unsigned char **ks, int sizeks, int sizek) {
     printf("%c", '\n');
 }
 
+void imprime_n(unsigned char c) {
+    int m = 1;
+    m <<= 7;
+    while(m > 0) {
+        if((c&m) != 0)
+            printf("%d", 1);
+        else
+            printf("%d", 0);
+        m >>= 1;
+    }
+    printf("%c", '\n');
+}
+
 //apply function of each element
 unsigned char* applyFunction(unsigned char (*f)(unsigned char,unsigned char), unsigned char *l_n, unsigned char *r_n, int size ){
     int idx;
@@ -155,17 +168,83 @@ unsigned char xorFunction(unsigned char a, unsigned char b){
     return a^b;
 }
 
+// Regresa la representación en char de los bits entre [b, e)
+unsigned char getChar(unsigned char* elements, int b, int e) {
+    int i, j, res = 0;
+    for(i = e - 1, j = 0; i >= b; i--, j++)
+        res |= getBit(elements, i) << j;
+    return res;
+}
+
+int getCol(unsigned char c) {
+    int i, mascara = 1 << 4, res = 0;
+    for(i = 0; i < 4; i++) {
+        res |= mascara & c;
+        mascara >>= 1;
+    }
+    return res >> 1;
+}
+
+int getRow(unsigned char c) {
+    int res = 0;
+    if(((1 << 5) & c) != 0)
+        res |= 2;
+    res |= c & 1;
+    return res;
+}
+
 //Applies an specific S box
-void applySi(unsigned char* input,int i, int* Si, unsigned char* output);
+// void applySi(unsigned char* input, int i, int* Si, unsigned char* output);
+void applySi(unsigned char* elements, unsigned char* result, int i, int* Si) {
+    unsigned char c = getChar(elements, (i - 1) * 6, (i - 1) * 6 + 6);
+    int s = Si[getCol(c) + getRow(c) * 16];
+    imprime_n(getCol(c));
+    imprime_n(getRow(c));
+    printf("%d\n",s);
+    imprime_n(s);
+    int j, m = 1 << 3;
+    for(j = 0; j < 4; j++) {
+        if((m & s) != 0)
+            setBit(result, (i - 1) * 4 + j, 1);
+        else
+            setBit(result, (i - 1) * 4 + j, 0);
+        m >>= 1;
+    }
+}
+
 //Applies S box
 unsigned char* applyS(unsigned char* elements){
     unsigned char *result = (unsigned char *) calloc(4,sizeof(unsigned char));
-    //complete
+    applySi(elements, result, 1, S1);
+    applySi(elements, result, 2, S2);
+    applySi(elements, result, 3, S3);
+    applySi(elements, result, 4, S4);
+    applySi(elements, result, 5, S5);
+    applySi(elements, result, 6, S6);
+    applySi(elements, result, 7, S7);
+    applySi(elements, result, 8, S8);
+    return result;
+}
+
+//Aplica la funcion f del algoritmo 
+unsigned char* fun(unsigned char *elements, unsigned char* key) {
+    unsigned char *e = applyPermutation(elements, E, 48);
+    unsigned char *xor = applyFunction(xorFunction, e, key, 48);
+    unsigned char *s = applyS(xor);
+    unsigned char *result = applyPermutation(s, PRIMITIVE_P, 32);
+    free(e);
+    free(xor);
+    free(s);
     return result;
 }
 
 //DES encryption (1 block)
-unsigned char * encryption(unsigned char *elements, unsigned char* key); //return cipher text
+unsigned char * encryption(unsigned char *elements, unsigned char* key) { //return cipher text
+    unsigned char *ip = applyPermutation(elements, IP, 64);
+    unsigned char *l = substr(ip, 0, 32);
+    unsigned char *r = substr(ip, 32, 64);
+    free(ip);    
+}
 
 //Read file and normalize
 unsigned char * encryptionFile(unsigned char *file_name, unsigned char* strK) {
@@ -233,12 +312,53 @@ int main(int argc, char **args) {
 
     // Prueba generacion de llaves
     /*
-    unsigned char k[8] = {-1,3,4,1,4,3,4,12};
+    unsigned char k[8] = {19,52,87,121,155,188,223,241};
     imprime(k, 64);
     unsigned char** ks =splitKeys(k);
     int i;
     imprime_ks(ks, DES_ITERATIONS, 48);
     free_keys(ks);
+    */
+
+    // Prueba getChar
+    /*
+    unsigned char k[4] = {19,52,87,121};
+    imprime(k, 4*8);
+    imprime_n(getChar(k, 25, 32));
+    */
+
+    // Prueba getRow getCol
+    /*
+    unsigned char c = -1 << 1;
+    int m = 1 << 7;
+    c = 20;
+    imprime_n(c);
+    imprime_n(getRow(c));
+    imprime_n(getCol(c));
+    */
+
+    //Prueba applySi
+    /*
+    unsigned char k[6] = {19,52,87,121, 13, 1};
+    imprime(k, 6*8);
+    unsigned char *result = (unsigned char *) calloc(4,sizeof(unsigned char));
+    imprime(result, 4*8);
+    applySi(k, result, 1, S1);
+    applySi(k, result, 2, S2);
+    applySi(k, result, 3, S3);
+    imprime(result, 4*8);
+    free(result);
+    */
+
+    //Prueba fun
+    /*
+    unsigned char key[6] = {27, 2, 239, 252, 112, 114};
+    imprime(key, 6*8);
+    unsigned char r[4] = {240, 170, 240, 170};
+    imprime(r, 4*8);
+    unsigned char *f = fun(r, key);
+    imprime(f, 32);
+    free(f);
     */
     return 0;
 }
