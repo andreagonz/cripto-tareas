@@ -176,10 +176,27 @@ unsigned char * encryptionFile(unsigned char *file_name, unsigned char* strK) {
     if( fp == NULL || fw == NULL)  {
         perror("Error while opening the file.\n");
         exit(EXIT_FAILURE);
+    }    
+
+    size_t n,t;
+    //getting the file size the dumb way
+    while ((ch = fgetc(fp)) != EOF)
+      t++;
+    fp = fopen((char *)file_name,"r");
+    printf("Tamaño de archivo (?): %i\n",t);
+    int norm = t+8-(t%8);
+    unsigned char *out = malloc(norm);
+    for(size_t i = 0; i < t; i++){
+      ch = fgetc(fp);
+      out[i] = (char) ch;
     }
+    out[norm] = '\0';          
+    printf("Antes: %i\nNormalizado en bytes: %i\nRead: %s\n",t,norm,out);   
     //complete
+    
     fclose(fp);
     fclose(fw);
+    return out;
 }
 
 //DES decrypt (1 block)
@@ -240,5 +257,7 @@ int main(int argc, char **args) {
     imprime_ks(ks, DES_ITERATIONS, 48);
     free_keys(ks);
     */
-    return 0;
+  
+  encryptionFile("des.h","hola");
+  return 0;
 }
