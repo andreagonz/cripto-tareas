@@ -280,25 +280,44 @@ unsigned char * encryptionFile(unsigned char *file_name, unsigned char* strK) {
         exit(EXIT_FAILURE);
     }    
 
-    size_t n,t;
+    size_t n,t,norm;
     //getting the file size the dumb way
     while ((ch = fgetc(fp)) != EOF)
       t++;
     fp = fopen((char *)file_name,"r"); //recovery of fp
     printf("Tamaño de archivo (?): %i\n",t);
-    size_t norm = t+8-(t%8);
+    norm = t+8-(t%8);
     unsigned char *out = malloc(norm);
     for(size_t i = 0; i < t; i++){
       ch = fgetc(fp);
       out[i] = (char) ch;
     }
+    //necessaire?
+    out[t] = 1;
+    for(size_t j = t+1; j < norm; j++)
+      out[j] = 0;
     out[norm] = '\0';          
     printf("Antes: %i\nNormalizado en bytes: %i\nRead: %s\n",t,norm,out);   
     //complete
-    
+
+    char *enc = malloc(norm);
+    for(size_t idx = 0; idx < norm; idx+=8)
+      strcat(enc,encryption(substr(out,idx,idx+8),strK));
+
+    fputs(enc,fw);
+    free(out);
+    free(enc);
     fclose(fp);
     fclose(fw);
-    return out;
+    return 0;
+}
+
+unsigned char *block64(unsigned char *total, int idx){
+  char *out = malloc(8);
+  for(int i = 0; i < 8; i++){
+    out[i] = total[idx];
+    idx++;
+  }
 }
 
 //DES decrypt (1 block)
