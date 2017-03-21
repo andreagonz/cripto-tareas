@@ -1,0 +1,69 @@
+%Especificacion
+\documentclass[12pt]{article}
+
+%Paquetes
+\usepackage[left=2cm,right=2cm,top=3cm,bottom=3cm,letterpaper]{geometry}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,activeacute]{babel}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{graphicx}
+
+%Preambulo
+\title{Criptografía y seguridad \\ Práctica 2: Readme}
+\author{Andrea Itzel González Vargas \\ Carlos Gerardo Acosta Hernández}
+\date{Entrega: 20/03/17 \\ Facultad de Ciencias UNAM}
+
+\begin{document}
+\maketitle
+\section{Modo de operación}
+El modo de operación utilizado en nuestra implementación de DES es el
+``Electronic Code Book'' (ECB), dado que cada bloque de 64 bits es cifrado
+independientemente del resto. Lo elegimos por su simplicidad.
+
+\section{Uso del programa}
+\subsection*{Compilación}
+Para compilar el código fuente contenido en \textbf{des.c} es necesario
+utilizar las banderas -lm para el compilador \textit{GCC}, pues hemos
+incluído la biblioteca \textit{math} para llevar a cabo nuestra implementación. Un ejemplo:
+\begin{verbatim}
+    $ gcc -lm des.c -o DES
+\end{verbatim}
+\subsection*{Ejecución}
+Una vez obtenido el binario ejecutable, es necesario darle ciertos
+argumentos de entrada. En primer lugar, se especifica si hará un cifrado
+(`c') o un descifrado (`d'), luego una llave de longitud 8 y finalmente, el nombre del archivo a utilizar para la operación definida. Es decir, la orden que tendremos tendrá la siguiente forma:
+\begin{verbatim}
+./a.out [c|d] <llave> <nombre archivo>
+\end{verbatim}
+Si hemos seguido el ejemplo de compilación anterior, el ejemplo de ejecución correspondiente sería:
+\begin{verbatim}
+    $ ./DES c holalola archivo.txt $
+    $ ./DES d holalola cipher_text.txt $
+\end{verbatim}
+
+Se puede inferir que el archivo de cifrado resultante con el criptotexto
+de la primera llamada al programa es \textit{cipher\_text.txt}, cuyo nombre no es dinámico
+en ejecución, pero es muy sencillo cambiarlo en el código. Decidimos
+dejarlo así por claridad.
+Para la segunda llamada, se generará un archivo que contendrá el texto
+claro, resultado del descifrado. Este se podrá consultar como \textit{plain\_text.txt}, cuyo nombre también es igual para todas las entradas que
+proporcionemos al programa.
+
+\subsubsection*{Posible resultado en el directorio de trabajo:}
+\begin{verbatim}
+.
+|__ cipher_text.txt
+|__ DES
+|__ des.c
+|__ des.h
+|__ plain_text.txt
+
+\end{verbatim}
+
+
+\end{document}
