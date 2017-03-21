@@ -271,14 +271,66 @@ unsigned char * encryption(unsigned char *elements, unsigned char* key) {
 
 //Read file and normalize
 unsigned char * encryptionFile(unsigned char *file_name, unsigned char* strK) {
-    FILE *fp, *fw;
+  FILE *fp, *fw, *cpy;
     int ch;//read character as an int
     fp = fopen((char *)file_name,"r"); // read mode
     fw = fopen("cipher_text.txt", "wb");//write mode
+    cpy = fopen("padding.txt","w");
     if( fp == NULL || fw == NULL)  {
         perror("Error while opening the file.\n");
         exit(EXIT_FAILURE);
     }    
+
+    size_t n,t,norm;
+    //getting the file size the dumb way
+    while ((ch = fgetc(fp)) != EOF)
+      t++;
+    fp = fopen((char *)file_name,"r"); //recovery of fp
+    //printf("Tamaño de archivo (?): %i\n",t);
+    norm = t+8-(t%8);
+    unsigned char *out = malloc(norm);
+    for(size_t i = 0; i < t; i++){
+      ch = fgetc(fp);
+      out[i] = (char) ch;
+    }
+    out[t] = 1;
+    out[norm] = '\0';
+    //necessaire?    
+    //for(size_t j = t+1; j < norm; j++)
+    //  out[j] = 0;
+    printf("Antes: %i\nNormalizado en bytes: %i\nRead: %s\n",t,norm,out);   
+    //complete
+    fputs(out,cpy);
+    char *enc = malloc(norm);
+    for(size_t idx = 0; idx < norm; idx+=8)
+      strcat(enc,encryption(substr(out,idx,idx+8),strK));
+
+    fputs(enc,fw);
+    free(out);
+    free(enc);
+    fclose(fp);
+    fclose(fw);
+    return 0;
+}
+
+//DES decrypt (1 block)
+
+unsigned char * decrypt(unsigned char* elements , unsigned char *key) {
+    return encryption_aux(elements, key, 1);
+}
+
+
+//Read file and normalize
+unsigned char * decryptFile(unsigned char *file_name, unsigned char* strK) {
+  FILE *fp, *fw;
+    int counter;
+    int ch; //read character as an int
+    fp = fopen((char *)file_name,"rb"); // read mode
+    fw = fopen("plain_text.txt", "w");//write mode
+    if( fp == NULL || fw == NULL)  {
+        perror("Error while opening the file.\n");
+        exit(EXIT_FAILURE);
+    }
 
     size_t n,t,norm;
     //getting the file size the dumb way
@@ -292,55 +344,29 @@ unsigned char * encryptionFile(unsigned char *file_name, unsigned char* strK) {
       ch = fgetc(fp);
       out[i] = (char) ch;
     }
-    //necessaire?
     out[t] = 1;
+
+    //necessaire?
     for(size_t j = t+1; j < norm; j++)
       out[j] = 0;
+    
     out[norm] = '\0';          
-    printf("Antes: %i\nNormalizado en bytes: %i\nRead: %s\n",t,norm,out);   
-    //complete
-
-    char *enc = malloc(norm);
+    printf("Antes: %i\nNormalizado en bytes: %i\nRead: %s\n",t,norm,out);
+    char *dec = malloc(norm);
     for(size_t idx = 0; idx < norm; idx+=8)
-      strcat(enc,encryption(substr(out,idx,idx+8),strK));
-
-    fputs(enc,fw);
+      strcat(dec,decrypt(substr(out,idx,idx+8),strK));
+    printf("PLANO!!!!!!!!!!!!!!!!!!: \n%s\n",dec);
+    
+    fputs(dec,fw);
+    
+    free(dec);
     free(out);
-    free(enc);
-    fclose(fp);
-    fclose(fw);
-    return 0;
-}
-
-unsigned char *block64(unsigned char *total, int idx){
-  char *out = malloc(8);
-  for(int i = 0; i < 8; i++){
-    out[i] = total[idx];
-    idx++;
-  }
-}
-
-//DES decrypt (1 block)
-
-unsigned char * decrypt(unsigned char* elements , unsigned char *key) {
-    return encryption_aux(elements, key, 1);
-}
-
-
-//Read file and normalize
-unsigned char * decryptFile(unsigned char *file_name, unsigned char* strK) {
-    FILE *fp, *fw;
-    int counter;
-    int ch; //read character as an int
-    fp = fopen((char *)file_name,"rb"); // read mode
-    fw = fopen("plain_text.txt", "w");//write mode
-    if( fp == NULL || fw == NULL)  {
-        perror("Error while opening the file.\n");
-        exit(EXIT_FAILURE);
-    }
+    
     //complete
     fclose(fp);
     fclose(fw);
+
+    return 0;
 }
 
 int main(int argc, char **args) {
@@ -436,7 +462,7 @@ int main(int argc, char **args) {
     */
 
   encryptionFile("des.h","hola");
-    
+  decryptFile("cipher_text.txt","hola");
   
     return 0;
 }
