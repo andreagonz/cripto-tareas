@@ -86,18 +86,6 @@ unsigned char* applyPermutation(unsigned char *elements, int *permutation, int s
     return result;
 }
 
-//Padding a key (WATS TIS SHIT)
-/*
-unsigned char* padding(unsigned char* strK) {
-    unsigned char * newKey =(unsigned char *) calloc(8,sizeof(unsigned char));
-    int i;
-
-    for(i = 0; i < strlen((char*)strK); i++) newKey[i] = strK[i];
-
-    return newKey;
-}
-*/
-
 // Shift a la izquierda
 unsigned char* l_rotation(unsigned char *elements, int shift, int size){ //size in bits   
     unsigned char *result = (unsigned char *) calloc(size/CHAR_BIT, sizeof(unsigned char));
@@ -270,7 +258,7 @@ unsigned char * encryption(unsigned char *elements, unsigned char* key) {
 }
 
 //Read file and normalize
-unsigned char * encryptionFile(unsigned char *file_name, unsigned char* strK) {
+void encryptionFile(unsigned char *file_name, unsigned char* strK) {
     FILE *fp, *fw;
     int ch;//read character as an int
     fp = fopen((char *)file_name,"r"); // read mode
@@ -280,38 +268,66 @@ unsigned char * encryptionFile(unsigned char *file_name, unsigned char* strK) {
         exit(EXIT_FAILURE);
     }    
 
-    size_t n,t;
-    //getting the file size the dumb way
-    while ((ch = fgetc(fp)) != EOF)
-      t++;
-    fp = fopen((char *)file_name,"r"); //recovery of fp
-    printf("Tamaño de archivo (?): %i\n",t);
-    size_t norm = t+8-(t%8);
+    fseek(fp, 0, SEEK_END);
+    int t = ftell(fp);
+    rewind(fp);        
+    printf("Tamaño de archivo %s: %d\n", file_name, t);    
+    int norm = t + 8 - (t % 8);    
     unsigned char *out = malloc(norm);
-    for(size_t i = 0; i < t; i++){
+    int i;
+    for(i = 0; i < t; i++){
       ch = fgetc(fp);
       out[i] = (char) ch;
     }
-    out[norm] = '\0';
-    printf("Antes: %i\nNormalizado en bytes: %i\nRead: %s\n",t,norm,out);
-    //complete
     
+    //printf("Antes: %s\n", out);
+    //imprime(out, t * 8);
+    out[t] = 1 << 7;
+    int j;
+    for(j = t + 1; j < norm; j++)
+      out[j] = 0;
+    out[norm] = '\0';
+    printf("Antes: %d\nNormalizado en bytes: %d\nRead: %s\n", t, norm, out);
+    //printf("%scifrado\n", "\n");
+    
+    unsigned char *enc = malloc(0);
+    for(i = 0; i < norm * 8; i += 64) {
+        unsigned char* block = substr(out, i, i + 64);
+        unsigned char* e = encryption(block, strK);
+        unsigned char* cat = catstr(enc, e, i, 64);
+        free(enc);
+        free(block);
+        free(e);
+        enc = cat;
+    }
+    
+    //imprime(enc, norm * 8);    
+    fwrite((char *)enc, sizeof(*enc), norm, fw);
+    free(out);
+    free(enc);
     fclose(fp);
     fclose(fw);
-    return out;
 }
 
 //DES decrypt (1 block)
-
 unsigned char * decrypt(unsigned char* elements , unsigned char *key) {
     return encryption_aux(elements, key, 1);
 }
 
+unsigned char * rm_padding(unsigned char* plaint, int * size) {
+    while(getBit(plaint, *size - 1) != 1)
+        (*size)--;
+    (*size)--;
+    int i;
+    unsigned char *result = malloc(ceil((double)(*size) / (double)CHAR_BIT));
+    for(i = 0; i < *size; i++)
+        setBit(result, i, getBit(plaint, i));
+    return result;
+}
 
 //Read file and normalize
 unsigned char * decryptFile(unsigned char *file_name, unsigned char* strK) {
     FILE *fp, *fw;
-    int counter;
     int ch; //read character as an int
     fp = fopen((char *)file_name,"rb"); // read mode
     fw = fopen("plain_text.txt", "w");//write mode
@@ -319,7 +335,41 @@ unsigned char * decryptFile(unsigned char *file_name, unsigned char* strK) {
         perror("Error while opening the file.\n");
         exit(EXIT_FAILURE);
     }
-    //complete
+
+    fseek(fp, 0, SEEK_END);
+    int t = ftell(fp);
+    rewind(fp);        
+    printf("Tamaño de archivo %s: %d\n", file_name, t);    
+    unsigned char *out = malloc(t);
+    int i;
+    for(i = 0; i < t; i++){
+      ch = fgetc(fp);
+      out[i] = (char) ch;
+    }
+    
+    //imprime(out, t * 8);
+    
+    unsigned char *des = malloc(0);
+    for(i = 0; i < t * 8; i += 64) {
+        unsigned char* block = substr(out, i, i + 64);
+        unsigned char* e = decrypt(block, strK);
+        unsigned char* cat = catstr(des, e, i, 64);
+        free(des);
+        free(block);
+        free(e);
+        des = cat;
+    }
+
+    //imprime(des, t * 8);
+    int size = t * 8;
+    //printf("Size: %d\n", size);    
+    unsigned char *res = rm_padding(des, &size);
+    //printf("Size: %d\n", size);
+    //imprime(res, size);
+    fwrite((char *)res, sizeof(*res), size/8, fw);
+    free(out);
+    free(des);
+    free(res);
     fclose(fp);
     fclose(fw);
 }
@@ -427,7 +477,8 @@ int main(int argc, char **args) {
     free(e);
     free(d);
     */
-    unsigned char* ef = encryptionFile((unsigned char*)"des.h", (unsigned char*)"hola");
-    free(ef);
+    unsigned char k[8] = {14,50,146,50,234,109,13,115};
+    encryptionFile((unsigned char*)"des.h", k);
+    decryptFile((unsigned char*)"cipher_text.txt", k);
     return 0;
 }
