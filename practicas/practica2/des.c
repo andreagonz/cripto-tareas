@@ -6,9 +6,9 @@
 #include <math.h>
 
 //get bit by position
-unsigned char getBit(unsigned char *elements, int idx){
-    int i = idx / CHAR_BIT;
-    int b = 1 << (CHAR_BIT - 1);
+unsigned char getBit(unsigned char *elements, size_t idx){
+    size_t i = idx / CHAR_BIT;
+    size_t b = 1 << (CHAR_BIT - 1);
     b >>= (idx % CHAR_BIT);
     b &= elements[i];
     if(b == 0)
@@ -17,11 +17,11 @@ unsigned char getBit(unsigned char *elements, int idx){
 }
 
 //set bit by postion
-void setBit(unsigned char *elements, int idx, unsigned char bit){
+void setBit(unsigned char *elements, size_t idx, unsigned char bit){
     if(getBit(elements, idx) == bit)
 	return;
-    int i = idx / CHAR_BIT;
-    int m = 1 << (CHAR_BIT - 1);
+    size_t i = idx / CHAR_BIT;
+    size_t m = 1 << (CHAR_BIT - 1);
     m >>= (idx % CHAR_BIT);
     if(getBit(elements, idx) == 0)
 	elements[i] |= m;
@@ -72,7 +72,7 @@ unsigned char* applyFunction(unsigned char (*f)(unsigned char,unsigned char), un
     return result;
 }
 
-//Permutation, size in bits
+// Aplica la permutación específicada, el tamaño se recibe en número de bits
 unsigned char* applyPermutation(unsigned char *elements, int *permutation, int size){
     int idx;
     unsigned char *result = (unsigned char *) malloc(ceil((double)size / (double)CHAR_BIT));
@@ -86,7 +86,7 @@ unsigned char* applyPermutation(unsigned char *elements, int *permutation, int s
     return result;
 }
 
-// Shift a la izquierda
+// Shift a la izquierda 
 unsigned char* l_rotation(unsigned char *elements, int shift, int size){ //size in bits   
     unsigned char *result = (unsigned char *) calloc(size/CHAR_BIT, sizeof(unsigned char));
     int i, j;
@@ -97,7 +97,7 @@ unsigned char* l_rotation(unsigned char *elements, int shift, int size){ //size 
     return result;
 }
 
-// Regresa la subcadena del indice b al indice e, i.e. [b, e), índices de los bits.
+// Regresa la subcadena del indice b al indice e, i.e. [b, e). Los índices son de los bits.
 unsigned char* substr(unsigned char *str, int b, int e) {
     int size = ceil((double)(e - b) / (double)CHAR_BIT);
     unsigned char *result = (unsigned char *) malloc(size);
@@ -152,6 +152,7 @@ unsigned char** splitKeys (unsigned char *strk) {
     return keys;
 }
 
+// Regresa el resultado de aplicar un xor entre a y b
 unsigned char xorFunction(unsigned char a, unsigned char b){
     return a^b;
 }
@@ -164,6 +165,7 @@ unsigned char getChar(unsigned char* elements, int b, int e) {
     return res;
 }
 
+// Regresa el número de columna que c especifica
 int getCol(unsigned char c) {
     int i, mascara = 1 << 4, res = 0;
     for(i = 0; i < 4; i++) {
@@ -173,6 +175,7 @@ int getCol(unsigned char c) {
     return res >> 1;
 }
 
+// Regresa el número de fila que c especifica
 int getRow(unsigned char c) {
     int res = 0;
     if(((1 << 5) & c) != 0)
@@ -182,7 +185,6 @@ int getRow(unsigned char c) {
 }
 
 //Applies an specific S box
-// void applySi(unsigned char* input, int i, int* Si, unsigned char* output);
 void applySi(unsigned char* elements, unsigned char* result, int i, int* Si) {
     unsigned char c = getChar(elements, (i - 1) * 6, (i - 1) * 6 + 6);
     int s = Si[getCol(c) + getRow(c) * 16];
@@ -210,7 +212,7 @@ unsigned char* applyS(unsigned char* elements){
     return result;
 }
 
-//Aplica la funcion f del algoritmo 
+// Aplica la funcion f del algoritmo 
 unsigned char* fun(unsigned char *elements, unsigned char* key) {
     unsigned char *e = applyPermutation(elements, E, 48);
     unsigned char *xor = applyFunction(xorFunction, e, key, 48);
@@ -222,7 +224,7 @@ unsigned char* fun(unsigned char *elements, unsigned char* key) {
     return result;
 }
 
-// Reliza la chamba de cifrado y decifrado segun el booleano decrypt
+// Función auxiliar que cifra o descifra según se indique con decrypt
 unsigned char * encryption_aux(unsigned char *elements, unsigned char* key, int decrypt) { //return cipher text
     unsigned char *ip = applyPermutation(elements, IP, 64);
     unsigned char *l = substr(ip, 0, 32);
@@ -269,26 +271,19 @@ void encryptionFile(unsigned char *file_name, unsigned char* strK) {
     }    
 
     fseek(fp, 0, SEEK_END);
-    int t = ftell(fp);
+    size_t t = ftell(fp);
     rewind(fp);        
-    printf("Tamaño de archivo %s: %d\n", file_name, t);    
-    int norm = t + 8 - (t % 8);    
+    size_t norm = t + 8 - (t % 8), i;    
     unsigned char *out = malloc(norm);
-    int i;
     for(i = 0; i < t; i++){
       ch = fgetc(fp);
       out[i] = (char) ch;
     }
     
-    //printf("Antes: %s\n", out);
-    //imprime(out, t * 8);
     out[t] = 1 << 7;
-    int j;
-    for(j = t + 1; j < norm; j++)
-      out[j] = 0;
+    for(i = t + 1; i < norm; i++)
+      out[i] = 0;
     out[norm] = '\0';
-    printf("Antes: %d\nNormalizado en bytes: %d\nRead: %s\n", t, norm, out);
-    //printf("%scifrado\n", "\n");
     
     unsigned char *enc = malloc(0);
     for(i = 0; i < norm * 8; i += 64) {
@@ -301,7 +296,6 @@ void encryptionFile(unsigned char *file_name, unsigned char* strK) {
         enc = cat;
     }
     
-    //imprime(enc, norm * 8);    
     fwrite((char *)enc, sizeof(*enc), norm, fw);
     free(out);
     free(enc);
@@ -314,11 +308,12 @@ unsigned char * decrypt(unsigned char* elements , unsigned char *key) {
     return encryption_aux(elements, key, 1);
 }
 
-unsigned char * rm_padding(unsigned char* plaint, int * size) {
+// Se le quita el padding al archivo de texto claro
+unsigned char * rm_padding(unsigned char* plaint, size_t * size) {
     while(getBit(plaint, *size - 1) != 1)
         (*size)--;
     (*size)--;
-    int i;
+    size_t i;
     unsigned char *result = malloc(ceil((double)(*size) / (double)CHAR_BIT));
     for(i = 0; i < *size; i++)
         setBit(result, i, getBit(plaint, i));
@@ -326,7 +321,7 @@ unsigned char * rm_padding(unsigned char* plaint, int * size) {
 }
 
 //Read file and normalize
-unsigned char * decryptFile(unsigned char *file_name, unsigned char* strK) {
+void decryptFile(unsigned char *file_name, unsigned char* strK) {
     FILE *fp, *fw;
     int ch; //read character as an int
     fp = fopen((char *)file_name,"rb"); // read mode
@@ -337,17 +332,14 @@ unsigned char * decryptFile(unsigned char *file_name, unsigned char* strK) {
     }
 
     fseek(fp, 0, SEEK_END);
-    int t = ftell(fp);
+    size_t t = ftell(fp);
     rewind(fp);        
-    printf("Tamaño de archivo %s: %d\n", file_name, t);    
     unsigned char *out = malloc(t);
-    int i;
+    size_t i;
     for(i = 0; i < t; i++){
       ch = fgetc(fp);
       out[i] = (char) ch;
     }
-    
-    //imprime(out, t * 8);
     
     unsigned char *des = malloc(0);
     for(i = 0; i < t * 8; i += 64) {
@@ -360,12 +352,8 @@ unsigned char * decryptFile(unsigned char *file_name, unsigned char* strK) {
         des = cat;
     }
 
-    //imprime(des, t * 8);
-    int size = t * 8;
-    //printf("Size: %d\n", size);    
+    size_t size = t * 8;
     unsigned char *res = rm_padding(des, &size);
-    //printf("Size: %d\n", size);
-    //imprime(res, size);
     fwrite((char *)res, sizeof(*res), size/8, fw);
     free(out);
     free(des);
@@ -374,111 +362,16 @@ unsigned char * decryptFile(unsigned char *file_name, unsigned char* strK) {
     fclose(fw);
 }
 
-int main(int argc, char **args) {
-    /*
-    unsigned char* key = (unsigned char*)args[1];
-    encryptionFile((unsigned char*)"file.txt", key);
-    decryptFile((unsigned char*)"file.txt", key);
-    */
-    
-    /*** PRUEBAS ***/
-
-    // Prueba left shift
-    /*
-    unsigned char uc[7] = {-1,3,4,1,4,3,4};
-    imprime(uc,7*8);
-    imprime(l_rotation(uc, 3, 7*8), 7*8);
-    */
-
-    // Prueba permutacion
-    /*
-    unsigned char uc[8] = {-1,3,4,1,4,3,4,12};
-    unsigned char uc2[8] = {0,3,5,1,12,14,40,12};
-    imprime(uc,8*8);
-    imprime(uc2,8*8);
-    unsigned char *perm = applyPermutation(uc, IP, 64);
-    imprime(perm,8*8);
-    free(perm);
-    unsigned char *cat = catstr(uc, uc2, 64, 64);
-    imprime(cat, 64+64);
-    free(cat);
-    */
-
-    // Prueba generacion de llaves
-    /*
-    unsigned char k[8] = {19,52,87,121,155,188,223,241};
-    imprime(k, 64);
-    unsigned char** ks =splitKeys(k);
+int main(int argc, char *args[]) {
+    if(argc < 4)
+        printf("Uso: ./a.out [c|d] <llave> <nombre archivo>\n");
     int i;
-    imprime_ks(ks, DES_ITERATIONS, 48);
-    free_keys(ks);
-    */ 
-    // Prueba getChar
-    /*
-    unsigned char k[4] = {19,52,87,121};
-    imprime(k, 4*8);
-    imprime_n(getChar(k, 25, 32));
-    */
-
-    // Prueba getRow getCol
-    /*
-    unsigned char c = -1 << 1;
-    int m = 1 << 7;
-    c = 20;
-    imprime_n(c);
-    imprime_n(getRow(c));
-    imprime_n(getCol(c));
-    */
-
-    //Prueba applySi
-    /*
-    unsigned char k[6] = {19,52,87,121, 13, 1};
-    imprime(k, 6*8);
-    unsigned char *result = (unsigned char *) calloc(4,sizeof(unsigned char));
-    imprime(result, 4*8);
-    applySi(k, result, 1, S1);
-    applySi(k, result, 2, S2);
-    applySi(k, result, 3, S3);
-    imprime(result, 4*8);
-    free(result);
-    */
-
-    //Prueba fun
-    /*
-    unsigned char key[6] = {27, 2, 239, 252, 112, 114};
-    imprime(key, 6*8);
-    unsigned char r[4] = {240, 170, 240, 170};
-    imprime(r, 4*8);
-    unsigned char *f = fun(r, key);
-    imprime(f, 32);
-    free(f);
-    */
-
-    //Prueba encryption decrypt
-    /*
-    unsigned char k[8] = {19,52,87,121,155,188,223,241};
-    unsigned char m[8] = {1,35,69,103,137,171,205,239};
-    unsigned char *e = encryption(m,k);
-    imprime(e, 64);
-    unsigned char *d = decrypt(e, k);
-    imprime(d, 64);
-    free(e);
-    free(d);
-    */
-
-    /*
-    unsigned char k[8] = {14,50,146,50,234,109,13,115};
-    unsigned char m[8] = {135, 135, 135, 135, 135, 135, 135, 135};
-    imprime(m, 64);
-    unsigned char *e = encryption(m,k);
-    imprime(e, 64);
-    unsigned char *d = decrypt(e, k);
-    imprime(d, 64);
-    free(e);
-    free(d);
-    */
-    unsigned char k[8] = {14,50,146,50,234,109,13,115};
-    encryptionFile((unsigned char*)"des.h", k);
-    decryptFile((unsigned char*)"cipher_text.txt", k);
+    unsigned char* key = (unsigned char*)args[2];
+    if(strcmp("c", args[1]) == 0)
+        encryptionFile((unsigned char*)args[3], key);
+    else if(strcmp("d", args[1]) == 0) 
+        decryptFile((unsigned char*)args[3], key);
+    else
+        printf("Uso: ./a.out [c|d] <llave> <nombre archivo>\n");
     return 0;
 }
