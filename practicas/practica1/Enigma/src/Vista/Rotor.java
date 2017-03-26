@@ -44,12 +44,14 @@ public class Rotor extends JComponent {
     }
 
     public void down() {
+        /*
+        if (c.equals(zero) && next != null) {
+            next.down();
+        }
+        */  
         c++;
         if (c > 'Z') {
             c = 'A';
-        }
-        if (c.equals(zero) && next != null) {
-            next.down();
         }
         displayLetra.setText(c.toString());
     }
@@ -57,4 +59,9 @@ public class Rotor extends JComponent {
     public Character getCharacter() {
         return c;
     }
+    
+    public Character getZero() {
+        return zero;
+    }
+    
 }

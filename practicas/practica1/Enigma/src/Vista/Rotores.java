@@ -49,6 +49,17 @@ public class Rotores extends Container {
     }
 
     public void increase() {
+        boolean b = false, v = false;
+        if(rotor[1].getCharacter().equals(rotor[1].getZero())) {
+            rotor[0].down();
+            v = true;
+        }
+        if(rotor[2].getCharacter().equals(rotor[2].getZero())) {
+            rotor[1].down();
+            b = true;
+        }
+        if(!b && v)
+            rotor[1].down();
         rotor[2].down();
     }
 }

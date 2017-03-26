@@ -85,10 +85,6 @@ public class VentanaEnigma extends JFrame {
     }
 
     public Character transmit(Character c) {
-        /**IMPLEMENTAR**/
-        /*Aquí deberás poner el flujo que seguiría la corriente 
-         eléctrica cuando presionas una tecla  y regresar el 
-         caracter correspondiente*/
         int a = c - 'A';
         a = plugBoard.map(a);
         a = rotores.transmitForward(a);
