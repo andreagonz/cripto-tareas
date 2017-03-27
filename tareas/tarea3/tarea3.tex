@@ -38,9 +38,11 @@ Sea G un generador seudoaleatorio con factor de expansión $\ell (n)$. El algori
 \item Se manda la pareja $(s, c)$.
 \end{itemize}
 \begin{enumerate}[label=\alph*)]
-\item Si Alicia manda un mensaje $(s, c)$, ¿qué tiene que hacer Bartolo para recuperar el mensaje claro?
-\item Si un adversario puede ver una lista de mensajes $(s_1, c_1)$, $(s_2, c_2)$, . . . que fueron enviados entre Alicia y Bartolo, ¿cómo puede comprobar que se usó el mismo flujo de claves para cifrar dos mensajes? (Flujo de claves es la salida de RC4.)
-\item Usando la paradoja del cumpleaños, ¿aproximadamente cuántos mensajes tendría que enviar Alicia para que se repita un flujo de claves?
+\item Si Alicia manda un mensaje $(s, c)$, ¿qué tiene que hacer Bartolo para recuperar el mensaje claro? \\
+Para recuperar el mensaje tiene que calcular $m = RC4(s \parallel k) \oplus c$
+  
+\item Si un adversario puede ver una lista de mensajes $(s_1, c_1)$, $(s_2, c_2)$, . . . que fueron enviados entre Alicia y Bartolo, ¿cómo puede comprobar que se usó el mismo flujo de claves para cifrar dos mensajes? (Flujo de claves es la salida de RC4.) \\
+\item Usando la paradoja del cumpleaños, ¿aproximadamente cuántos mensajes tendría que enviar Alicia para que se repita un flujo de claves? \\
 \end{enumerate}
 
 
@@ -48,7 +50,12 @@ Sea G un generador seudoaleatorio con factor de expansión $\ell (n)$. El algori
 
 
 \subsubsection*{4. En el cifrado por bloques los errores se propagan de manera distinta dependiendo del modo de operación que se utilice. Explica qué ocurre en el mensaje descifrado cuando se usan los modos ECB, CBC, OFB y CTR, si el texto cifrado contiene un error de un solo bit.}
-
+\begin{itemize}
+\item ECB: Como en este modo cada bloque se cifra y descifra con la misma llave independientemente del otro, sólo el bloque que contiene al bit con el error difiere del bloque en el mensaje original. Los otros bloques no se ven afectados.
+\item CBC: En este modo el cifrado y descifrado de cada bloque depende del anterior, por lo que el bloque que contiene el bit con el error y todos los bloques que le siguen son distintos al mensaje original.
+\item OFB: Como en este modo ningún bit del mensaje depende del otro ya que sólo se hace un xor con una cadena para cifrar y descifrar, el mensaje original y el descifrado sólo difieren en ese bit.
+\item CTR: Análogamente al caso anterior sólo se modifica el bit con el error.
+\end{itemize}
 
 \subsubsection*{5. Para usar un cifrado por bloques de tamaño $n$ es necesario que el mensaje tenga longitud múltiplo de $n$, así que se agrega un padding cuando hace falta. Si se establece que se usará alguna forma de padding (por ejemplo, agregar un uno seguido de ceros), ¿por qué es necesario agregar padding aun en los mensajes de tamaño múltiplo de $n$?}
 Es necesario porque a partir del criptograma no se puede distinguir si el mensaje original tenía longitud múltiplo de $n$, por lo que si no se agregara siempre el padding no podría saberse cuándo éste se debe de remover después de descifrar y cuando no, por lo que es más conveniente siempre poner el padding antes de cifrar para siempre quitarlo después de descifrar.
