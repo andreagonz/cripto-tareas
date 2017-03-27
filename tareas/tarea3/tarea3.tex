@@ -41,10 +41,12 @@ Sea G un generador seudoaleatorio con factor de expansión $\ell (n)$. El algori
 \item Si Alicia manda un mensaje $(s, c)$, ¿qué tiene que hacer Bartolo para recuperar el mensaje claro? \\
 Para recuperar el mensaje tiene que calcular $m = RC4(s \parallel k) \oplus c$
   
-\item Si un adversario puede ver una lista de mensajes $(s_1, c_1)$, $(s_2, c_2)$, . . . que fueron enviados entre Alicia y Bartolo, ¿cómo puede comprobar que se usó el mismo flujo de claves para cifrar dos mensajes? (Flujo de claves es la salida de RC4.) \\
+\item Si un adversario puede ver una lista de mensajes $(s_1, c_1)$, $(s_2, c_2)$, . . . que fueron enviados entre Alicia y Bartolo, ¿cómo puede comprobar que se usó el mismo flujo de claves para cifrar dos mensajes? (Flujo de claves es la salida de RC4.) \\  
+  Ya que Alicia y Bartolo siempre usan la misma clave $k$, basta con que el adversario encuentre dos mensajes $(s_i, c_i)$ y $(s_j, c_j)$ tales que $s_i$ sea igual a $s_j$, de manera que sucederá que \\ $RC4(s_i \parallel k) = RC4(s_j \parallel k)$.
+  
 \item Usando la paradoja del cumpleaños, ¿aproximadamente cuántos mensajes tendría que enviar Alicia para que se repita un flujo de claves? \\
+ Ya que la cadena aleatoria $s$ es la única que cambia y mide 80 bits, cuando se haya mandado aproximadamente $2^{\sqrt{80}} = 2^{40}$ mensajes habrá una probabilidad del 50$\%$ de que se repita un flujo de claves, para tener una probabilidad de 90$\%$ se necesita aproximadamente de $2^{41}$ mensajes.
 \end{enumerate}
-
 
 \subsubsection*{3. Explica qué es una función seudoaleatoria y qué relación tiene con los algoritmos de cifrado por bloques.}
 
@@ -53,7 +55,7 @@ Para recuperar el mensaje tiene que calcular $m = RC4(s \parallel k) \oplus c$
 \begin{itemize}
 \item ECB: Como en este modo cada bloque se cifra y descifra con la misma llave independientemente del otro, sólo el bloque que contiene al bit con el error difiere del bloque en el mensaje original. Los otros bloques no se ven afectados.
 \item CBC: En este modo el cifrado y descifrado de cada bloque depende del anterior, por lo que el bloque que contiene el bit con el error y todos los bloques que le siguen son distintos al mensaje original.
-\item OFB: Como en este modo ningún bit del mensaje depende del otro ya que sólo se hace un xor con una cadena para cifrar y descifrar, el mensaje original y el descifrado sólo difieren en ese bit.
+\item OFB: Como en este modo ningún bit del mensaje depende del otro ya que sólo se hace un xor con una cadena para cifrar y descifrar, el mensaje original y el descifrado sólo difieren en el bit con el error.
 \item CTR: Análogamente al caso anterior sólo se modifica el bit con el error.
 \end{itemize}
 
