@@ -29,7 +29,7 @@
 \maketitle
 \subsubsection*{1. Con tus propias palabras explica por qué el siguiente esquema de cifrado para mensajes de tamaño $\ell(n)$ es seguro: \\
 Sea G un generador seudoaleatorio con factor de expansión $\ell (n)$. El algoritmo $\textsf{Gen}$, con entrada $n$, devuelve una clave $k$ escogida uniformemente del conjunto $\{0, 1\}^n$ . El algoritmo de cifrado $\textsf{Enc}$ recibe como entradas una clave $k$ de tamaño $n$ y un mensaje $m$ de tamaño $\ell (n)$ y devuelve el mensaje cifrado $c = G(k) \oplus m$. Para descifrar se calcula $m = G(k) \oplus c$.}
-
+Como $k$ es escogida aleatoriamente, $G(k)$ da entonces una salida aleatoria tomando a $k$ como semilla. Como $G(k)$ sólo da una salida, es decir sólo tiene que hacer una iteración a partir de la semilla ya que nuestro mensaje es de tamaño $\ell(n)$ y el factor de expansión de $G$ es también $\ell(n)$, no podemos nunca inferir qué salida nos va a dar $G$ si se desconoce a $k$, entonces mientras $k$ sea siempre renovada uniformemente al cifrar un nuevo mensaje, tendremos un esquema que simula al cifrado de Vernam, y por lo tanto es seguro.
 
 \subsubsection*{2. Supongamos que Alicia y Bartolo se quieren mandar mensajes cifrados y solo tienen una clave $k$ de 128 bits que ambos conocen. Para mandar un mensaje m hacen lo siguiente:}
 \begin{itemize}
@@ -45,7 +45,7 @@ Para recuperar el mensaje tiene que calcular $m = RC4(s \parallel k) \oplus c$
   Ya que Alicia y Bartolo siempre usan la misma clave $k$, basta con que el adversario encuentre dos mensajes $(s_i, c_i)$ y $(s_j, c_j)$ tales que $s_i$ sea igual a $s_j$, de manera que sucederá que \\ $RC4(s_i \parallel k) = RC4(s_j \parallel k)$.
   
 \item Usando la paradoja del cumpleaños, ¿aproximadamente cuántos mensajes tendría que enviar Alicia para que se repita un flujo de claves? \\
- Ya que la cadena aleatoria $s$ es la única que cambia y mide 80 bits, cuando se haya mandado aproximadamente $2^{\sqrt{80}} = 2^{40}$ mensajes habrá una probabilidad del 50$\%$ de que se repita un flujo de claves, para tener una probabilidad de 90$\%$ se necesita aproximadamente de $2^{41}$ mensajes.
+ Ya que la cadena aleatoria $s$ es la única que cambia y mide 80 bits, cuando se haya mandado aproximadamente $\sqrt{2^{80}} = 2^{40}$ mensajes habrá una probabilidad del 50$\%$ de que se repita un flujo de claves, para tener una probabilidad de 90$\%$ se necesita aproximadamente de $2^{41}$ mensajes.
 \end{enumerate}
 
 \subsubsection*{3. Explica qué es una función seudoaleatoria y qué relación tiene con los algoritmos de cifrado por bloques.}
