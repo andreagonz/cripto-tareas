@@ -21,6 +21,20 @@ public class Rotores extends Container {
             rotor[i].setNext(rotor[i - 1]);
         }
     }
+    
+    public Rotores(MapRotor p, MapRotor q, MapRotor r, char a, char b, char c) {
+        /*El rotor 0  es el de la izquierda*/
+        rotor = new Rotor[]{new Rotor(a), new Rotor(b), new Rotor(c)};
+        mf = new MapRotor[]{p, q, r};
+
+        for (int i = 0; i < 3; i++) {
+            rotor[i].setBounds(26 + i * 86, 55, 90, 120);
+            add(rotor[i]);
+        }
+        for (int i = 2; i > 0; i--) {
+            rotor[i].setNext(rotor[i - 1]);
+        }
+    }
 
     public int transmitForward(int c) {
         for (int i = 2; i >= 0; i--) {

@@ -5,6 +5,7 @@ import Logica.PlugBoard;
 import Logica.ReflectorB;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -19,8 +20,9 @@ public class VentanaEnigma extends JFrame {
     private final Background background;
     private final Display display;
     private final KeyBoard keyBoard;
-    private final Rotores rotores;
-    private final PlugBoard plugBoard;
+    private Rotores rotores;
+    private PlugBoard plugBoard;
+    private final Configuracion configuracion;
     private MapFunction reflector;
 
     public VentanaEnigma() {
@@ -30,6 +32,7 @@ public class VentanaEnigma extends JFrame {
         keyBoard = new KeyBoard();
         rotores = new Rotores();
         reflector = new ReflectorB();
+        configuracion = new Configuracion(this, "Configuración", "Hla");
         initComponents();
     }
 
@@ -45,10 +48,15 @@ public class VentanaEnigma extends JFrame {
         itemConfigurar.getAccessibleContext().setAccessibleDescription(
                 "This doesn't really do anything");
 //        mi1.addActionListener(this);
+        itemConfigurar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                configuracion.setVisible(true);
+            }
+        });
         menuSettings.add(itemConfigurar);
     }
 
-    private void initComponents() {
+    public void initComponents() {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
         setMinimumSize(new Dimension(VentanaEnigma.width, VentanaEnigma.height));
@@ -82,6 +90,22 @@ public class VentanaEnigma extends JFrame {
 
     public Rotores getRotores() {
         return rotores;
+    }
+    
+    public MapFunction getReflector() {
+        return reflector;
+    }
+    
+    public void setReflector(MapFunction mf) {
+        reflector = mf;
+    }
+    
+    public void setPlugBoard(PlugBoard pb) {
+        plugBoard = pb;
+    }
+    
+    public void setRotores(Rotores r) {
+        rotores = r;
     }
 
     public Character transmit(Character c) {
