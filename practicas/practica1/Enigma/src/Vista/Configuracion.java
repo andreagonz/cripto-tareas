@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -17,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JComboBox;
 import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 public class Configuracion extends JDialog implements ActionListener{
     
@@ -33,15 +36,17 @@ public class Configuracion extends JDialog implements ActionListener{
     Character rotorDC;
     Character rotorCC;
     Character[] map;
+    JTextField charIniI, charIniD, charIniC;
     
     public Configuracion(VentanaEnigma parent, String title, String message) {
         if (parent != null) {
             Dimension parentSize = parent.getSize(); 
-            Point p = parent.getLocation(); 
-            setLocation(p.x + parentSize.width / 4, p.y + parentSize.height / 4);
+            Point pp = parent.getLocation(); 
+            setLocation(pp.x + parentSize.width / 4, pp.y + parentSize.height / 4);
         }
         p = parent;
         JPanel panel = new JPanel();
+        initChars('Q','E','V');
         initCBReflector(panel);
         initCBRotorI(panel);
         initCBRotorC(panel);
@@ -66,12 +71,41 @@ public class Configuracion extends JDialog implements ActionListener{
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();
     }
+               
+    private void initChars(char i, char c, char d){
+        rotorIC = i;
+        rotorCC = c;
+        rotorDC = d;
+        //más sucio todavía
+        charIniC = new JTextField(""+c,1);
+        charIniI = new JTextField(""+i,1);
+        charIniD = new JTextField(""+d,1);
+        
+        charIniI.addKeyListener(delimiter(charIniI));
+        charIniD.addKeyListener(delimiter(charIniD));
+        charIniC.addKeyListener(delimiter(charIniC));
+    }
+    
+    //Algo sucio
+    private KeyAdapter delimiter(final JTextField jtf){
+        return new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) { 
+                if (jtf.getText().length() >= 1)
+                    e.consume(); 
+            }};
+    }
+    
+    private boolean validStartChars(){
+        rotorIC = charIniI.getText().charAt(0);
+        rotorDC = charIniD.getText().charAt(0);
+        rotorCC = charIniC.getText().charAt(0);
+        return (charAceptado(rotorIC) && charAceptado(rotorDC) && charAceptado(rotorCC));                
+    }
     
     // Dice si c es un carácter válido según nuestro alfabeto
     private boolean charAceptado(char c) {
-        if(c >= 'A' && c <= 'Z')
-            return true;
-        return false;
+        return c >= 'A' && c <= 'Z';            
     }
     
     // Nos regresa un arreglo de caracteres con las configuraciones de la entrada
@@ -117,8 +151,9 @@ public class Configuracion extends JDialog implements ActionListener{
             }
         });
         jp.add(new JLabel("Rotor Izquierdo:"));
-        jp.add(cbRotorI);
-    }
+        jp.add(cbRotorI);    
+        jp.add(charIniI);
+    }       
     
     private void initCBRotorD(JPanel jp) {
         String[] labels = {"Rotor I", "Rotor II", "Rotor III", "Rotor IV", "Rotor V"};
@@ -129,7 +164,8 @@ public class Configuracion extends JDialog implements ActionListener{
             }
         });
         jp.add(new JLabel("Rotor Derecho:"));
-        jp.add(cbRotorD);
+        jp.add(cbRotorD);       
+        jp.add(charIniD);
     }
     
     private void initCBRotorC(JPanel jp) {
@@ -141,14 +177,22 @@ public class Configuracion extends JDialog implements ActionListener{
             }
         });
         jp.add(new JLabel("Rotor Centro:"));
-        jp.add(cbRotorC);
+        jp.add(cbRotorC);       
+        jp.add(charIniC);
     }
     
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(!plugBoardMapFactible())
+        if(!validStartChars()){
+            JOptionPane.showMessageDialog(new Frame(), "Letras de inicio en rotores inválidas.");
+            return;
+        }
+        if(!plugBoardMapFactible()){
             JOptionPane.showMessageDialog(new Frame(), "No repetir letras para el plugboard.");
+            return;
+        }
+        
         MapRotor[] mr = {new RotorI(), new RotorII(), new RotorIII(), new RotorIV(), new RotorV()};
         if(reflectorIndice == 0)
             p.setReflector(new ReflectorB());
@@ -156,6 +200,7 @@ public class Configuracion extends JDialog implements ActionListener{
             p.setReflector(new ReflectorC());
         p.setRotores(new Rotores(mr[rotorIIndice], mr[rotorCIndice], mr[rotorDIndice], rotorIC, rotorCC, rotorDC));
         p.setPlugBoard(new PlugBoard(map));
+                        
         p.initComponents();
         setVisible(false); 
         dispose(); 
