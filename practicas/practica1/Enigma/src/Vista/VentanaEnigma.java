@@ -92,10 +92,6 @@ public class VentanaEnigma extends JFrame {
         return rotores;
     }
     
-    public MapFunction getReflector() {
-        return reflector;
-    }
-    
     public void setReflector(MapFunction mf) {
         reflector = mf;
     }
