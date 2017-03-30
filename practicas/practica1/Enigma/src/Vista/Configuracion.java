@@ -32,11 +32,10 @@ public class Configuracion extends JDialog implements ActionListener{
     int rotorIIndice;
     int rotorDIndice;
     int rotorCIndice;
-    Character rotorIC;
-    Character rotorDC;
-    Character rotorCC;
     Character[] map;
-    JTextField charIniI, charIniD, charIniC;
+    JTextField map1, map2, map3, map4, map5, to1, to2, to3, to4, to5;//mapeos
+    Character rotorIC, rotorDC, rotorCC; //caracteres de inicio en los rotores       
+    JTextField charIniI, charIniD, charIniC; //para captura de los chars de inicio
     
     public Configuracion(VentanaEnigma parent, String title, String message) {
         if (parent != null) {
@@ -51,6 +50,8 @@ public class Configuracion extends JDialog implements ActionListener{
         initCBRotorI(panel);
         initCBRotorC(panel);
         initCBRotorD(panel);
+        initMaps();
+        initPlugboardConf(panel);
         getContentPane().add(panel);
         
         JPanel buttonPane = new JPanel();
@@ -83,7 +84,34 @@ public class Configuracion extends JDialog implements ActionListener{
         
         charIniI.addKeyListener(delimiter(charIniI));
         charIniD.addKeyListener(delimiter(charIniD));
-        charIniC.addKeyListener(delimiter(charIniC));
+        charIniC.addKeyListener(delimiter(charIniC));                
+    }
+    
+    private void initMaps(){
+        map1 = new JTextField("A",1);
+        map2 = new JTextField("B",1);
+        map3 = new JTextField("C",1);
+        map4 = new JTextField("D",1);
+        map5 = new JTextField("E",1);
+        
+        map1.addKeyListener(delimiter(map1));
+        map2.addKeyListener(delimiter(map2));
+        map3.addKeyListener(delimiter(map3));
+        map4.addKeyListener(delimiter(map4));
+        map5.addKeyListener(delimiter(map5));        
+        
+        to1 = new JTextField("A",1);
+        to2 = new JTextField("B",1);
+        to3 = new JTextField("C",1);
+        to4 = new JTextField("D",1);
+        to5 = new JTextField("E",1);        
+        
+        to1.addKeyListener(delimiter(to1));
+        to2.addKeyListener(delimiter(to2));
+        to3.addKeyListener(delimiter(to3));
+        to4.addKeyListener(delimiter(to4));
+        to5.addKeyListener(delimiter(to5));        
+        
     }
     
     //Algo sucio
@@ -96,6 +124,10 @@ public class Configuracion extends JDialog implements ActionListener{
             }};
     }
     
+    /**
+     * Nos dice si la entrada de los caracteres de inicio para 
+     * los rotores es válida.    
+     */
     private boolean validStartChars(){
         rotorIC = charIniI.getText().charAt(0);
         rotorDC = charIniD.getText().charAt(0);
@@ -108,11 +140,18 @@ public class Configuracion extends JDialog implements ActionListener{
         return c >= 'A' && c <= 'Z';            
     }
     
+    private boolean aceptadoA(char[] a){        
+        for(int i = 0; i < a.length; i++)
+            if(!charAceptado(a[i]))
+                return false;
+        return true;
+    }
+    
     // Nos regresa un arreglo de caracteres con las configuraciones de la entrada
     private void getNuevoPlugBoardMap(char[] s, char[] d) {
         map = new Character[26];
         for(int i = 0; i < 5; i++)
-            if(s[i] != ' ' && d[i] != ' ')
+            if(s[i] != '\u0000' && d[i] != '\u0000')
                 map[s[i] - 'A'] = d[i];
         for(int i = 0; i < 26; i++)
             if(map[i] == null)
@@ -122,11 +161,11 @@ public class Configuracion extends JDialog implements ActionListener{
     // Nos dice si el arreglo de caracteres es válido, i.e. si no se repite ningún carácter
     private boolean plugBoardMapFactible() {
         int[] dicc = new int[26];
-        for(int i = 0; i < 26; i++) {
+        for(int i = 0; i < 26; i++)
             if(dicc[map[i] - 'A'] > 0)
                 return false;
-            dicc[map[i]]++;
-        }
+            else
+                dicc[map[i] - 'A' ]++;        
         return true;
     }
     
@@ -181,18 +220,46 @@ public class Configuracion extends JDialog implements ActionListener{
         jp.add(charIniC);
     }
     
+    private void initPlugboardConf(JPanel jp){
+        
+        jp.add(new JLabel("Configuración del plugboard\n"));
+        
+        jp.add(map1);
+        jp.add(map2);
+        jp.add(map3);
+        jp.add(map4);
+        jp.add(map5);
+        
+        jp.add(to1);       
+        jp.add(to2);
+        jp.add(to3);
+        jp.add(to4);
+        jp.add(to5);
+    }       
+
+    private boolean setMap(){            
+        char[] s = new char[]{map1.getText().charAt(0),map2.getText().charAt(0),map3.getText().charAt(0),map4.getText().charAt(0),map5.getText().charAt(0)};
+        char[] d = new char[]{to1.getText().charAt(0),to2.getText().charAt(0),to3.getText().charAt(0),to4.getText().charAt(0),to5.getText().charAt(0)};
+        getNuevoPlugBoardMap(s,d);
+        return aceptadoA(s) && aceptadoA(d);               
+    }
     
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {        
         if(!validStartChars()){
             JOptionPane.showMessageDialog(new Frame(), "Letras de inicio en rotores inválidas.");
             return;
         }
+        if(!setMap()){
+            JOptionPane.showMessageDialog(new Frame(), "Error en caracteres de plugboard.");
+            return;
+        }
+        
         if(!plugBoardMapFactible()){
             JOptionPane.showMessageDialog(new Frame(), "No repetir letras para el plugboard.");
             return;
         }
-        
+                                    
         MapRotor[] mr = {new RotorI(), new RotorII(), new RotorIII(), new RotorIV(), new RotorV()};
         if(reflectorIndice == 0)
             p.setReflector(new ReflectorB());
