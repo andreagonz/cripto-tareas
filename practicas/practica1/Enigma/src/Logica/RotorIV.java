@@ -8,4 +8,9 @@ public class RotorIV extends MapRotor {
         forward = new MapFunction(f);
         backward = new MapFunction(b);
     }
+    
+    @Override
+    public Character getSalto() {
+	return 'J';
+    }
 }

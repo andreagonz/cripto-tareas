@@ -64,11 +64,11 @@ public class Rotores extends Container {
 
     public void increase() {
         boolean b = false, v = false;
-        if(rotor[1].getCharacter().equals(rotor[1].getZero())) {
+        if(rotor[1].getCharacter().equals(mf[1].getSalto())) {
             rotor[0].down();
             v = true;
         }
-        if(rotor[2].getCharacter().equals(rotor[2].getZero())) {
+        if(rotor[2].getCharacter().equals(mf[2].getSalto())) {
             rotor[1].down();
             b = true;
         }

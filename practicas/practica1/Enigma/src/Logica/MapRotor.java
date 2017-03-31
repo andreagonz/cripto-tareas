@@ -12,5 +12,7 @@ public abstract class MapRotor {
     public int mapBackward(int c) {
         return backward.map(c);
     }
+    
+    abstract public Character getSalto();
 
 }
