@@ -293,7 +293,7 @@ public class Configuracion extends JDialog implements ActionListener{
             p.setReflector(new ReflectorC());
         p.setRotores(new Rotores(mr[rotorIIndice], mr[rotorCIndice], mr[rotorDIndice], rotorIC, rotorCC, rotorDC));
         p.setPlugBoard(new PlugBoard(map));
-                        
+        p.clean();       
         p.initComponents();
         setVisible(false); 
         dispose(); 

@@ -79,6 +79,10 @@ public class VentanaEnigma extends JFrame {
 
         pack();
     }
+    
+    public void clean() {
+         getContentPane().removeAll();
+    }
 
     public Display getDisplay() {
         return display;
