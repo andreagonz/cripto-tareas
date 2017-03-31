@@ -51,14 +51,31 @@ public class Configuracion extends JDialog implements ActionListener{
         initCBRotorC(panel);
         initCBRotorD(panel);
         initMaps();
-        initPlugboardConf(panel);
-        getContentPane().add(panel);
+        //panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        getContentPane().add(panel, BorderLayout.NORTH);
         
-        JPanel buttonPane = new JPanel();
-        JButton button = new JButton("Aceptar"); 
+        JPanel plugBoard = new JPanel();
+        plugBoard.add(new JLabel("Plugboard:"));        
+        JPanel plugBoardMap = new JPanel();        
+        JPanel plugBoardTo = new JPanel();        
+        plugBoardMap.setLayout(new BoxLayout(plugBoardMap, BoxLayout.Y_AXIS));
+        plugBoardTo.setLayout(new BoxLayout(plugBoardTo, BoxLayout.Y_AXIS));
+        initPlugboardConf(plugBoardMap,plugBoardTo);
+        plugBoard.add(plugBoardMap);
+        plugBoard.add(new JLabel("→"));
+        plugBoard.add(plugBoardTo);        
+        getContentPane().add(plugBoard, BorderLayout.CENTER);
+                
+        
+        
+        
+        JPanel buttonPane = new JPanel();                
+        JButton button = new JButton("Aceptar");          
+        //buttonPane.add(plugBoardMap);
+        //buttonPane.add(plugBoardTo);
         buttonPane.add(button); 
         button.addActionListener(this);
-        getContentPane().add(buttonPane, BorderLayout.SOUTH);
+        //getContentPane().add(buttonPane, BorderLayout.EAST);
         
         JButton botonCancelar = new JButton("Cancelar"); 
         buttonPane.add(botonCancelar); 
@@ -69,6 +86,7 @@ public class Configuracion extends JDialog implements ActionListener{
             }
         });
         getContentPane().add(buttonPane, BorderLayout.SOUTH);
+        
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();
     }
@@ -162,10 +180,11 @@ public class Configuracion extends JDialog implements ActionListener{
     
     // Nos dice si el arreglo de caracteres es válido, i.e. si no se repite ningún carácter
     private boolean plugBoardMapFactible() {
-        //this bs is for quitar bichitos :v
+        /*this is for quitar bichitos :v
         for(int i = 0; i < 26; i++)            
             System.out.print(map[i]+",");                
         System.out.print('\n');
+        */
                 
         int[] dicc = new int[26];
         for(int i = 0; i < 26; i++)
@@ -227,9 +246,9 @@ public class Configuracion extends JDialog implements ActionListener{
         jp.add(charIniC);
     }
     
-    private void initPlugboardConf(JPanel jp){
+    private void initPlugboardConf(JPanel jp, JPanel jp2){
         
-        jp.add(new JLabel("Configuración del plugboard\n"));
+        //jp.add(new JLabel("Configuración del plugboard\n"));
         
         jp.add(map1);
         jp.add(map2);
@@ -237,11 +256,11 @@ public class Configuracion extends JDialog implements ActionListener{
         jp.add(map4);
         jp.add(map5);
         
-        jp.add(to1);       
-        jp.add(to2);
-        jp.add(to3);
-        jp.add(to4);
-        jp.add(to5);
+        jp2.add(to1);       
+        jp2.add(to2);
+        jp2.add(to3);
+        jp2.add(to4);
+        jp2.add(to5);
     }       
 
     private boolean setMap(){            
