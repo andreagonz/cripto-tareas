@@ -151,15 +151,22 @@ public class Configuracion extends JDialog implements ActionListener{
     private void getNuevoPlugBoardMap(char[] s, char[] d) {
         map = new Character[26];
         for(int i = 0; i < 5; i++)
-            if(s[i] != '\u0000' && d[i] != '\u0000')
+            if(s[i] != '\u0000' && d[i] != '\u0000'){
                 map[s[i] - 'A'] = d[i];
+                map[d[i] - 'A'] = s[i];
+            }
         for(int i = 0; i < 26; i++)
             if(map[i] == null)
-                map[i] = (char)(i + 'A');
+                map[i] = (char)(i + 'A');        
     }
     
     // Nos dice si el arreglo de caracteres es válido, i.e. si no se repite ningún carácter
     private boolean plugBoardMapFactible() {
+        //this bs is for quitar bichitos :v
+        for(int i = 0; i < 26; i++)            
+            System.out.print(map[i]+",");                
+        System.out.print('\n');
+                
         int[] dicc = new int[26];
         for(int i = 0; i < 26; i++)
             if(dicc[map[i] - 'A'] > 0)
