@@ -18,14 +18,25 @@
 \usepackage{titlesec}
 \usepackage{enumitem}
 %Preambulo
-\title{Criptografía y seguridad \\ Practica 1}
+\title{Laboratorio: \\Criptografía y seguridad \\ Practica 1}
 \author{Andrea Itzel González Vargas \\ Carlos Gerardo Acosta Hernández}
 \date{Facultad de Ciencias UNAM}
-
 \setlength\parindent{0pt}
 
 \begin{document}
 \maketitle
-Para que los rotores se movieran de forma correcta hicimos varias modificaciones. Modificamos el metodo $down()$ de $Vista/Rotor.java$ y el metodo $increase()$ de $Vista/Rotores.java$, de manera que se puedan dar los saltos correctamente [redactar], y en vez de tomar en cuenta al caracter $zero$ como el indicador de salto, agregamos un nuevo metodo en MapRotor.java que nos devuelve un caracter que siempre es el mismo para cada rotor, de manera que zero solo nos indique la colocacion del rotor sin afectar cuando se dan los saltos.
+\section{Notas}
+
+Una vez que creímos haber terminado el proyecto, comparamos nuestros resultados con la página de ejemplos que se nos enlazó en el PDF de la práctica, además de otras máquinas $ENIGMA$ disponibles en Internet y caímos en cuenta de que los rotores no siempre hacían girar al rotor que le sucedía, fallando en algunos casos. Por ejemplo, con la configuración inicial.-
+\begin{itemize}
+\item rotor I izquierdo: ``A''
+\item rotor II centro: ''D''
+\item rotor III derecho: ``S''
+\end{itemize}
+Debía terminar en ``B'', ``F'' y ``C'' (izquierdo, centro y derecho, respectivamente) después de 10 iteraciones, que no logramos obtener sin modificar los archivos fuera de los que se nos indicaba para editar. \\ 
+
+Modificamos el método \texttt{down()} de $Vista/Rotor.java$ y el método \texttt{increase()} de $Vista/Rotores.java$, esto con el fin de que en cada iteración de los rotores, se verifique si cada rotor ha llegado al carácter que hace saltar al rotor que le sucede. Siguiendo lo anterior, en lugar de tomar en cuenta al carácter \texttt{zero} como el indicador de salto, agregamos un nuevo método en $MapRotor.java$ que nos devuelve un carácter, siempre el mismo para cada rotor, así \texttt{zero} solo indicará la colocación del rotor sin afectar los saltos, ya que en los ejemplos que vimos cada rotor tenía fijo su carácter de salto. \\
+
+
 \end{document}
-a
+

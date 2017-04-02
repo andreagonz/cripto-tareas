@@ -147,18 +147,23 @@ public class Configuracion extends JDialog implements ActionListener{
      * los rotores es válida.    
      */
     private boolean validStartChars(){
-        rotorIC = charIniI.getText().charAt(0);
-        rotorDC = charIniD.getText().charAt(0);
-        rotorCC = charIniC.getText().charAt(0);
-        return (charAceptado(rotorIC) && charAceptado(rotorDC) && charAceptado(rotorCC));                
+        if (charIniI.getText().length() > 0 && charIniD.getText().length() > 0 && charIniC.getText().length() > 0){
+            rotorIC = charIniI.getText().charAt(0);
+            rotorDC = charIniD.getText().charAt(0);
+            rotorCC = charIniC.getText().charAt(0);
+            return charAceptado(rotorIC) && charAceptado(rotorCC) && charAceptado(rotorDC);
+        }
+        return false; 
     }
     
     // Dice si c es un carácter válido según nuestro alfabeto
     private boolean charAceptado(char c) {
-        return c >= 'A' && c <= 'Z';            
+        return c != ' ' && c >= 'A' && c <= 'Z';            
     }
     
-    private boolean aceptadoA(char[] a){        
+    private boolean aceptadoA(char[] a){
+        if(a == null)
+            return false;
         for(int i = 0; i < a.length; i++)
             if(!charAceptado(a[i]))
                 return false;
@@ -263,10 +268,14 @@ public class Configuracion extends JDialog implements ActionListener{
         jp2.add(to5);
     }       
 
-    private boolean setMap(){            
-        char[] s = new char[]{map1.getText().charAt(0),map2.getText().charAt(0),map3.getText().charAt(0),map4.getText().charAt(0),map5.getText().charAt(0)};
-        char[] d = new char[]{to1.getText().charAt(0),to2.getText().charAt(0),to3.getText().charAt(0),to4.getText().charAt(0),to5.getText().charAt(0)};
-        getNuevoPlugBoardMap(s,d);
+    private boolean setMap(){
+        char[] s = null;
+        char[] d = null;
+        try{
+            s = new char[]{map1.getText().charAt(0),map2.getText().charAt(0),map3.getText().charAt(0),map4.getText().charAt(0),map5.getText().charAt(0)};
+            d = new char[]{to1.getText().charAt(0),to2.getText().charAt(0),to3.getText().charAt(0),to4.getText().charAt(0),to5.getText().charAt(0)};
+            getNuevoPlugBoardMap(s,d);
+        } catch(Exception e){return false;}
         return aceptadoA(s) && aceptadoA(d);               
     }
     
