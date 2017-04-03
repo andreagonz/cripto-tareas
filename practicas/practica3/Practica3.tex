@@ -55,7 +55,25 @@ Sea $H(m)$ una función de hash segura.
 \end{itemize}
 
 \subsubsection*{4. Supongamos que H(m) es una función hash resistente a colisiones que mapea un mensaje de una longitud de bits arbitraria en un valor hash de n bits. ¿Es cierto que para todos los mensajes x, x’ con x $\neq$ de x’, tenemos ¿H(x) $\neq$ H(x')? Argumenta tu respuesta.}
-Sea $M$ el conjunto de mensajes y $H$ el conjunto de todos los hashes posibles con $H(m)$ tal que $m \in M$, supongamos que la longitud $l_m$ de los mensajes $m$ es a lo más $n$, i.e. $0 \leq l_m \leq n$. Entonces sabemos que $|H| = 2^n$ y $|M| = \sum_{i = 0}^n 2^i$, por lo tanto $|M| > |H|$. Sin embargo, más aún sabemos que $l_m$ puede ser mayor a $n$, por lo que $|M|$ es mucho mayor a $|H|$. Podemos ver entonces que como el dominio de $H(m)$ es mayor a la imágen, necesariamente sucede que $\exists x, x' \in M$ tales que $H(x) = H(x')$, por el $principio\ del\ palomar$, o sea que el que una función sea resistente a colisiones no significa que no existan mensajes que causen colisiones, es más, estamos seguros de que existen dichas colisiones, sin embargo la función debe de asegurar que el encontrarlas sea muy difícil.
+Sea $M$ el conjunto de mensajes y $H$ el conjunto de todos los hashes posibles con $H(m)$ tal que $m \in M$, supongamos que la longitud $l_m$ de los mensajes $m$ es a lo más $n$, i.e. $0 \leq l_m \leq n$. Entonces sabemos que $|H| = 2^n$ y $|M| = \sum_{i = 0}^n 2^i$, por lo tanto $|M| > |H|$. Sin embargo, sabemos que $l_m$ puede ser mayor a $n$, por lo que $|M|$ es mucho mayor a $|H|$. Podemos ver entonces que como el dominio de $H(m)$ es mayor a la imagen, necesariamente sucede que $\exists x, x' \in M$ tales que $H(x) = H(x')$, por el $principio\ del\ palomar$, o sea que el que una función sea resistente a colisiones no significa que no existan mensajes que causen colisiones, es más, estamos seguros de que existen dichas colisiones, sin embargo la función debe de asegurar que el encontrarlas sea muy difícil.
 
 \subsubsection*{5. ¿Qué es “birthday attack”? ¿Cómo se puede evitar? ¿Qué propiedad de las funciones hash seguras protege contra este tipo de ataques?}
+Es un ataque basado en la \textit{Paradoja del cumpleaños} de la Teoría
+de probabilidad. Este problema describe un escenario en el que dado un
+grupo de personas, encontrar a dos individuos que comparten cumpleaños
+no es tan poco probable, contrario a la intuición inmediata. De hecho,
+con tan sólo 23 personas, se tiene una probabilidad del 50\% y con 70 personas del 99\%. Este problema trasladado a criptología, refiere a la
+probabilidad de que dos conjuntos de datos distintos tengan una misma
+imagen dada una función de \textit{hash}.
+Sea $H$ el número de posibles salidas de una función de hash $f$. El número de entradas necesarias para encontrar la primer colisión en $f$, es aproximado por
+\begin{equation}
+  Q(H) \approx \sqrt{\frac{\pi}{2}H}
+\end{equation}
+Por ejemplo, en una función de \textit{hash} de 64 bits, $H = 1.8 \times 10^{19}$, entonces $Q(H) \approx 5.38 \times 10^{9}$ (5 billones de entradas) serían necesarios para generar una colisión por fuerza bruta. A esto se le conoce como la \textit{cota del cumpleaños}. Dicho esto, es posible evitar la vulnerabilidad a este ataque, con un \textit{hash} de salida lo suficientemente grande para que sea inviable computacionalmente encontrar una colisión. Precisamente es el objetivo de las funciones de \textit{hash} criptográficas definir un tamaño de bloque suficientemente
+largo para que sea muy difícil encontrar una colisión lo que los protege
+de este tipo de ataques, sin embargo, por el principio del palomar,
+es seguro que existan colisiones; además, para algunas funciones como
+\textit{MD} y \textit{SHA}, cuyas imágenes no están distribuidas uniformemente, una colisión puede encontrarse más prontamente por un ataque de este estilo.
+
+
 \end{document}
