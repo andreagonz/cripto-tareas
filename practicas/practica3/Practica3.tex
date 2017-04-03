@@ -18,11 +18,33 @@
 \usepackage{titlesec}
 \usepackage{enumitem}
 %Preambulo
-\title{Laboratorio: \\Criptografía y seguridad \\ Practica 1}
+\title{Laboratorio: \\Criptografía y seguridad \\ Práctica 3}
 \author{Andrea Itzel González Vargas \\ Carlos Gerardo Acosta Hernández}
 \date{Facultad de Ciencias UNAM}
 \setlength\parindent{0pt}
 
 \begin{document}
 \maketitle
+\section*{Preguntas}
+\subsubsection*{1. Describe los tipos de ataques pasivos y activos y las soluciones que aplicarías para evitar cada tipo de ataque.}
+\begin{itemize}
+\item \textbf{Ataque pasivo}\\
+  Un ataque pasivo en un sistema criptográfico es aquel en el que el
+  criptoanalista o atacante no interviene con los mecanismos involucrados en el sistema, es decir, no modifica ni altera la información que se
+  busca proteger. Este tipo de ataque tiene por objetivo perpetrar
+  en el sistema utilizando únicamente la observación y monitoreo de
+  los datos transmitidos por el canal de comunicación. 
+\item \textbf{Ataque activo}\\
+  Son aquellos que afectan la operación de un sistema criptográfico
+  mediante la modificación del flujo de datos transmitido o la
+  suplantación de éste por un flujo falso.
+\end{itemize}
+Para evitarlos, me iría al cerro de Daiana.
+\subsubsection*{2. ¿Cuál es la diferencia más importante entre un algoritmo de cifrado y un algoritmo de autenticación?}
+Que un algoritmo de autenticación, por definición, no conserva la información completa de la entrada en la salida que devuelve. Es decir, que
+a partir de un elemento de la imagen de la función \textit{hash}, no es posible recuperar el elemento del dominio del que proviene contando únicamente con la salida;
+mientras que en un algoritmo de cifrado, debe ser posible recuperar el texto claro a partir de su criptotexto correspondiente.
+\subsubsection*{3. ¿Cuáles son las diferencias entre las funciones de hash y las funciones de hash seguras?}
+\subsubsection*{4. Supongamos que H(m) es una función hash resistente a colisiones que mapea un mensaje de una longitud de bits arbitraria en un valor hash de n bits. ¿Es cierto que para todos los mensajes x, x’ con x $\neq$ de x’, tenemos ¿H(x) $\neq$ H(x')? Argumenta tu respuesta.}
+\subsubsection*{5. ¿Qué es “birthday attack”? ¿Cómo se puede evitar? ¿Qué propiedad de las funciones hash seguras protege contra este tipo de ataques?}
 \end{document}
