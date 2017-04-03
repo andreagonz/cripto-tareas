@@ -39,7 +39,22 @@
   mediante la modificación del flujo de datos transmitido o la
   suplantación de éste por un flujo falso.
 \end{itemize}
-Para evitarlos, me iría al cerro de Daiana.
+Detectar un ataque pasivo puede resultar muy dificil por su naturaleza.
+Sin embargo, si no podemos asegurar cuando alguien observe nuestra información, podemos acudir a los algoritmos de cifrado de información,
+de esa manera no tendrá relevancia si nuestro canal de comunicación
+es susceptible a las intervenciones pasivas, sino que la seguridad del sistema dependerá de nuestro esquema de cifrado.\\
+
+Por el lado de los ataques activos, al alterar la información, es más
+probable que sean detectados. En el caso de \textit{suplantaciones de identidad},
+puede manejarse con un sistema de autenticación de dos pasos;
+si se trata de una \textit{modificación de mensajes}, pueden verificarse la
+integridad de los datos mediante algún mecanismo como las funciones
+de \textit{hash} y de esa manera asegurar que el mensaje que esperábamos
+no ha sido alterado; finalmente, si se trata de una \textit{replicación de
+mensajes} legítimos en el sistema, se puede establecer un límite de
+recepciones provenientes de cada nodo transmisor y de esa forma detectar
+un ataque y posiblemente al atacante.
+
 \subsubsection*{2. ¿Cuál es la diferencia más importante entre un algoritmo de cifrado y un algoritmo de autenticación?}
 Que un algoritmo de autenticación, por definición, no conserva la información completa de la entrada en la salida que devuelve. Es decir, que
 a partir de un elemento de la imagen de la función \textit{hash}, no es posible recuperar el elemento del dominio del que proviene contando únicamente con la salida;
