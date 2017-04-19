@@ -92,6 +92,16 @@ es seguro que existan colisiones; además, para algunas funciones como
 
 \subsection*{Kerberos}
 \subsubsection*{6. ¿Cómo evita kerberos los ataques de repetición?}
+El principal problema que considera \textit{Kerberos} en potencialmente ser propenso a un ataque de repetición es la duración de los \textit{tickets} proveedores.
+Tanto el \textit{ticket proveedor de tickets}\footnote{Nuestra terrible traducción para \textit{Ticket-granting ticket}} -pues debe tener una duración considerable por la naturaleza de su definición: ser reutilizable en la solicitud de múltiples \textit{tickets} de servicio-, como
+el \textit{ticket} proveedor de servicios. Específicamente cuando el tiempo de vida de tales \textit{tickets} es largo (en el orden de horas, por ejemplo), un posible atacante tendría oportunidad de capturar una copia de alguno de ellos. En caso de ser el primer \textit{ticket} mencionado, podría esperar a que el usuario terminase su sesión, luego falsificar la dirección de red del usuario y mandar el mensaje\footnote{$ID_c||ID_v||Ticket_{tgs}$} al \textit{servidor emisor de tickets} (\textbf{TGS}), accediendo de tal forma a todos los servicios del usuario legítimo, sin necesidad de mayor información. En caso de que el atacante obtenga
+el segundo \textit{ticket}, tendría acceso al servicio correspondiente, que continúa representando un peligro para la seguridad del sistema.\\
+
+Para resolver esto es necesario el siguiente requerimiento en el sistema: Un servicio de red debe ser capaz de asegurar que el usuario que está haciendo uso de un \textit{ticket} es el mismo usuario para el que el fue creado tal \textit{ticket}.
+Continuará... (Breve descripción de cómo se logra esto mediante llaves de sesión)
+
+
+
 
 \subsubsection*{7. ¿De qué manera kerberos asegura a un usuario que el servidor al que se está conectando, es un 
 servidor auténtico?}
