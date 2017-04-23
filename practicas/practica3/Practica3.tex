@@ -97,8 +97,20 @@ Tanto el \textit{ticket proveedor de tickets}\footnote{Nuestra terrible traducci
 el \textit{ticket} proveedor de servicios. Específicamente cuando el tiempo de vida de tales \textit{tickets} es largo (en el orden de horas, por ejemplo), un posible atacante tendría oportunidad de capturar una copia de alguno de ellos. En caso de ser el primer \textit{ticket} mencionado, podría esperar a que el usuario terminase su sesión, luego falsificar la dirección de red del usuario y mandar el mensaje\footnote{$ID_c||ID_v||Ticket_{tgs}$} al \textit{servidor emisor de tickets} (\textbf{TGS}), accediendo de tal forma a todos los servicios del usuario legítimo, sin necesidad de mayor información. En caso de que el atacante obtenga
 el segundo \textit{ticket}, tendría acceso al servicio correspondiente, que continúa representando un peligro para la seguridad del sistema.\\
 
-Para resolver esto es necesario el siguiente requerimiento en el sistema: Un servicio de red debe ser capaz de asegurar que el usuario que está haciendo uso de un \textit{ticket} es el mismo usuario para el que el fue creado tal \textit{ticket}.
-Continuará... (Breve descripción de cómo se logra esto mediante llaves de sesión)
+Para resolver esto es necesario el siguiente requerimiento en el sistema: Un servicio de red debe ser capaz de asegurar que el usuario que está haciendo uso de un \textit{ticket} es el mismo usuario para el que el fue creado tal \textit{ticket}. Kerberos logra esto, mediante el \textit{servicio de autentificación} (\textbf{AS}), que provee tanto al \textbf{TGS} como al cliente una \textit{llave de cifrado o de sesión} que sólo ellos conocerán, que
+al menos el cliente deberá presentar ante el \textbf{TGS} para probar su identidad. \\
+
+La mecánica para la distribución de dichas llaves de sesión es la siguiente:\\
+El cliente manda un mensaje al \textbf{AS} solicitando acceso al \textbf{TGS}. El \textbf{AS} responde con un mensaje que contiene el ticket y además una copia de la \textit{llave de sesión}; al estar cifrado con una llave derivada de la contraseña del usuario, sólo el cliente de dicho usuario puede descifrar el contenido. Esa misma llave está incluída en el ticket, por lo que sólo el \textbf{TGS} puede leerla. De esa manera, ambas partes
+obtienen su copia de la llave de manera segura.\\
+
+Con esta adecuación, el cliente puede presentarse ante el \textbf{TGS} sin que nos preocupemos por un ataque de repetición:\\
+El cliente manda un mensaje al \textbf{TGS} con el \textit{ticket} y el \textit{ID} del servicio al que quiere acceso, además de un \textit{autentificador}, cifrado con la llave de sesión provista por el \textbf{AS}, que contiene el \textit{ID} y la dirección del usuario, junto con un \textit{timestamp}. El \textbf{TGS} procede entonces a descifrar la información del \textit{ticket} con la llave que comparte con el \textbf{AS}, de esa forma
+obtiene la llave de sesión e intenta descifrar el \textit{autentificador}. Si tiene éxito, sólo restará revisar el nombre y la dirección contenidos
+en el \textit{autentificador} y compararlos con la información del \textit{ticket} recibido y la dirección de donde procede el mensaje del cliente.
+Si coinciden, el \textbf{TGS} sabrá que tanto el cliente que hace uso del \textit{ticket} es efectivamente su dueño original. \\
+
+Dado que el \textit{autentificador} sólo puede ser utilizado una ocasión y tiene un tiempo de vida corto, la amenaza de que un atacante lo robe y también obtenga una copia del \textit{ticket} es contrarrestada.
 
 
 
