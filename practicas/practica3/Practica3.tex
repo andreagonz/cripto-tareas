@@ -116,7 +116,17 @@ Dado que el \textit{autentificador} sólo puede ser utilizado una ocasión y tie
 
 
 \subsubsection*{7. ¿De qué manera kerberos asegura a un usuario que el servidor al que se está conectando, es un 
-servidor auténtico?}
+  servidor auténtico?}
+A pesar de que \textit{Kerberos} se asegura de que la identidad de los clientes y usuarios no sea suplantada, es importante que análogamente se proteja a los clientes y a los usuarios de una comunicación con un servidor potencialmente falso. Es por ello que la autentificación ocurre en ambos
+sentidos de la comunicación. Si no existe una restricción sobre el servidor que lo obligue a identificarse ante los usuarios del sistema, un atacante podría redirigir la comunicación hacia su propio servidor y emular el original para obtener información del usuario y denegarle los servicios.\\
+
+\textit{Kerberos} le asegura a un usuario que el servidor con el que se está comunicando es auténtico y además no se trata de una
+\textit{repetición}, al momento de responder a una solicitud de servicio del cliente, luego de haber obtenido el \textit{ticket proveedor de servicios} del \textbf{TGS}.
+Cuando el cliente presenta el \textit{ticket proveedor de servicios} para solicitar acceso a algún servicio, envía igualmente en el mensaje un autentificador, como al momento de solicitar dicho \textit{ticket} por primera vez. Recordemos que el \textbf{TGS} puede descifrar el ticket, de esa manera obtener su copia de la llave de sesión secreta y de esa manera, descifrar el \textit{autentificador}.
+Cuando sea momento de responder al cliente, el servidor devolverá en su mensaje el valor del \textit{timestamp} del \textit{autentificador} incrementado en 1 y cifrado con
+la llave de sesión. El cliente podrá obtener entonces, mediante su propia copia de la llave de sesión, el \textit{timestamp} que fue incrementado y como sólo era posible cifrarlo y descifrarlo con la llave de sesión que sólo el cliente y servidor originales poseen, el cliente puede estar tranquilo de que se trata efectivamente del servidor original. Asimismo, el propio valor del \textit{timestamp} asegura al cliente que no se trata de una
+repetición de una respuesta previa. 
+
 
 \subsubsection*{8. ¿Qué sucede si el servidor TGS es sustituido por un servidor de un hacker? }
 
