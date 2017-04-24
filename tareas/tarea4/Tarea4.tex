@@ -1,0 +1,60 @@
+%Especificacion
+\documentclass[14pt]{article}
+
+%Paquetes
+\usepackage[left=2cm,right=2cm,top=3cm,bottom=3cm,letterpaper]{geometry}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+%\usepackage[utf8]{inputenc}
+\usepackage[spanish,activeacute]{babel}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{enumerate}
+%\usepackage{tabularx}
+%\usepackage{wasysym}
+\usepackage{graphicx}
+%\graphicspath { {tarea01/media/} }
+%\usepackage{pifont}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{coloremoji}
+%Preambulo
+\title{Criptografía y seguridad \\ Tarea 4}
+\author{Andrea Itzel González Vargas \\ Carlos Gerardo Acosta Hernández}
+\date{Entrega: 25/04/17 \\ Facultad de Ciencias UNAM}
+
+\titleformat*{\subsubsection}{}
+\setlength\parindent{0pt}
+
+\begin{document}
+\maketitle
+
+\subsubsection*{1. Chon Hacker está harto de que le llegue mucha publicidad a su correo electrónico. Por esto ha decidido crear un filtro para abrir solamente los correos de sus amigos. El método consiste en lo siguiente:}
+\begin{itemize}
+\item Escoge dos emojis, $a$ y $b$, y se los manda a sus amigos.
+\item Solo aceptará aquellos mensajes que inicien con una cadena $x$, donde esta cadena satisface la igualdad SHA256($a \parallel x$) = $b \parallel loquesea$.
+\end{itemize}
+
+\begin{enumerate}[label=\alph*)]
+\item ¿Cómo encuentras una $x$ para enviar un mensaje «legítimo» a Chon Hacker? \\ \\
+\textbf{R:} 
+  
+\item ¿Es necesario que Chon cambie $a$ y $b$ regularmente o pueden quedarse fijos? Explica. \\ \\
+  \textbf{R:} 
+  
+\item Estima cuántas operaciones tiene que hacer alguien para enviar un mensaje. (Aplicar SHA256 cuenta como operación básica.) \\ \\
+  \textbf{R:}
+  
+\item Haz un programa para encontrar $x$ si $a$ = 😄, $b$ = 😏. Cuenta las operaciones que fueron necesarias y compara con la estimación anterior. Guarda $x$ en forma hexadecimal como texto, con los bytes separados por un espacio. \\ \\
+  \textbf{R:}
+  
+\item ¿Seguiría funcionando este método si ahora $b$ son dos emojis? ¿Y si a son dos emojis? \\ \\
+  \textbf{R:}
+\end{enumerate}
+
+\subsubsection*{6. Investiga cómo funciona BitTorrent. Describe cómo y para qué se usa SHA1 en la creación de archivos torrent. Existe la posibilidad de usar una estructura llamada árbol de Merkle, explica cómo se puede usar en BitTorrent y por qué es útil.}
+\textbf{R:} 
+\subsubsection*{7. Este problema trata sobre cómo construir una función hash a partir de ir formando caminos sobre gráficas.}
+  Sea $G$ una gráfica no dirigida 3-regular con $n$ vértices, además conexa y posiblemente con loops o multiaristas. Cada vértice es un elemento de $\{1, ... , n\}$. Se escoge un vértice $s \in V (G)$ y se establece como el vértice de inicio. Se usará un oráculo $\mathcal{O}$ que en todo momento «sabe» los movimientos que se han hecho. Para construir una función $h : \{0, 1\}^N \rightarrow \{1, ... , n\}$ se procede como sigue: con una entrada $x = b_1 b_2 ... b_N$ , primero nos paramos en $s$, se le da $b_1$ a $\mathcal{O}$ y nos contesta hacia cuál de los vecinos de $s$ hay que moverse dependiendo del valor de $b_1$, nos movemos hacia ese vecino, ahora le damos $b_2$ al oráculo y nos dirá hacia donde movernos, solo que nunca regresaremos al vértice por donde llegamos, seguimos este proceso hasta tener un camino de tamaño $N$ que empieza en $s$ y termina en un vértice $t$, y este número $t$ será la salida, es decir, $h(x) = t$. \\
+\textbf{R:} 
+\end{document}

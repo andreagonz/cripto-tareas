@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="ejercicio2" default="ejercicio2.jar" basedir="." >
+
+  <property name="build.dir" value="build" />
+  <property name="src.dir"   value="src" />
+  <property name="lib.dir"   value="lib" />
+  <property name="doc.dir"   value="doc" />
+
+  <target name="ejercicio2.jar" depends="compile.ejercicio2">
+    <jar jarfile="ejercicio2.jar">
+      <zipfileset dir="${build.dir}" prefix="" />
+      <manifest>
+        <attribute name="Main-Class" value="Main"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="compile.ejercicio2">
+    <mkdir dir="${build.dir}"/>
+    <javac srcdir="${src.dir}"
+      destdir="${build.dir}"
+      debug="true"
+      debuglevel="lines,vars,source"
+      includeantruntime="false"
+      deprecation="true"
+      nowarn="off">
+      <classpath>
+	<fileset dir="${lib.dir}">
+	  <include name="*.jar"/>
+	</fileset>
+      </classpath>
+      <compilerarg value="-Xlint:unchecked"/>
+    </javac>
+  </target>
+
+  <target name="clean">
+    <delete file="ejercicio2.jar"/>
+    <delete dir="${build.dir}"/>
+    <delete dir="${doc.dir}"/>
+  </target>
+
+</project>
