@@ -1,0 +1,6 @@
+*.aux
+*.log
+*.dvi
+common-passwords.txt
+passwords-salt.txt
+prueba.py

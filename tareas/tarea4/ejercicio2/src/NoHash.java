@@ -61,12 +61,11 @@ class NoHash {
                     if(i != null) {
                         pass[i] = linea;
                         encontrados++;
-                        System.out.println("Encontrado: " + encontrados + " " + linea);
+                        System.out.println("Encontrado: " + encontrados + ", Contraseña: " + linea + ", Id: " + pass_salt.get(h));
                     }
                 }
-                if(x % 100000 == 0) {
-                    System.out.println(x);
-                }
+                if(x % 100000 == 0)
+                    System.out.println("Iterando en contraseña número " + x);
                 x++;
             }
         } catch (IOException e) {
@@ -79,7 +78,7 @@ class NoHash {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("passwords-salt-RESPUESTA.txt"))) {
             for(int i = 0; i < pass.length; i++) {
                 if(pass[i] != null) {
-                    bw.write(pass[i]);
+                    bw.write(pass[i] + "\n");
                     j++;
                 }
             }

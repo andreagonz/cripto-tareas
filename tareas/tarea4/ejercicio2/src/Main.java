@@ -1,7 +1,10 @@
 class Main {
     public static void main(String[] args) {
-        NoHash nh = new NoHash();
-        nh.obtenContrasenas("passwords-salt.txt", "common-passwords.txt");
-        // System.out.println(nh.hash("hola"));
+        if(args.length < 2)
+            System.out.println("Uso: java -jar ejercicio2.jar <dirección de passwords-salt.txt> <dirección de common-passwords.txt>");
+        else {
+            NoHash nh = new NoHash();        
+            nh.obtenContrasenas(args[0], args[1]);
+        }
     }
 }
