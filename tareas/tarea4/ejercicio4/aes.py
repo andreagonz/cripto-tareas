@@ -1,7 +1,14 @@
 import os,sys
 from Crypto.Cipher import AES
+#from operator import xor
 
 iv = os.urandom(16)
+
+def xor(a, b):
+    bout = bytearray(b)
+    for i in range(0,16):
+        bout[i] ^= a[i]    
+    return b
 
 def padding(entrada):
     print(len(entrada))
@@ -75,7 +82,27 @@ class Cifrado:
             self.encryptor = AES.new(self.clave, AES.MODE_ECB, IV=v_actual)
             out += v_actual            
         return unpadding(out)
-            
+
+    def cifra_ofb(self):
+        e = padding(self.entrada)
+        out = bytes(0)
+        v_actual = iv
+        for x in range(0,int(len(e)/16)):
+            idx = x*16
+            v_actual = self.encryptor.encrypt(v_actual)
+            self.encryptor = AES.new(self.clave, AES.MODE_ECB)
+            out += xor(v_actual,e[idx:idx+16])
+        return out
+    
+    def descifra_ofb(self):
+        out = bytes(0)
+        v_actual = iv
+        for x in range(0,int(len(self.entrada)/16)):
+            idx = x*16
+            v_actual = self.encryptor.decrypt(v_actual)
+            self.encryptor = AES.new(self.clave, AES.MODE_ECB, IV=v_actual)
+            out += xor(v_actual, self.entrada[idx:idx+16])
+        return unpadding(out)
     
 
 def escribe_archivo(nom, arch):
