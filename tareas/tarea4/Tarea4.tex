@@ -37,18 +37,18 @@
 
 \begin{enumerate}[label=\alph*)]
 \item ¿Cómo encuentras una $x$ para enviar un mensaje «legítimo» a Chon Hacker? \\ \\
-\textbf{R:} Se itera por el espacio de mensajes posibles que empiezen con $a$. Como SHA256 acepta mensajes de longitud menor a $2^{64}$, entonces hay $sum_{i = 0}^{63} 2^i$ mensajes posibles en total, sin embargo solo estamos tomando en cuenta los que empiezan con $a$, ya que $a$ es un emoji, ocupa 4 bytes de espacio (32 bits), por lo que nuestro espacio de mensajes posibles se reduce a $sum_{i = 0}^{31} 2^i$. Por cada uno de estos mensajes $x$ posibles se obtiene el hash $h$ = SHA256($a \parallel x$)  y se verifica si $h$ comienza con $b$.
+\textbf{R:} Se itera por el espacio de mensajes posibles que empiezan con $a$. Como SHA256 acepta mensajes de longitud menor a $2^{64}$, entonces hay $\sum_{i = 0}^{63} 2^i$ mensajes posibles en total, sin embargo solo estamos tomando en cuenta los que empiezan con $a$, ya que $a$ es un emoji, ocupa 4 bytes de espacio (32 bits), por lo que nuestro espacio de mensajes posibles se reduce a $\sum_{i = 0}^{31} 2^i$. Por cada uno de estos mensajes $x$ posibles se obtiene el hash $h$ = SHA256($a \parallel x$)  y se verifica si $h$ comienza con $b$.
 
 \item ¿Es necesario que Chon cambie $a$ y $b$ regularmente o pueden quedarse fijos? Explica. \\ \\
   \textbf{R:} 
   
 \item Estima cuántas operaciones tiene que hacer alguien para enviar un mensaje. (Aplicar SHA256 cuenta como operación básica.) \\ \\
-  \textbf{R:} En el peor de los casos debera de hacer ah...
+  \textbf{R:} En el peor de los casos se deberá de recorrer todo el espacio de mensajes posibles, puede ser incluso que nisiquiera se llegue a un hash tal que se cumpla la igualdad, aunque es más probable que sí. O sea que a lo mas se calculará $h$ = SHA256($a \parallel x$) unas  $\sum_{i = 0}^{31} 2^i$ veces. (i.e. se tiene una complejidad de $\mathcal{O} (2^n)$).
   
 \item Haz un programa para encontrar $x$ si $a$ = 😄, $b$ = 😏. Cuenta las operaciones que fueron necesarias y compara con la estimación anterior. Guarda $x$ en forma hexadecimal como texto, con los bytes separados por un espacio. \\ \\
   \textbf{R:}
   
-\item ¿Seguiría funcionando este método si ahora $b$ son dos emojis? ¿Y si a son dos emojis? \\ \\
+\item ¿Seguiría funcionando este método si ahora $b$ son dos emojis? ¿Y si $a$ son dos emojis? \\ \\
   \textbf{R:}
 \end{enumerate}
 

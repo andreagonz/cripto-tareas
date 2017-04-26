@@ -1,5 +1,6 @@
 class Main {
     public static void main(String[] args) {
-        System.out.println("Dos kerberos");
+        ChonHacker ch = new ChonHacker();
+        ch.algo();
     }
 }
