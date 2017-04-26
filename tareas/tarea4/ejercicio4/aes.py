@@ -4,23 +4,23 @@ from Crypto.Cipher import AES
 
 iv = os.urandom(16)
 
-def xor(a, b):
-    bout = bytearray(b)
+def xor(a, b):    
+    bout = bytes(0)
     for i in range(0,16):
-        bout[i] ^= a[i]    
-    return b
+        bout += bytes([a[i] ^ b[i]])
+    return bout
 
 def padding(entrada):
     print(len(entrada))
     dif = 16-(len(entrada)%16)
     if dif > 0:        
-        entrada += bytes([1])
+        entrada += bytearray([1])
         for x in range(1,dif):
-            entrada += bytes([0])            
+            entrada += bytearray([0])            
     else:
-        entrada += bytes([1])
+        entrada += bytearray([1])
         for x in range(1,16):
-            entrada += bytes([0])
+            entrada += bytearray([0])
     print(len(entrada))
     return entrada
 
@@ -66,41 +66,45 @@ class Cifrado:
 
     def cifra_cbc(self):
         e = padding(self.entrada)
-        out = bytes(0)
+        out = bytearray(0)
+        v_actual = iv[0:16]
         for x in range(0,int(len(e)/16)):
             idx = x*16
-            v_actual = self.encryptor.encrypt(e[idx:idx+16])
-            self.encryptor = AES.new(self.clave, AES.MODE_ECB, IV=v_actual)
+            v_actual = self.encryptor.encrypt(xor(v_actual,e[idx:idx+16]))
             out += v_actual
-        return out
+        print(iv)
+        return iv+out
 
     def descifra_cbc(self):
-        out = bytes(0)
+        out = bytearray(0)
+        v_actual = self.entrada[0:16]
+        print(v_actual)
+        self.entrada = self.entrada[16:]
         for x in range(0,int(len(self.entrada)/16)):
-            idx = x*16
-            v_actual = self.encryptor.decrypt(self.entrada[idx:idx+16])
-            self.encryptor = AES.new(self.clave, AES.MODE_ECB, IV=v_actual)
-            out += v_actual            
+            idx = x*16                       
+            out += xor(v_actual,self.encryptor.decrypt(self.entrada[idx:idx+16]))
+            v_actual = self.entrada[idx:idx+16]
         return unpadding(out)
 
     def cifra_ofb(self):
         e = padding(self.entrada)
-        out = bytes(0)
-        v_actual = iv
+        out = bytearray(0)
+        v_actual = iv[0:16]
         for x in range(0,int(len(e)/16)):
             idx = x*16
             v_actual = self.encryptor.encrypt(v_actual)
-            self.encryptor = AES.new(self.clave, AES.MODE_ECB)
             out += xor(v_actual,e[idx:idx+16])
-        return out
+        print(iv)
+        return iv+out
     
     def descifra_ofb(self):
-        out = bytes(0)
-        v_actual = iv
+        out = bytearray(0)
+        v_actual = self.entrada[0:16]
+        self.entrada = self.entrada[16:]
+        print(v_actual)
         for x in range(0,int(len(self.entrada)/16)):
             idx = x*16
-            v_actual = self.encryptor.decrypt(v_actual)
-            self.encryptor = AES.new(self.clave, AES.MODE_ECB, IV=v_actual)
+            v_actual = self.encryptor.encrypt(v_actual)
             out += xor(v_actual, self.entrada[idx:idx+16])
         return unpadding(out)
     
