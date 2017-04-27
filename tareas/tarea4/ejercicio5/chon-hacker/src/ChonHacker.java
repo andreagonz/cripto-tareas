@@ -44,12 +44,7 @@ class ChonHacker {
     }
     
     public void buscarMensaje() {
-        int x = 0;
-        while(!mensajeAceptado()) {
-            mensajeAleatorio();
-            if(x % 10000 == 0)
-                System.out.println("Iteración: " + x);
-            x++;
-        }
+        while(!mensajeAceptado())
+            mensajeAleatorio();        
     }
 }
