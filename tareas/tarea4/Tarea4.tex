@@ -84,7 +84,7 @@
   \end{equation}
   Considerando el tamaño de los conjuntos $M$, $N$ y $B$, si restamos $|M| - |B|$, obtendremos que:
   \begin{equation}
-    \sum_{i = 0}^{i = 2^{31}}2^i - (2^{224} \cdot \frac{\sum_{i = 0}^{i = 2^{31}}2^i}{2^{256}}) = \sum_{i = 0}^{i = 2^{31}}2^i}\cdot (1-\frac{2^{224}}{2^{256}}) = \sum_{i = 0}^{i = 2^{31}}2^i}\cdot (1-\frac{1}{2^{32}})
+    \sum_{i = 0}^{i = 2^{31}}2^i - (2^{224} \cdot \frac{\sum_{i = 0}^{i = 2^{31}}2^i}{2^{256}}) = \sum_{i = 0}^{i = 2^{31}}2^i\cdot (1-\frac{2^{224}}{2^{256}}) = \sum_{i = 0}^{i = 2^{31}}2^i\cdot (1-\frac{1}{2^{32}})
   \end{equation}
   Comparando este resultado con $|N|$, podemos ver que (5) es mayor que (2), lo que nos lleva a considerar que dentro del conjunto $M$, cabe la posibilidad de que sus subconjuntos $N$ y $B$ sean ajenos, es decir, que
   $N \cap B = \varnothing$. Habíamos dicho que $B \subseteq M$ refería a los mensajes que podían llegar al conjunto de mensajes que Chon Hacker estaba dispuesto a aceptar, sin embargo $N$ refería a los
