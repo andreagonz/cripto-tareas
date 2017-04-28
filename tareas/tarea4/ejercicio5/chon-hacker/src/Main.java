@@ -1,6 +1,7 @@
 class Main {
     public static void main(String[] args) {
-        ChonHacker ch = new ChonHacker(3);
-        ch.buscarMensaje();
+        if(args.length < 1)
+            System.out.println("Uso: java -jar chon-hacker.jar <num de hilos>");
+        else new ChonHacker(Integer.parseInt(args[0]));        
     }
 }
