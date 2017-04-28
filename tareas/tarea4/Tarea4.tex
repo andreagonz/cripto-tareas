@@ -49,13 +49,13 @@
   Por otro lado, suponiendo que se mantienen los emojis permanentemente, un posible atacante empedernido podría obtener, mediante alguna técnica que requiera menos esfuerzo y tiempo, el \textit{emoji} de seguridad y de esa forma, hacerse pasar por uno de los amigos de Chon Hacker. Una posible impostura
   podría encaminarnos a la idea de cambiarlos con cierta regularidad, establecer un tiempo de vigencia
   para los $emojis$, pero también debe preocuparnos entonces la mecánica de distribución de estos $emojis$ a los amigos de Chon Hacker, el canal de comunicación por el que se los provee, de no considerar
-  la seguridad, nos veríamos en la misma situación por la que se planteó un cambio en la naturaleza temporal de los emojis. Tanto Chon como sus amigos podrían ser víctimas de ataques de repetición (resultando así en más $spam$ del que pudo evitarse) o quedar imposibilitado en la comunicación, tal como en una denegación de servicio, mismo que se tenía intención de mejorar. Además, en los siguientes puntos de la tarea, ya hemos evidenciado lo impráctico que resulta para un emisor, encontrar una $x$ que valide su mensaje para Chon Hacker, por lo que renovar los emojis requeriría de parte de todos sus contactos una fuerte búsqueda de una cadena válida para cada nuevo $emoji$.  \\
+  la seguridad, nos veríamos en la misma situación por la que se planteó un cambio en la naturaleza temporal de los emojis. Tanto Chon como sus amigos podrían ser víctimas de ataques de repetición (resultando así en más $spam$ del que pudo evitarse) o quedar imposibilitado en la comunicación, tal como en una denegación de servicio, misma que se tenía intención de mejorar. Además, en los siguientes puntos de la tarea, ya hemos evidenciado lo impráctico que resulta para un emisor, encontrar una $x$ que valide su mensaje para Chon Hacker, por lo que renovar los emojis requeriría de parte de todos sus contactos una fuerte búsqueda de una cadena válida para cada nuevo $emoji$.  \\
   
 \item Estima cuántas operaciones tiene que hacer alguien para enviar un mensaje. (Aplicar SHA256 cuenta como operación básica.) \\ \\
   \textbf{R:}
   Para determinar cuántas operaciones es necesario realizar, debemos saber qué tanto del espacio de mensajes debemos explorar para encontrar una $x$ apropiada que cumpla la restricción de Chon Hacker.
   Comencemos por determinar el
-  tamaño del subconjunto de mensajes $N \subset M$, ($M$ el espacio de mensajes) tal que $emoji_a || x \in N$. Lo consideramos un subconjunto
+  tamaño del subconjunto de mensajes $N \subset M$ ($M$ el espacio total de mensajes), tal que $emoji_a || x \in N$. Lo consideramos un subconjunto
   propio dado que la cantidad de bits en $x$ no puede superar los $2^{64} - 32$, pues el \textit{emoji}
   que nos ha proporcionado nuestro amigo Chon Hacker para la entrada en la función de hash toma 4 $bytes$ (32 $bits$), por tanto, la cantidad de combinaciones posibles en $N$ es menor que en $M$.\\
   
@@ -91,9 +91,11 @@
   mensajes que teníamos disponibles para elegir, en caso de ser ajenos, a pesar de ejecutar todas las
   operaciones que calculamos, no encontraríamos una cadena $x$ adecuada para que nuestro mensaje pueda ser recibido por nuestro receptor.
 \item Haz un programa para encontrar $x$ si $a$ = 😄, $b$ = 😏. Cuenta las operaciones que fueron necesarias y compara con la estimación anterior. Guarda $x$ en forma hexadecimal como texto, con los bytes separados por un espacio. \\ \\
-  \textbf{R:} El programa está en \texttt{ejercicio1}, se compila con \texttt{ant} y se corre con
+  \textbf{R:} El programa se encuentra en el directorio \texttt{ejercicio1/}, el sistema de construcción es \texttt{apache-ant}, por lo que debe encontrarse en tal directorio las definiciones de la construcción en el archivo \textit{build.xml}.
+  Para ejecutarlo, bastan los siguientes comandos:
 \begin{verbatim}
-    java -jar ejercicio1.jar
+    $ ant
+    $ java -jar ejercicio1.jar
 \end{verbatim}
   Se encontró una $x$ que cumple con las condiciones en aproximadamente 906,000,000 iteraciones (con la versión concurrente del programa del ejercicio 5). Ésto tomo al rededor de 30 min. \\
   
@@ -103,12 +105,12 @@
   
 donde $a$ = F09F9884 y $b$ = F09F988F. \\
 
-Se hicieron bastantes iteraciones, pero por suerte no se tuvo que recorrer todo el espacio de mensajes, y resultó ser bastante rápido el programa, por lo que se logró obtener el resultado en un tiempo decente. $x$ está guardada en el archivo \texttt{ejercicio1/x.txt}
+Se hicieron bastantes iteraciones, pero por suerte no se tuvo que recorrer todo el espacio de mensajes, y resultó ser bastante rápido el programa, por lo que se logró obtener el resultado en un tiempo decente. Dicha $x$ está almacenada en el archivo \texttt{ejercicio1/x.txt}. 
   
 \item ¿Seguiría funcionando este método si ahora $b$ son dos emojis? ¿Y si $a$ son dos emojis? \\ \\
-  \textbf{R:} En el primer caso, en el que $b$ son dos emojis, sucede que los hashes posibles que cumplen con la igualdad tienen sus primeros 64 bits fijos, por lo que tendremos $2^{256 - 64} = 2 ^ {192}$ hashes posibles, muchos menos que si $b$ es sólo un emoji, por lo que se vuelve más difícil encontrar una $x$ válida y aumenta la posibilidad de que dentro de nuestro espacio de búsqueda de mensajes ningún mensaje nos lleve a un hash deseado. \\
+  \textbf{R:} En el primer caso, en el que $b$ son dos emojis, sucede que los hashes posibles que cumplen con la igualdad tienen sus primeros 64 bits fijos, por lo que tendremos $2^{256 - 64} = 2 ^ {192}$ hashes posibles, muchos menos que si $b$ es sólo un emoji, por lo que se vuelve más difícil encontrar una $x$ válida y aumenta la probabilidad de que dentro de nuestro espacio de búsqueda de mensajes ningún mensaje nos lleve a un hash deseado. \\
 
-Si $a$ son dos emojis nuestro espacio de búsqueda de mensajes $x$ disminuirá de $\sum_{i = 0}^{2^{64} - 33}2^i$ a $\sum_{i = 0}^{2^{64} - 65}2^i$, lo cuál reduce el número máximo de operaciones a realizar, sin embargo sigue siendo un número muy grande para ser explorado en su totalidad en tiempo eficiente, y por lo tanto es peligroso ya que potencialmente podría llevarse mucho tiempo buscando una $x$ que cumpla la condición, más aun como en el caso anterior, también aumenta la probabilidad de no poder encontrar un hash deseado, cosa que sucedería si ningún mensaje en nuestro ahora reducido espacio de búsqueda resulta en algún hash buscado.
+Si $a$ son dos emojis nuestro espacio de búsqueda de mensajes $x$ disminuirá de $\sum_{i = 0}^{2^{64} - 33}2^i$ a $\sum_{i = 0}^{2^{64} - 65}2^i$, lo cuál reduce el número máximo de operaciones a realizar, sin embargo sigue siendo un número muy grande para ser explorado en su totalidad en tiempo eficiente, y por tanto es peligroso ya que potencialmente podría llevarse mucho tiempo buscando una $x$ que cumpla la condición; más grave aún, como en el caso anterior, también aumenta la probabilidad de no poder encontrar un hash deseado, evento que sucedería si ningún mensaje en el ahora reducido espacio de búsqueda, resulta en algún hash apropiado.
 
 \end{enumerate}
 
@@ -120,22 +122,22 @@ function hash(salt, password)
 \end{verbatim}
 Las contraseñas originales aparecen en \texttt{common-passwords}. Encuentra cuáles son y guárdalas en un archivo\\ \texttt{passwords-salt-RESPUESTA}. \\
 
-El programa para éste ejercicio (junto con \texttt{passwords-salt-RESPUESTA.txt}) está guardado en la carpeta \texttt{ejercicio2}, para compilarlo se debe correr \texttt{ant} y correrlo con
+El programa para éste ejercicio (junto con \texttt{passwords-salt-RESPUESTA.txt}) está guardado en la carpeta \texttt{ejercicio2/}, para compilarlo se debe correr \texttt{ant} y correrlo con
 \begin{verbatim}
-    java -jar ejercicio2.jar <dirección de passwords-salt.txt> <dirección de common-passwords.txt>
+    $ java -jar ejercicio2.jar <dirección de passwords-salt.txt> <dirección de common-passwords.txt>
 \end{verbatim}
 
 \subsubsection*{3. Obten dos programas, \texttt{bueno.py} y \texttt{malo.py}, donde el primero muestra el mensaje \texttt{"Hola mundo"}, el segundo muestra \texttt{"h0l4 mund0"}, y desde luego, ambos tienen el mismo hash MD5.}
-En la carpeta \texttt{ejercicio3} están los archivos \texttt{bueno.py} y \texttt{malo.py}, los cuáles deben de correrse con \textsf{python2}. Para comprobar que tienen el mismo hash MD5 se hizo el archivo \texttt{pruebamd5.py}, el cuál se corre con 
+En la carpeta \texttt{ejercicio3/}, se encuentran los archivos \texttt{bueno.py} y \texttt{malo.py}, los cuáles deben de correrse con \textsf{python2}. Para comprobar que tienen el mismo hash MD5 se hizo el archivo \texttt{pruebamd5.py}, el cuál se corre con 
 \begin{verbatim}
-    python pruebamd5.py <archivo1> <archivo2>
+    $ python pruebamd5.py <archivo1> <archivo2>
 \end{verbatim}
 En este caso \texttt{<archivo1>} y \texttt{<archivo2>} serían \texttt{bueno.py} y \texttt{malo.py}.
 
 \subsubsection*{4. AES con modos CBC y OFB}
 En la carpeta \texttt{ejercicio4} correr
 \begin{verbatim}
-    python3 aes.py [c|d] [cbc|ofb} <archivoEntrada> <archivoClave>
+    $ python3 aes.py [c|d] [cbc|ofb} <archivoEntrada> <archivoClave>
 \end{verbatim}
 donde \texttt{<archivoClave>} es la llave de 16 bytes.
 
@@ -143,14 +145,14 @@ donde \texttt{<archivoClave>} es la llave de 16 bytes.
 \textsf{Ejercicio 1} \\
 En la carpeta \texttt{ejercicio5/chon-hacker}, compilar con \texttt{ant} y correr con
 \begin{verbatim}
-    java -jar chon-hacker.jar <num de hilos> <semilla>
+    $ java -jar chon-hacker.jar <num de hilos> <semilla>
 \end{verbatim}
 donde \texttt{<num de hilos>} es el número de hilos a usar y \texttt{<semilla>} es la semilla del generador pseudoaleatorio. \\
 
 \textsf{Ejercicio 2} \\
 En la carpeta \texttt{ejercicio5/passwords}, compilar con \texttt{ant} y correr con
 \begin{verbatim}
-    java -jar passwords.jar <dirección de passwords-salt.txt> <dirección de common-passwords.txt> 
+    $ java -jar passwords.jar <dirección de passwords-salt.txt> <dirección de common-passwords.txt> 
     <Núm de hilos>
 \end{verbatim}
 donde \texttt{<Núm de hilos>} es el número de hilos a usar.
