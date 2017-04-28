@@ -56,15 +56,15 @@
   Para determinar cuántas operaciones es necesario realizar, debemos saber qué tanto del espacio de mensajes debemos explorar para encontrar una $x$ apropiada que cumpla la restricción de Chon Hacker.
   Comencemos por determinar el
   tamaño del subconjunto de mensajes $N \subset M$, ($M$ el espacio de mensajes) tal que $emoji_a || x \in N$. Lo consideramos un subconjunto
-  propio dado que la cantidad de bits en $x$ no puede superar los $2^{64-32}$, pues el \textit{emoji}
+  propio dado que la cantidad de bits en $x$ no puede superar los $2^{64} - 32$, pues el \textit{emoji}
   que nos ha proporcionado nuestro amigo Chon Hacker para la entrada en la función de hash toma 4 $bytes$ (32 $bits$), por tanto, la cantidad de combinaciones posibles en $N$ es menor que en $M$.\\
   
   Similarmente a \textbf{1.a)}, podemos calcular la cardinalidad del conjunto $N$ como:
   \begin{equation}
-    |M| = \sum_{i = 0}^{2^{63}} 2^i
+    |M| = \sum_{i = 0}^{2^{64} - 1} 2^i
   \end{equation}
   \begin{equation}
-    |N| = \sum_{i = 0}^{i = 2^{(64-32)-1}}2^i = \sum_{i = 0}^{i = 2^{31}}2^i
+    |N| = \sum_{i = 0}^{2^{64}-32-1}2^i = \sum_{i = 0}^{2^{64}-33}2^i
   \end{equation}
   Luego, si contamos la concatenación de $x$ con el $emoji_a$ como una de las operaciones a realizar, igualmente el cálculo de la función hash y además la comparación de los primeros cuatro $bytes$
   del resultado con el $emoji_b$, tenemos que el número total de operaciones a realizar en el
@@ -84,7 +84,7 @@
   \end{equation}
   Considerando el tamaño de los conjuntos $M$, $N$ y $B$, si restamos $|M| - |B|$, obtendremos que:
   \begin{equation}
-    \sum_{i = 0}^{i = 2^{31}}2^i - (2^{224} \cdot \frac{\sum_{i = 0}^{i = 2^{31}}2^i}{2^{256}}) = \sum_{i = 0}^{i = 2^{31}}2^i\cdot (1-\frac{2^{224}}{2^{256}}) = \sum_{i = 0}^{i = 2^{31}}2^i\cdot (1-\frac{1}{2^{32}})
+    \sum_{i = 0}^{2^{64} - 1}2^i - (2^{224} \cdot \frac{\sum_{i = 0}^{2^{64} - 1}2^i}{2^{256}}) = \sum_{i = 0}^{2^{64} - 1}2^i\cdot (1-\frac{2^{224}}{2^{256}}) = \sum_{i = 0}^{2^{64}-1}2^i\cdot (1-\frac{1}{2^{32}})
   \end{equation}
   Comparando este resultado con $|N|$, podemos ver que (5) es mayor que (2), lo que nos lleva a considerar que dentro del conjunto $M$, cabe la posibilidad de que sus subconjuntos $N$ y $B$ sean ajenos, es decir, que
   $N \cap B = \varnothing$. Habíamos dicho que $B \subseteq M$ refería a los mensajes que podían llegar al conjunto de mensajes que Chon Hacker estaba dispuesto a aceptar, sin embargo $N$ refería a los
@@ -96,6 +96,9 @@
 \item ¿Seguiría funcionando este método si ahora $b$ son dos emojis? ¿Y si $a$ son dos emojis? \\ \\
   \textbf{R:}
 \end{enumerate}
+En el primer caso, en el que $b$ son dos emojis, sucede que los hashes posibles que cumplen con la igualdad tienen sus primeros 64 bits fijos, por lo que tendremos $2^{256 - 64} = 2 ^ {192}$ hashes posibles, muchos menos que si $b$ es sólo un emoji, por lo que se vuelve menos probable encontrar una $x$ válida y aumenta la posibilidad de que dentro de nuestro espacio de búsqueda de mensajes ningún mensaje nos lleve a un hash deseado. \\
+
+Si $a$ son dos emojis nuestro espacio de búsqueda de mensajes $x$ disminuirá de $\sum_{i = 0}^{2^{64} - 33}2^i$ a $\sum_{i = 0}^{2^{64} - 65}2^i$, lo cuál reduce el número máximo de operaciones a realizar, sin embargo sigue siendo un número muy grande para ser explorado en tiempo eficiente y como en el caso anterior, también aumenta la probabilidad de no poder encontrar un hash deseado.
 
 \subsubsection*{2. El archivo \texttt{passwords-salt} contiene una lista de contraseñas obtenidas de una base de datos. Fueron creadas usando la siguiente función}
 \begin{verbatim}
