@@ -5,7 +5,7 @@
 \usepackage[left=2cm,right=2cm,top=3cm,bottom=3cm,letterpaper]{geometry}
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
+%\usepackage[utf8]{inputenc}
 \usepackage[spanish,activeacute]{babel}
 \usepackage{mathtools}
 \usepackage{amssymb}
@@ -17,7 +17,7 @@
 %\usepackage{pifont}
 \usepackage{titlesec}
 \usepackage{enumitem}
-%\usepackage{coloremoji}
+\usepackage{coloremoji}
 %Preambulo
 \title{Criptografía y seguridad \\ Tarea 4}
 \author{Andrea Itzel González Vargas \\ Carlos Gerardo Acosta Hernández}
@@ -37,10 +37,19 @@
 
 \begin{enumerate}[label=\alph*)]
 \item ¿Cómo encuentras una $x$ para enviar un mensaje «legítimo» a Chon Hacker? \\ \\
-\textbf{R:} Se itera por el espacio de mensajes posibles que empiezan con $a$. Como SHA256 acepta mensajes de longitud menor a $2^{64}$, entonces hay $\sum_{i = 0}^{2^{64} - 1} 2^i$ mensajes posibles en total, sin embargo solo estamos tomando en cuenta los que empiezan con $a$, ya que $a$ es un emoji, ocupa 4 bytes de espacio (32 bits), por lo que nuestro espacio de $x$ posibles se reduce a $\sum_{i = 0}^{2^{64} - 32 - 1} 2^i$. Por cada una de estas $x$ se obtiene el hash $h$ = SHA256($a \parallel x$)  y se verifica si $h$ comienza con $b$.
+\textbf{R:} Se itera por el espacio de mensajes posibles que empiezan con $a$. Como SHA256 acepta mensajes de longitud menor a $2^{64}$, entonces hay $\sum_{i = 0}^{2^{64} - 1} 2^i$ mensajes posibles en total, sin embargo sólo estamos tomando en cuenta los que empiezan con $a$, ya que éste es un emoji, ocupa 4 bytes de espacio (32 bits), por lo que nuestro espacio de $x$ posibles se reduce a $\sum_{i = 0}^{2^{64} - 32 - 1} 2^i$. Por cada una de estas $x$ se obtiene el hash $h$ = SHA256($a \parallel x$)  y se verifica si $h$ comienza con $b$.
 
 \item ¿Es necesario que Chon cambie $a$ y $b$ regularmente o pueden quedarse fijos? Explica. \\ \\
-  \textbf{R:}  
+  \textbf{R:} Ambas opciones poseen sus respectivas desventajas. Aunque el número de colisiones por mensaje, es el mismo para todos los mensajes, por la distribución uniforme de los hashes, mantener
+  los $emojis$ fijos no representaría una vulnerabiliad significativa ante ataques del estilo de ``birthday attack''. Recordemos que se trata de cantidades absurdamente grandes de intentos para encontrar
+  una colisión en un hash de 256 bits; a lo mejor, podemos descontar los primeros cuatro bytes pero
+  no reducen significativamente la búsqueda. \\
+
+  Por otro lado, manteniendo los emojis permanentemente, un posible atacante podría obtener, mediante alguna técnica que requiera menos esfuerzo y tiempo, el \textit{emoji} y de esa forma, hacerse pasar por uno de los amigos de Chon Hacker. Una posible impostura
+  podría encaminarnos a la idea de cambiarlos con cierta regularidad, establecer un tiempo de vigencia
+  para los $emojis$, pero también debe preocuparnos entonces la mecánica de distribución de estos $emojis$ a los amigos de Chon Hacker, el canal de comunicación por el que se los provee, de no considerar
+  la seguridad podría ser víctima tanto él como sus amigos de ataques de repetición o quedar imposibilitado para comunicarse como en una denegación de servicio. \\
+  
   
 \item Estima cuántas operaciones tiene que hacer alguien para enviar un mensaje. (Aplicar SHA256 cuenta como operación básica.) \\ \\
   \textbf{R:}
@@ -52,10 +61,10 @@
   
   Similarmente a \textbf{1.a)}, podemos calcular la cardinalidad del conjunto $N$ como:
   \begin{equation}
-    |M| = \sum_{i = 0}^{63} 2^i
+    |M| = \sum_{i = 0}^{2^{63}} 2^i
   \end{equation}
   \begin{equation}
-    |N| = \sum_{i = 0}^{i = (64-32)-1}2^i = \sum_{i = 0}^{i = 31}2^i
+    |N| = \sum_{i = 0}^{i = 2^{(64-32)-1}}2^i = \sum_{i = 0}^{i = 2^{31}}2^i
   \end{equation}
   Luego, si contamos la concatenación de $x$ con el $emoji_a$ como una de las operaciones a realizar, igualmente el cálculo de la función hash y además la comparación de los primeros cuatro $bytes$
   del resultado con el $emoji_b$, tenemos que el número total de operaciones a realizar en el
@@ -75,7 +84,7 @@
   \end{equation}
   Considerando el tamaño de los conjuntos $M$, $N$ y $B$, si restamos $|M| - |B|$, obtendremos que:
   \begin{equation}
-    \sum_{i = 0}^{i = 31}2^i - (2^{224} \cdot \frac{\sum_{i = 0}^{i = 31}2^i}{2^{256}}) = \sum_{i = 0}^{i = 31}2^i}\cdot (1-\frac{2^{224}}{2^{256}}) = \sum_{i = 0}^{i = 31}2^i}\cdot (1-\frac{1}{2^{32}})
+    \sum_{i = 0}^{i = 2^{31}}2^i - (2^{224} \cdot \frac{\sum_{i = 0}^{i = 2^{31}}2^i}{2^{256}}) = \sum_{i = 0}^{i = 2^{31}}2^i\cdot (1-\frac{2^{224}}{2^{256}}) = \sum_{i = 0}^{i = 2^{31}}2^i\cdot (1-\frac{1}{2^{32}})
   \end{equation}
   Comparando este resultado con $|N|$, podemos ver que (5) es mayor que (2), lo que nos lleva a considerar que dentro del conjunto $M$, cabe la posibilidad de que sus subconjuntos $N$ y $B$ sean ajenos, es decir, que
   $N \cap B = \varnothing$. Habíamos dicho que $B \subseteq M$ refería a los mensajes que podían llegar al conjunto de mensajes que Chon Hacker estaba dispuesto a aceptar, sin embargo $N$ refería a los
