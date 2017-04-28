@@ -37,7 +37,7 @@
 
 \begin{enumerate}[label=\alph*)]
 \item ¿Cómo encuentras una $x$ para enviar un mensaje «legítimo» a Chon Hacker? \\ \\
-\textbf{R:} Se itera por el espacio de mensajes posibles que empiezan con $a$. Como SHA256 acepta mensajes de longitud menor a $2^{64}$, entonces hay $\sum_{i = 0}^{63} 2^i$ mensajes posibles en total, sin embargo solo estamos tomando en cuenta los que empiezan con $a$, ya que $a$ es un emoji, ocupa 4 bytes de espacio (32 bits), por lo que nuestro espacio de mensajes posibles se reduce a $\sum_{i = 0}^{31} 2^i$. Por cada uno de estos mensajes $x$ posibles se obtiene el hash $h$ = SHA256($a \parallel x$)  y se verifica si $h$ comienza con $b$.
+\textbf{R:} Se itera por el espacio de mensajes posibles que empiezan con $a$. Como SHA256 acepta mensajes de longitud menor a $2^{64}$, entonces hay $\sum_{i = 0}^{2^{64} - 1} 2^i$ mensajes posibles en total, sin embargo solo estamos tomando en cuenta los que empiezan con $a$, ya que $a$ es un emoji, ocupa 4 bytes de espacio (32 bits), por lo que nuestro espacio de $x$ posibles se reduce a $\sum_{i = 0}^{2^{64} - 32 - 1} 2^i$. Por cada una de estas $x$ se obtiene el hash $h$ = SHA256($a \parallel x$)  y se verifica si $h$ comienza con $b$.
 
 \item ¿Es necesario que Chon cambie $a$ y $b$ regularmente o pueden quedarse fijos? Explica. \\ \\
   \textbf{R:}  
@@ -88,9 +88,44 @@
   \textbf{R:}
 \end{enumerate}
 
-\subsubsection*{6. Investiga cómo funciona BitTorrent. Describe cómo y para qué se usa SHA1 en la creación de archivos torrent. Existe la posibilidad de usar una estructura llamada árbol de Merkle, explica cómo se puede usar en BitTorrent y por qué es útil.}
-\textbf{R:} 
-\subsubsection*{7. Este problema trata sobre cómo construir una función hash a partir de ir formando caminos sobre gráficas.}
-  Sea $G$ una gráfica no dirigida 3-regular con $n$ vértices, además conexa y posiblemente con loops o multiaristas. Cada vértice es un elemento de $\{1, ... , n\}$. Se escoge un vértice $s \in V (G)$ y se establece como el vértice de inicio. Se usará un oráculo $\mathcal{O}$ que en todo momento «sabe» los movimientos que se han hecho. Para construir una función $h : \{0, 1\}^N \rightarrow \{1, ... , n\}$ se procede como sigue: con una entrada $x = b_1 b_2 ... b_N$ , primero nos paramos en $s$, se le da $b_1$ a $\mathcal{O}$ y nos contesta hacia cuál de los vecinos de $s$ hay que moverse dependiendo del valor de $b_1$, nos movemos hacia ese vecino, ahora le damos $b_2$ al oráculo y nos dirá hacia donde movernos, solo que nunca regresaremos al vértice por donde llegamos, seguimos este proceso hasta tener un camino de tamaño $N$ que empieza en $s$ y termina en un vértice $t$, y este número $t$ será la salida, es decir, $h(x) = t$. \\
-\textbf{R:} 
+\subsubsection*{2. El archivo \texttt{passwords-salt} contiene una lista de contraseñas obtenidas de una base de datos. Fueron creadas usando la siguiente función}
+\begin{verbatim}
+function hash(salt, password)
+    hash_val = sha1(password || salt)
+    return ’$’ || salt || ’$’ || base64(hash_val)
+\end{verbatim}
+Las contraseñas originales aparecen en \texttt{common-passwords}. Encuentra cuáles son y guárdalas en un archivo \texttt{passwords-salt-RESPUESTA}.
+El programa para éste ejercicio (junto con \texttt{passwords-salt-RESPUESTA.txt}) está guardado en la carpeta \texttt{ejercicio2}, para compilarlo se debe correr \texttt{ant} y correrlo con
+\begin{verbatim}
+    java -jar ejercicio2.jar <dirección de passwords-salt.txt> <dirección de common-passwords.txt>
+\end{verbatim}
+
+\subsubsection*{3. Obten dos programas, \texttt{bueno.py} y \texttt{malo.py}, donde el primero muestra el mensaje \texttt{"Hola mundo"}, el segundo muestra \texttt{"h0l4 mund0"}, y desde luego, ambos tienen el mismo hash MD5.}
+En la carpeta \texttt{ejercicio3} están los archivos \texttt{bueno.py} y \texttt{malo.py}, los cuáles deben de correrse con \textsf{python2}. Para comprobar que tienen el mismo hash MD5 se hizo el archivo \texttt{pruebamd5.py}, el cuál se corre con 
+\begin{verbatim}
+    python pruebamd5.py <archivo1> <archivo2>
+\end{verbatim}
+En este caso \texttt{<archivo1>} y \texttt{<archivo2>} serían \texttt{bueno.py} y \texttt{malo.py}.
+
+\subsubsection*{4. AES con modos CBC y OFB}.
+En la carpeta \texttt{ejercicio4} correr
+\begin{verbatim}
+    python3 aes.py [c|d] [cbc|ofb} <archivoEntrada> <archivoClave>
+\end{verbatim}
+donde \texttt{<archivoClave>} es la llave de 16 bytes.
+
+\subsubsection*{5. Ejercicios 1 y 2 concurrentes}.
+\textsf{Ejercicio 1} \\
+En la carpeta \texttt{ejercicio5/chon-hacker}, compilar con \texttt{ant} y correr con
+\begin{verbatim}
+    java -jar chon-hacker.jar <num de hilos> <semilla>
+\end{verbatim}
+donde <num de hilos> es el número de hilos a usar y <semilla> es la semilla del generador pseudoaleatorio.
+
+\textsf{Ejercicio 2}
+En la carpeta \texttt{ejercicio5/passwords}, compilar con \texttt{ant} y correr con
+\begin{verbatim}
+    java -jar passwords.jar <dirección de passwords-salt.txt> <dirección de common-passwords.txt> <Núm de hilos>
+\end{verbatim}
+donde \texttt{<Núm de hilos>} es el número de hilos a usar.
 \end{document}
