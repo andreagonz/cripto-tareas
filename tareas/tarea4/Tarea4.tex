@@ -42,13 +42,14 @@
 \item ¿Es necesario que Chon cambie $a$ y $b$ regularmente o pueden quedarse fijos? Explica. \\ \\
   \textbf{R:} Ambas opciones poseen sus respectivas desventajas. Aunque el número de colisiones por mensaje, es el mismo para todos los mensajes, por la distribución uniforme de los hashes, mantener
   los $emojis$ fijos no representaría una vulnerabiliad significativa ante ataques del estilo de ``birthday attack''. Recordemos que se trata de cantidades absurdamente grandes de intentos para encontrar
-  una colisión en un hash de 256 bits; a lo mejor, podemos descontar los primeros cuatro bytes pero
-  no reducen significativamente la búsqueda. \\
+  una colisión en un hash de 256 bits; más aún, la definición restrictiva del mensaje a enviar, dificulta el éxito de estos ataques, por lo que encontrar una colisión no necesariamente derivaría en la obtención de un mensaje que pueda recibir Chon Hacker y que se abuse de tal ventaja, esto porque la restricción disminuye el espacio de mensajes posibles, por lo que una posible colisión podría corresponder
+  a un mensaje fuera de ese espacio de mensajes. En este tono, de una lucha  de cientos de años de procesamiento para encontrar colisiones que quizá no le signifiquen vulnerabilidades a nuestro amigo Chon, dudamos seriamente que un sistema de distribución automático de correo, los autores del $spam$ que busca evitarse,
+  empleen esfuerzos mucho más comprometidos para asegurar que una persona en particular reciba los correos que mandan a múltiples destinatarios.\\
 
-  Por otro lado, manteniendo los emojis permanentemente, un posible atacante podría obtener, mediante alguna técnica que requiera menos esfuerzo y tiempo, el \textit{emoji} y de esa forma, hacerse pasar por uno de los amigos de Chon Hacker. Una posible impostura
+  Por otro lado, suponiendo que se mantienen los emojis permanentemente, un posible atacante empedernido podría obtener, mediante alguna técnica que requiera menos esfuerzo y tiempo, el \textit{emoji} de seguridad y de esa forma, hacerse pasar por uno de los amigos de Chon Hacker. Una posible impostura
   podría encaminarnos a la idea de cambiarlos con cierta regularidad, establecer un tiempo de vigencia
   para los $emojis$, pero también debe preocuparnos entonces la mecánica de distribución de estos $emojis$ a los amigos de Chon Hacker, el canal de comunicación por el que se los provee, de no considerar
-  la seguridad podría ser víctima tanto él como sus amigos de ataques de repetición o quedar imposibilitado para comunicarse como en una denegación de servicio. \\
+  la seguridad, nos veríamos en la misma situación por la que se planteó un cambio en la naturaleza temporal de los emojis. Tanto Chon como sus amigos podrían ser víctimas de ataques de repetición (resultando así en más $spam$ del que pudo evitarse) o quedar imposibilitado en la comunicación, tal como en una denegación de servicio, mismo que se tenía intención de mejorar. Además, en los siguientes puntos de la tarea, ya hemos evidenciado lo impráctico que resulta para un emisor, encontrar una $x$ que valide su mensaje para Chon Hacker, por lo que renovar los emojis requeriría de parte de todos sus contactos una fuerte búsqueda de una cadena válida para cada nuevo $emoji$.  \\
   
   
 \item Estima cuántas operaciones tiene que hacer alguien para enviar un mensaje. (Aplicar SHA256 cuenta como operación básica.) \\ \\
