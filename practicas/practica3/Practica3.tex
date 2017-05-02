@@ -97,7 +97,8 @@ Tanto el \textit{ticket proveedor de tickets}\footnote{Nuestra terrible traducci
 el \textit{ticket} proveedor de servicios. Específicamente cuando el tiempo de vida de tales \textit{tickets} es largo (en el orden de horas, por ejemplo), un posible atacante tendría oportunidad de capturar una copia de alguno de ellos. En caso de ser el primer \textit{ticket} mencionado, podría esperar a que el usuario terminase su sesión, luego falsificar la dirección de red del usuario y mandar el mensaje\footnote{$ID_c||ID_v||Ticket_{tgs}$} al \textit{servidor emisor de tickets} (\textbf{TGS}), accediendo de tal forma a todos los servicios del usuario legítimo, sin necesidad de mayor información. En caso de que el atacante obtenga
 el segundo \textit{ticket}, tendría acceso al servicio correspondiente, que continúa representando un peligro para la seguridad del sistema.\\
 
-Para resolver esto es necesario el siguiente requerimiento en el sistema: Un servicio de red debe ser capaz de asegurar que el usuario que está haciendo uso de un \textit{ticket} es el mismo usuario para el que el fue creado tal \textit{ticket}. Kerberos logra esto, mediante el \textit{servicio de autentificación} (\textbf{AS}), que provee tanto al \textbf{TGS} como al cliente una \textit{llave de cifrado o de sesión} que sólo ellos conocerán, que
+Para resolver esto es necesario el siguiente requerimiento en el sistema: Un servicio de red debe ser capaz de asegurar que el usuario que está haciendo uso de un \textit{ticket} es el mismo usuario para el que el fue creado tal \textit{ticket}. Kerberos logra esto, mediante el \textit{servidor
+  de autentificación} (\textbf{AS}), que provee tanto al \textbf{TGS} como al cliente una \textit{llave de cifrado o de sesión} que sólo ellos conocerán, que
 al menos el cliente deberá presentar ante el \textbf{TGS} para probar su identidad. \\
 
 La mecánica para la distribución de dichas llaves de sesión es la siguiente:\\
@@ -129,5 +130,30 @@ repetición de una respuesta previa.
 
 
 \subsubsection*{8. ¿Qué sucede si el servidor TGS es sustituido por un servidor de un hacker? }
+Para determinar una posible respuesta de un servicio autentificador y distribuidor de llaves como
+\textit{Kerberos}, antes que nada hagamos un breve recuento de los pasos de la comunicación entre un
+servidor con los clientes, bajo tal esquema. \\
 
+En primer lugar, el cliente solicita un \textit{ticket proveedor de tickets} para el usuario, mandando
+el \textit{ID} de dicho interesado al \textbf{AS}, junto con el \textit{ID} del \textbf{TGS} pues es
+el encargado de generar estas piezas de información para facilitar el intercambio seguro en la comunicación.\\
+
+El \textbf{AS} a su vez, responde con el \textit{ticket} que cifra con una llave derivada de la contraseña del usuario, misma que ya ha sido almacenada previamente en el registro del usuario autorizado por
+el sistema y a la que puede acceder ese servicio. El cliente, al recibir el mensaje, exije al usuario
+su contraseña, genera la clave para descifrar la información con ella. En caso de que la contraseña correcta haya sido suministrada por el usuario, el \textit{ticket proveedor de tickets} es recuperado con exito para múltiples usos del usuario. \\
+
+Recordemos en este punto la naturaleza del \textit{ticket} recién recibido. Ya hemos mencionado que es reutilizable y que un posible ataque de repetición con una copia del \textit{ticket} es improcedente por los elementos de información que contiene y sobre todo porque esta cifrado incialmente con una llave que sólo el \textbf{TGS} y el \textbf{AS} conocen -con el fin de preservar la integridad-, por lo que
+la pieza de información que resulta de la recuperación del cliente para el usuario, sólo consiste de
+la segunda capa de cifrado que se aplica sobre el \textit{ticket}, que busca exclusivamente que el
+cliente logre autentificar al usuario, no un acceso a la información subyacente. \\
+
+Armado con el \textit{ticket proveedor de tickets}, el cliente solicita un \textit{ticket proveedor de servicios} para el usuario. Para obtenerlo, envía un mensaje al \textbf{TGS} que contiene el \textit{ID} del usuario y el \textit{ID} del servicio al que busca tener acceso, principalmente, y el \textit{ticket} ulterior. \\
+
+Suponiendo que el \textbf{TGS} ya ha sido sustituido desde el inicio de la comunicación cliente-servidor por un servidor ``hacker'', ninguno de los pasos anteriores debería tener problema. \\
+
+Una vez que el servidor recibe el mensaje del cliente con la solicitud de un nuevo \textit{ticket}, es
+tarea del \textbf{TGS}, producirlo. Para ello, debe descifrar el \texit{ticket} entrante mediante
+la llave compartida únicamente con el \textbf{AS}. Sin embargo, un servidor falso no podrá descifrar el \texit{ticket} al estar falto de la información mencionada, por tanto fallará en la producción del nuevo \textit{ticket} para el cliente. En ese momento, la comunicación se verá paralizada y pueden comenzar mecanismos de detección de instrusos para dar seguridad tanto al servidor como a los clientes y usuarios.\\
+
+En momentos posteriores de la comunicación, cualquier intervención del \textbf{TGS} requiere de la llave que comparte con el \textbf{AS}, para recibir la información y comunicar nueva, por lo que será inadmisible no contar con ella. \\
 \end{document}
