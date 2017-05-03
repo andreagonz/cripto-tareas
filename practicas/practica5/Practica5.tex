@@ -15,12 +15,76 @@
 
 
 \section{Combinación de Asociaciones de Seguridad}
-\subsection{}
-\frame{\frametitle{}
+\subsection{Preliminares}
+\frame{\frametitle{Recordando...}
   \begin{itemize}
-  \item i \pause
-  \item e 
+  \item Asociaciones de seguridad 
+  \item Modos de uso en SA
   \end{itemize}
+}
+\subsubsection{Asociaciones de seguridad}
+\frame{\frametitle{Definición}
+  Es una conexión lógica de un sólo sentido entre un emisor
+  y un receptor que proporciona servicios de seguridad al tráfico de información
+  que se transporta en ella.
+}
+
+\subsubsection{Modos de uso en SA}
+\frame{\frametitle{Modo de transporte}
+  \begin{itemize}
+  \item Utilizado para cifrar y opcionalmente autentificar los datos de IP.
+  \item Adecuado para proteger conexiones entre \textit{hosts}, que soportan \textit{ESP}.
+
+    Ventaja: Provee confidencialidad para cualquier aplicación que la utilice.
+    Desventaja: Es susceptible a análisis de tráfico.
+  \end{itemize}
+}
+
+\frame{\frametitle{Modo túnel}
+  \begin{itemize}
+  \item Es utilizado cifrar un paquete IP por completo.
+  \item Orientado para sistemas que incluyen un \textit{firewall}, o algún otro
+    mecanismo de seguridad que protege una red confiable de redes externas.
+    Ventaja: Resistente a análisis de tráfico.
+  \end{itemize}
+}
+
+\subsection{Combinación de SAs}
+\frame{\frametitle{¿Para qué?}
+  Una asociación de seguridad puede implementar ya sea un protocolo \textit{AH}
+  o un \textit{ESP}, pero sólo uno.
+  Sin embargo, puede ocurrir que un flujo de tráfico llame servicios de ambos protocolos
+  durante su operación. En otro caso, puede que dicho flujo necesite de los servicios de \textit{IPsec} entre \textit{hosts} y, para ese mismo flujo, servicios separados entre \textit{gateways}.
+  Múltiples SAs, deben ser utilizados para obtener los servicios de \textit{IPsec}.
+}
+
+\frame{\frametitle{Colecciones de SAs}
+  Secuencia de SAs a través de las cuáles el tráfico de datos debe ser procesado
+  para obtener los servicios de \textit{IPsec} que se necesitan.
+  Se puede obtener una combinación de SAs mediante:
+  \begin{itemize}
+  \item Transport Adjacency
+  \item Iterated Tunneling
+  \end{itemize}
+}
+
+\frame{\frametitle{Transport Adjacency}
+  Consiste en aplicar más de un protocolo de seguridad a un mismo paquete \textit{IP} sin invocar
+  un modo túnel. Se realiza sólo un nivel de anidamiento, pues el procesamiento es realzado
+  para una única instancia de \textit{IPsec}, el punto de destino del paquete.
+}
+\frame{\frametitle{Iterated Tunneling}
+  
+}
+
+
+%i y ii
+\subsection{Autentificación y confidencialidad}
+\frame{\frametitle{}
+}
+
+\subsection{Combinaciones básicas}
+\frame{\frametitle{}
 }
 
 
@@ -32,11 +96,9 @@
   \end{itemize}
 }
 
-
 \section{Suites criptográficas}
 \subsection{}
 \frame{\frametitle{}
 }
-
 \end{document}
 
