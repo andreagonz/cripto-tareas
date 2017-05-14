@@ -5,7 +5,7 @@
 \usepackage[left=2cm,right=2cm,top=3cm,bottom=3cm,letterpaper]{geometry}
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
-%\usepackage[utf8]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[spanish,activeacute]{babel}
 \usepackage{mathtools}
 \usepackage{amssymb}
@@ -17,7 +17,7 @@
 %\usepackage{pifont}
 \usepackage{titlesec}
 \usepackage{enumitem}
-\usepackage{coloremoji}
+
 %Preambulo
 \title{Criptografía y seguridad \\ Tarea 5}
 \author{Andrea Itzel González Vargas \\ Carlos Gerardo Acosta Hernández}
@@ -33,18 +33,27 @@
 \textbf{R:} 
 
 \subsubsection*{2. Acabas de intervenir la comunicación de un sistema que usa RSA.}
+\begin{enumerate}[label=\alph*)]
+\item Si detectas que se envió el mensaje cifrado $c$ = 10 al usuario que tiene clave pública $e$ = 5, $N$ = 35, ¿cuál es el mensaje claro? \\
+  \textbf{R:} Para saber cuál es el mensaje claro debemos de encontrar la llave privada de descifrado $d$. Para ésto primero calculamos la factorización de $N$: \\
+  $N$ = 35 = 5 $\cdot$ 7 \\
+  Por lo tanto $\phi(N)$ = (5 - 1) $\cdot$ (7 - 1) = 4 $\cdot$ 6 = 24 \\
+  Ahora debemos encontrar $d$, que es el inverso de $e$ módulo $\phi(N)$, o sea que se cumple que $d \cdot e \equiv 1 \mod(\phi(N))$, o sea $d \cdot 5 \equiv 1 \mod(24)$. Podemos darnos cuenta de que $5 \cdot 5 \equiv 1 \mod(24)$, y por lo tanto $d = 5$. Ahora solo nos falta descifrar el mensaje, como ya sabemos $M \equiv c^d \mod(N)$, entonces $M \equiv 10^5 \mod(35) \equiv 5 \mod(35)$.
+  
+\item Si la clave pública de un usuario es $e$ = 31, $N$ = 3599, ¿cuál es la clave privada correspondiente? \\
+  \textbf{R:}
+\end{enumerate}
 
-
-\subsubsection*{3. Considera el esquema de ElGamal sobre $\Zeta^*_{71}$, con elemento generador g = 7.}
+\subsubsection*{3. Considera el esquema de ElGamal sobre $\mathbb{Z}^*_{71}$, con elemento generador g = 7.}
 
 \subsubsection*{4. Sea $N = pq$, con $p$ y $q$ primos distintos. Encuentra $p$ y $q$ si $N$ = 172205490419 y $\phi$ ($N$) = 172204660344. (Sin factorizar directamente.)}
 
 \subsubsection*{5. Se tiene el siguiente protocolo de intercambio de clave:}
 
-\subsubsection*{6. Lee la sección 1 del artı́culo Elliptic Curve Cryptography in Practice y escribe un resumen de lo que se exploró y los resultados.}
+\subsubsection*{6. Lee la sección 1 del artıículo Elliptic Curve Cryptography in Practice y escribe un resumen de lo que se exploró y los resultados.}
 \textbf{R:}
 
-\subsubsection*{7. Para el sistema de ElGamal con curvas elı́pticas se tienen los siguientes parámetros de una curva y 2 = x 3 + ax + b sobre F p con generador G:}
+\subsubsection*{7. Para el sistema de ElGamal con curvas elıípticas se tienen los siguientes parámetros de una curva y 2 = x 3 + ax + b sobre F p con generador G:}
 
 \subsubsection*{8. Se tiene la siguiente clave pública RSA}
 
