@@ -59,7 +59,7 @@
 }
 
 \frame{\frametitle{Colecciones de SAs}
-  Secuencia de SAs a través de las cuáles el tráfico de datos debe ser procesado
+  Secuencia de \textbf{SA}s a través de las cuáles el tráfico de datos debe ser procesado
   para obtener los servicios de \textit{IPsec} que se necesitan.
   Se puede obtener una combinación de SAs mediante:
   \begin{itemize}
@@ -74,9 +74,18 @@
   para una única instancia de \textit{IPsec}, el punto de destino del paquete.
 }
 \frame{\frametitle{Iterated Tunneling}
-  
+  Consiste en aplciar múltiples capas de protocolos de seguridad a un paquete, efectuadas a través de tunelizado de \textti{IP}.
+  Este enfoque permite varios niveles de anidamiento dado que cada túnel puede originarse o terminar en un punto
+  de \textit{IPsec} a lo largo de la trayectoria del paquete.
 }
 
+\frame{\frametitle{Combinación}
+  Ambos enfoques pueden ser combinados al hacer que, por ejemplo, una \textbf{SA} de transporte entre \textit{hosts} viaje parte del camino por medio de un \textbf{SA} de túnel entre \textit{gateways} de
+  seguridad.
+
+  Un interrogante potencial al tener colecciones de \textbf{SA}s, es el orden en que la autentificación y el cifrado deben ser aplicados entre dos puntos de destino y las maneras para conseguir el apropiado.
+  
+}
 
 %i y ii
 \subsection{Autentificación y confidencialidad}
