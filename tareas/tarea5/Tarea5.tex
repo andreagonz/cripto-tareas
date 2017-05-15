@@ -116,7 +116,8 @@ Segunda parte:
     a \equiv 7^2 \Mod{71} \equiv 49 \Mod{71} \\
     b \equiv 3^2 \cdot 30 \equiv 9 \cdot 30 \Mod{71} \equiv 270 \Mod{71} \equiv 57 \Mod{71}
   \end{gather*}
-  Por lo tanto el mensaje cifrado $c$ es (49, 57).
+  Por lo tanto el mensaje cifrado $c$ es (49, 57). \\
+
   
 \item Si ahora Alicia escoge otro valor para $k$ de manera que el cifrado de $M$ = 30 es la pareja (59, $C_2$), ¿cuál es el valor de $C_2$? \\
   
@@ -131,8 +132,30 @@ Segunda parte:
 \subsubsection*{4. Sea $N = pq$, con $p$ y $q$ primos distintos. Encuentra $p$ y $q$ si $N$ = 172205490419 y $\varphi$ ($N$) = 172204660344. (Sin factorizar directamente.)}
 
 \subsubsection*{5. Se tiene el siguiente protocolo de intercambio de clave:}
+\begin{enumerate}[label=\Roman*)]
+\item Alicia escoge $k, r \rightarrow \{0, 1\}^n$ al azar y envía $s := k \oplus r$ a Bartolo.
+\item Bartolo escoge $t \rightarrow \{0, 1\}^n$ al azar y manda $u := s \oplus t$ a Alicia.
+\item Alicia calcula $w := u \oplus r$ y manda $w$ a Bartolo.
+\item Alicia devuelve $k$ y Bartolo devuelve $w \oplus t$. \\
+  Verifica que Alicia y Bartolo devuelven la misma clave, luego muestra que si Eva puede ver los mensajes intercambiados, entonces puede recuperar la clave. \\
 
-\subsubsection*{6. Lee la sección 1 del artıículo Elliptic Curve Cryptography in Practice y escribe un resumen de lo que se exploró y los resultados.}
+  \textbf{R:} Primero verificamos que Alicia y Bartolo devuelvan la misma llave. Alicia devuelve $k$ y Bartolo $w \oplus t$, entonces debemos ver si $k = w \oplus t$.
+  \begin{flalign*}
+    w \oplus t &= u \oplus r \oplus t = s \oplus t \oplus r \oplus t = s \oplus r \oplus t \oplus t \\
+    &= s \oplus r \oplus 0 = k \oplus r \oplus r = k \oplus 0 = k
+  \end{flalign*}
+  Podemos ver que $w \oplus t$ y $k$ sí son iguales, entonces Alicia y Bartolo sí tienen la misma llave. \\
+
+  Eva conoce $s$, $u$ y $w$, entonces para recuperar la llave debe de calcular lo siguiente: 
+  \begin{flalign*}
+    w \oplus u \oplus s = u \oplus r \oplus u \oplus s = r \oplus s = r \oplus k \oplus r = k
+  \end{flalign*}
+  Así que Eva con la información que tiene dispoible puede saber cuál es la llave, por lo que podemos concluir que este sistema de intercambio de llaves no es seguro.
+\end{enumerate}
+
+
+
+\subsubsection*{6. Lee la sección 1 del artículo Elliptic Curve Cryptography in Practice y escribe un resumen de lo que se exploró y los resultados.}
 \textbf{R:}
 
 \subsubsection*{7. Para el sistema de ElGamal con curvas elípticas se tienen los siguientes parámetros de una curva y 2 = x 3 + ax + b sobre F p con generador G:}
