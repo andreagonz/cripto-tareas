@@ -35,8 +35,13 @@
 \textbf{R:} Una función $f : \{0,1\}^* \to \{0,1\}^*$ es de un sólo sentido si se cumple:
 \begin{itemize}
 \item $\exists\; M_f \in P$, un algoritmo que calcula $f$ tal que $\forall x \;M_f(x) = f(x)$. 
-\item $\forall A \in P$ algoritmo probabilístico, $\exists \;negl$, una función tal que $\Pr[Invert_{A,f}(n) = 1] \leq negl(n)$.
-  Donde... (def invert)
+\item $\forall A \in P$ algoritmo probabilístico, $\exists \;negl$, una función tal que $\Pr[Invert_{A,f}(n) = 1] \leq negl(n)$.\\
+  Donde el experimento $Invert$ está definido para un algoritmo cualquiera $A$ y un valor $n$ como:
+  \begin{enumerate}
+  \item Se escoge uniformemente $x \in \{0,1\}^n$, y se calcula, $y = f(x)$.
+  \item Se utilizan como parámetros de $A$, $1^n$ y $y$, y consideramos la salida como $x'$.
+  \item La salida de este experimento es $1$ si $f(x') = y$, $0$ en caso contrario.
+  \end{enumerate}
 \end{itemize}
 
 \subsubsection*{2. Acabas de intervenir la comunicación de un sistema que usa RSA.}
