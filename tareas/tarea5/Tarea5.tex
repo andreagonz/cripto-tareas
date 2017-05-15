@@ -71,7 +71,7 @@
     N = 3599 = 61 \cdot 59 \\
     \varphi(3599) = \varphi(61) \cdot \varphi(59) = (61 - 1) \cdot (59 - 1) = 60 \cdot 58 = 3480
   \end{gather*}
-  Ahora encontramos la llave privada $d$ tal que $d \cdot 31 \equiv 1 \Mod{3480}$, es decir el inverso de $e$ módulo $\varphi(N)$. Con tal fin usamos el algoritmo extendido de Euclides. \\
+  Ahora encontramos la llave privada $d$ tal que $d \cdot 31 \equiv 1 \Mod{3480}$, es decir el inverso de $e$ módulo $\varphi(N)$. Con tal fin usamos el algoritmo de Euclides extendido. \\
   
   Primera parte:
   \begin{align*}
@@ -97,7 +97,26 @@ Segunda parte:
 \end{enumerate}
 
 \subsubsection*{3. Considera el esquema de ElGamal sobre $\mathbb{Z}^*_{71}$, con elemento generador g = 7.}
+\begin{enumerate}[label=\alph*)]
+\item Si Bartolo tiene clave pública $Y_B$ = 3 y Alicia escoge el entero $k$ = 2, ¿cuál es el mensaje cifrado de $M$ = 30? \\
+  
+    \textbf{R:}  Se necesita encontrar el mensaje cifrado $c = (a, b)$, por lo que se debe calcular $a \equiv g^k \Mod{71}$ y $b \equiv Y_B^kM \Mod{71}$. Asi que
+  \begin{gather*}
+    a \equiv 7^2 \Mod{71} \equiv 49 \Mod{71} \\
+    b \equiv 3^2 \cdot 30 \equiv 9 \cdot 30 \Mod{71} \equiv 270 \Mod{71} \equiv 57 \Mod{71}
+  \end{gather*}
+  Por lo tanto el mensaje cifrado $c$ es (49, 57).
+  
+\item Si ahora Alicia escoge otro valor para $k$ de manera que el cifrado de $M$ = 30 es la pareja (59, $C_2$), ¿cuál es el valor de $C_2$? \\
+  
+    \textbf{R:}  Se debe encontrar $k$ tal que $a \equiv 7^k \Mod{71} \equiv 59 \Mod{71}$, lo cual se cumple si $k$ = 3. Ahora se calcula $C_2$.
+  \begin{gather*}
+    C_2 \equiv Y_B^kM \Mod{71} \equiv 3^3 \cdot 30 \Mod{71} \equiv 27 \cdot 30 \Mod{71} \equiv 810 \Mod{71} \equiv 29 \Mod{71}
+  \end{gather*}
 
+  Por lo tanto $C_2$ = 29.
+  
+\end{enumerate}
 \subsubsection*{4. Sea $N = pq$, con $p$ y $q$ primos distintos. Encuentra $p$ y $q$ si $N$ = 172205490419 y $\varphi$ ($N$) = 172204660344. (Sin factorizar directamente.)}
 
 \subsubsection*{5. Se tiene el siguiente protocolo de intercambio de clave:}
@@ -105,7 +124,7 @@ Segunda parte:
 \subsubsection*{6. Lee la sección 1 del artıículo Elliptic Curve Cryptography in Practice y escribe un resumen de lo que se exploró y los resultados.}
 \textbf{R:}
 
-\subsubsection*{7. Para el sistema de ElGamal con curvas elıípticas se tienen los siguientes parámetros de una curva y 2 = x 3 + ax + b sobre F p con generador G:}
+\subsubsection*{7. Para el sistema de ElGamal con curvas elípticas se tienen los siguientes parámetros de una curva y 2 = x 3 + ax + b sobre F p con generador G:}
 
 \subsubsection*{8. Se tiene la siguiente clave pública RSA}
 
