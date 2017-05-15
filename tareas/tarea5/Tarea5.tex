@@ -1,3 +1,4 @@
+
 %Especificacion
 \documentclass[14pt]{article}
 
@@ -31,7 +32,12 @@
 \maketitle
 
 \subsubsection*{1. Da una definición formal de función de un solo sentido.}
-\textbf{R:} 
+\textbf{R:} Una función $f : \{0,1\}^* \to \{0,1\}^*$ es de un sólo sentido si se cumple:
+\begin{itemize}
+\item $\exists\; M_f \in P$, un algoritmo que calcula $f$ tal que $\forall x \;M_f(x) = f(x)$. 
+\item $\forall A \in P$ algoritmo probabilístico, $\exists \;negl$, una función tal que $\Pr[Invert_{A,f}(n) = 1] \leq negl(n)$.
+  Donde... (def invert)
+\end{itemize}
 
 \subsubsection*{2. Acabas de intervenir la comunicación de un sistema que usa RSA.}
 \begin{enumerate}[label=\alph*)]
