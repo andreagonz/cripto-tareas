@@ -154,13 +154,57 @@ Segunda parte:
 \end{enumerate}
 
 
-
 \subsubsection*{6. Lee la sección 1 del artículo Elliptic Curve Cryptography in Practice y escribe un resumen de lo que se exploró y los resultados.}
 \textbf{R:}
 
-\subsubsection*{7. Para el sistema de ElGamal con curvas elípticas se tienen los siguientes parámetros de una curva y 2 = x 3 + ax + b sobre F p con generador G:}
+\subsubsection*{7. Para el sistema de ElGamal con curvas elípticas se tienen los siguientes parámetros de una curva $y^2 = x^3 + ax + b$}
+sobre $\mathbb{F}_p$ con generador $G$:
+\begin{flalign*}
+  p &= 2^{256} - 2^{224} + 2^{192} + 2^{96} - 1 \\
+  &= \textsf{0xffffffff00000001000000000000000000000000ffffffffffffffffffffffff} \\
+  a &= -3 \\
+  b &= \textsf{0x5ac635d8aa3a93e7b3ebbd55769886bc651d06b0cc53b0f63bce3c3e27d2604b} \\
+  G &= (\textsf{0x6b17d1f2e12c4247f8bce6e563a440f277037d812deb33a0f4a13945d898c296}, \\
+  &\textsf{0x4fe342e2fe1a7f9b8ee7eb4a7c0f9e162bce33576b315ececbb6406837bf51f5})
+\end{flalign*}
+Dada la clave pública
+\begin{flalign*}
+Q &= (\textsf{0xcfc746589e4a140785b3bf94c7269ad1b17ad259fbe717c276ae0b0e749833af}, \\
+&\textsf{0x9ee25d020b5be979be4f9367e271322ce8a1006aef0e41f611e7bb1930978ef8})
+\end{flalign*}
+donde $Q$ = [$d$]$G$, encuentra la clave privada $d$. \\
+
+\textbf{R:} Utilizamos el programa \textsf{src/ejercicio7/ecc.sage} para encontrar $d$ = 101. Para correr el programa:
+\begin{verbatim}
+  cd src/ejercicio7
+  sage
+  load("ecc.sage")
+\end{verbatim}
 
 \subsubsection*{8. Se tiene la siguiente clave pública RSA}
+\begin{verbatim}
+-----BEGIN PUBLIC KEY-----
+MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKzl5VggSXb/Jm2oqkPeRQwtpmGlLnJTNre4LKx3VUljtLzYWj4xoG+aHBouwJ
+T7DyeibpasCH8Yderr4zIGTNUCAwEAAQ==
+-----END PUBLIC KEY-----
+\end{verbatim}
+
+y un mensaje que fue cifrado con ella
+
+\begin{verbatim}
+0x41b4e1609390ff8fb5f225b010d1cc79253dcab1744d5f865daabad0e28d259141722382114d9a73106b4d429676
+dae60a1528a0eb3b73eab0e9d2165c72492f
+\end{verbatim}
+Se usó un generador de números aleatorios deficiente, y enseguida de obtener los primos para la clave anterior se obtuvieron los primos para la clave siguiente
+
+\begin{verbatim}
+-----BEGIN PUBLIC KEY-----
+MF0wDQYJKoZIhvcNAQEBBQADTAAwSQJCAPsrpwx56OTlKtGAWn24bo5HUg3xYtnznTj1X/8Hq7pLYNIVE57Yxoyr3zTOOBJ
+ufgTNzdKS0Rc5Ti4zZUkCkQvpAgMBAAE=
+-----END PUBLIC KEY-----
+\end{verbatim}
+
+Descifra el mensaje y agrega los programas que hayas usado.
 
 \subsubsection*{9. Demuestra que si existe una función de un solo sentido, entonces P $\neq$ NP.}
 
