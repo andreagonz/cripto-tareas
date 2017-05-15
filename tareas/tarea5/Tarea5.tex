@@ -18,6 +18,7 @@
 %\usepackage{pifont}
 \usepackage{titlesec}
 \usepackage{enumitem}
+\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
 
 %Preambulo
 \title{Criptografía y seguridad \\ Tarea 5}
@@ -41,18 +42,69 @@
 \subsubsection*{2. Acabas de intervenir la comunicación de un sistema que usa RSA.}
 \begin{enumerate}[label=\alph*)]
 \item Si detectas que se envió el mensaje cifrado $c$ = 10 al usuario que tiene clave pública $e$ = 5, $N$ = 35, ¿cuál es el mensaje claro? \\
-  \textbf{R:} Para saber cuál es el mensaje claro debemos de encontrar la llave privada de descifrado $d$. Para ésto primero calculamos la factorización de $N$: \\
-  $N$ = 35 = 5 $\cdot$ 7 \\
-  Por lo tanto $\phi(N)$ = (5 - 1) $\cdot$ (7 - 1) = 4 $\cdot$ 6 = 24 \\
-  Ahora debemos encontrar $d$, que es el inverso de $e$ módulo $\phi(N)$, o sea que se cumple que $d \cdot e \equiv 1 \mod(\phi(N))$, o sea $d \cdot 5 \equiv 1 \mod(24)$. Podemos darnos cuenta de que $5 \cdot 5 \equiv 1 \mod(24)$, y por lo tanto $d = 5$. Ahora solo nos falta descifrar el mensaje, como ya sabemos $M \equiv c^d \mod(N)$, entonces $M \equiv 10^5 \mod(35) \equiv 5 \mod(35)$.
+
+  \textbf{R:} Para saber cuál es el mensaje claro debemos de encontrar la llave privada de descifrado $d$. Primero encontramos la factorización de $N$ en números primos.
+  \begin{gather*}
+    N = 35 = 5 \cdot 7
+  \end{gather*}
+  Por lo tanto:
+  \begin{gather*}
+    \varphi(N) = \varphi(5) \cdot \varphi(7) = (5 - 1) (7 - 1) = 4 \cdot 6 = 24
+  \end{gather*}
+  Ahora debemos encontrar $d$, que es el inverso de $e$ módulo $\varphi(N)$, o sea que se cumple que
+  \begin{gather*}
+    d \cdot e \equiv 1 \Mod{\varphi(N)}
+  \end{gather*}
+  substituyendo $N$ y $e$:
+  \begin{gather*}
+    d \cdot 5 \equiv 1 \Mod{24}
+  \end{gather*}
+  podemos ver entonces que:
+  \begin{gather*}
+    5 \cdot 5 \equiv 1 \Mod{24}
+  \end{gather*}
+  y por lo tanto $d = 5$. Ahora solo nos falta descifrar el mensaje, como ya sabemos $M \equiv c^d \Mod{N}$, entonces
+  \begin{gather*}
+    M \equiv 10^5 \Mod{35} \equiv 5 \Mod{35}
+  \end{gather*}
+  y por lo tanto se ha descubierto el mensaje claro $M$ = 5.
   
-\item Si la clave pública de un usuario es $e$ = 31, $N$ = 3599, ¿cuál es la clave privada correspondiente? \\
-  \textbf{R:}
+ \item Si la clave pública de un usuario es $e$ = 31, $N$ = 3599, ¿cuál es la clave privada correspondiente? \\
+   
+   \textbf{R:}
+   Como en el caso anterior, procedemos a encontrar la factorización en números primos de $N$ y $\varphi$($N$).
+  \begin{gather*}
+    N = 3599 = 61 \cdot 59 \\
+    \varphi(3599) = \varphi(61) \cdot \varphi(59) = (61 - 1) \cdot (59 - 1) = 60 \cdot 58 = 3480
+  \end{gather*}
+  Ahora encontramos la llave privada $d$ tal que $d \cdot 31 \equiv 1 \Mod{3480}$, es decir el inverso de $e$ módulo $\varphi(N)$. Con tal fin usamos el algoritmo extendido de Euclides. \\
+  
+  Primera parte:
+  \begin{align*}
+    3480 &= 31 \cdot 112 + 8 \\
+    31 &= 8 \cdot 3 + 7 \\
+    8 &= 7 \cdot 1 + 1 \\
+    7 &= 1 \cdot 7 + 0
+  \end{align*}
+Segunda parte:
+  \begin{flalign*}
+    1 &= 8 + 7 (-1) \\
+    &= 8 + (31 + 8 (-3)) (-1) \\
+    &= 8 + 31 (-1) + 8 (3) \\
+    &= 8 (4) + 31 (-1) \\
+    &= ((3480 + 31 (-112)) (4) + 31 (-1) \\
+    &= 3480 (4) + 31 (-449)
+  \end{flalign*}
+  Tenemos como resultado que:
+  \begin{gather*}
+    3480 (4) + 31 (-449) \equiv 1 \Mod{3480}
+  \end{gather*}
+  Como $3480 (4) \equiv 0 \Mod{3480}$, entonces tenemos que $31 (-449) \equiv 1 \Mod{3480}$, por lo que $d \equiv -449 \Mod{3480} \equiv 3031 \Mod{3480}$, y por lo tanto se ha encontrado la llave privada $d = 3031$.
 \end{enumerate}
 
 \subsubsection*{3. Considera el esquema de ElGamal sobre $\mathbb{Z}^*_{71}$, con elemento generador g = 7.}
 
-\subsubsection*{4. Sea $N = pq$, con $p$ y $q$ primos distintos. Encuentra $p$ y $q$ si $N$ = 172205490419 y $\phi$ ($N$) = 172204660344. (Sin factorizar directamente.)}
+\subsubsection*{4. Sea $N = pq$, con $p$ y $q$ primos distintos. Encuentra $p$ y $q$ si $N$ = 172205490419 y $\varphi$ ($N$) = 172204660344. (Sin factorizar directamente.)}
 
 \subsubsection*{5. Se tiene el siguiente protocolo de intercambio de clave:}
 
