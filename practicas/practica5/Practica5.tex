@@ -3,8 +3,10 @@
 \usepackage{beamerthemesplit} % new
 \usepackage[utf8]{inputenc}
 \usepackage[spanish,activeacute]{babel}
+\usepackage{graphicx}
+\graphicspath { {media/} }
 
-\hypersetup{pdfpagemode=FullScreen}
+%\hypersetup{pdfpagemode=FullScreen}
 \begin{document}
 \title{AS combinadas \\ Intercambio de llaves \\ Suites criptográficas}   
 \author{González Vargas \\ Acosta Hernández} 
@@ -33,9 +35,9 @@
 \frame{\frametitle{Modo de transporte}
   \begin{itemize}
   \item Utilizado para cifrar y opcionalmente autentificar los datos de IP.
-  \item Adecuado para proteger conexiones entre \textit{hosts}, que soportan \textit{ESP}.
+  \item Adecuado para proteger conexiones entre \textit{hosts}, que soportan \textit{ESP}.\\
 
-    Ventaja: Provee confidencialidad para cualquier aplicación que la utilice.
+    Ventaja: Provee confidencialidad para cualquier aplicación que la utilice.\\
     Desventaja: Es susceptible a análisis de tráfico.
   \end{itemize}
 }
@@ -93,17 +95,60 @@
 
 \subsubsection{Diferentes opciones}
 \frame{\frametitle{ESP con Autentificación}
+  El usuario apica primero \textit{ESP} a la información que debe ser protegida y posteriormente agrega al final el campo de autentificación.  \\
+  \vspace{0.3cm}
+  Se tienen dos casos:\\
 }
 
+\frame{\frametitle{ESP con Autentificación}
+  \begin{itemize}
+  \item \textbf{Transport Mode ESP}
+     \includegraphics[scale=0.20]{ESPauthTrans.jpg}
+    %\includegraphics[width=1\textwidth]{ESPauthTrans}
+  \end{itemize}
+}
+
+\frame{\frametitle{ESP con Autentificación}
+  \begin{itemize}
+  \item \textbf{Tunnel Mode ESP}
+    \includegraphics[scale=0.20]{ESPauthTun.jpg}
+  \end{itemize}
+}
+  
+
 \frame{\frametitle{Transport Adjacency}
+  Se utilizan dos \textit{SAs} de transporte agrupadas, la primera o interior
+  consta de aplicar \textit{ESP} sin autentificación, la segunda o exterior, consta de aplicar \textit{AH}
+  en modo de transporte para que pueda cubrir tanto la parte del \textit{ESP} y la cabecera original del paquete.
 }
 
 \frame{\frametitle{Transport-Tunnel Bundle}
+  En este caso se utiliza primero autentificación y posteriormente cifrado.
+  Se aplica la asociación de seguridad \textit{AH} sobre la carga útil del paquete \textit{IP} junto con su cabecera. El paquete resultante
+  se procesa con una segunda asociación de seguridad \textit{ESP} con modo de túnel. Al ser aplicado sobre todo el paquete, debe agregarse
+  una nueva cabecera \textit{IP}.
 }
 
 
 \subsection{Combinaciones básicas}
 \frame{\frametitle{Combinaciones básicas de SAs}
+  \textbf{Caso 1.}
+  \includegraphics[scale=0.45]{caso1}
+}
+
+\frame{\frametitle{Combinaciones básicas de SAs}
+  \textbf{Caso 2.}
+  \includegraphics[scale=0.47]{caso2}
+}
+
+\frame{\frametitle{Combinaciones básicas de SAs}
+  \textbf{Caso 3.}
+  \includegraphics[scale=0.45]{caso3}
+}
+
+\frame{\frametitle{Combinaciones básicas de SAs}
+  \textbf{Caso 4.}\\
+  \includegraphics[scale=0.45]{caso4}
 }
 
 
