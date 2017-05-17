@@ -86,23 +86,23 @@
 \frame{\frametitle{Combinación}
   Ambos enfoques pueden ser combinados al hacer que, por ejemplo, una \textbf{SA} de transporte entre \textit{hosts} viaje parte del camino por medio de un \textbf{SA} de túnel entre \textit{gateways} de
   seguridad.
-  Un interrogante potencial al tener colecciones de \textbf{SA}s, es el orden en que la autentificación y el cifrado deben ser aplicados entre dos puntos de destino y las maneras para conseguir el apropiado.  
+  Un interrogante potencial al tener colecciones de \textbf{SA}s, es el orden en que la autenticación y el cifrado deben ser aplicados entre dos puntos de destino y las maneras para conseguir el apropiado.  
 }
 
 %i y ii
-\subsection{Autentificación y confidencialidad}
-\frame{\frametitle{Autentificación y confidencialidad}
-  Siempre que la comunicación entre \textit{hosts} requiera tanto de un cifrado como una autentificación, ambos pueden combinarse y aplicarse en la transmisión de paquetes \textit{IP}. 
+\subsection{Autenticación y confidencialidad}
+\frame{\frametitle{Autenticación y confidencialidad}
+  Siempre que la comunicación entre \textit{hosts} requiera tanto de un cifrado como una autenticación, ambos pueden combinarse y aplicarse en la transmisión de paquetes \textit{IP}. 
 }
 
 \subsubsection{Diferentes opciones}
-\frame{\frametitle{ESP con Autentificación}
-  El usuario apica primero \textit{ESP} a la información que debe ser protegida y posteriormente agrega al final el campo de autentificación.  \\
+\frame{\frametitle{ESP con Autenticación}
+  El usuario apica primero \textit{ESP} a la información que debe ser protegida y posteriormente agrega al final el campo de autenticación.  \\
   \vspace{0.3cm}
   Se tienen dos casos:\\
 }
 
-\frame{\frametitle{ESP con Autentificación}
+\frame{\frametitle{ESP con Autenticación}
   \begin{itemize}
   \item \textbf{Transport Mode ESP}
      \includegraphics[scale=0.20]{ESPauthTrans.jpg}
@@ -110,7 +110,7 @@
   \end{itemize}
 }
 
-\frame{\frametitle{ESP con Autentificación}
+\frame{\frametitle{ESP con Autenticación}
   \begin{itemize}
   \item \textbf{Tunnel Mode ESP}
     \includegraphics[scale=0.20]{ESPauthTun.jpg}
@@ -120,12 +120,12 @@
 
 \frame{\frametitle{Transport Adjacency}
   Se utilizan dos \textit{SAs} de transporte agrupadas, la primera o interior
-  consta de aplicar \textit{ESP} sin autentificación, la segunda o exterior, consta de aplicar \textit{AH}
+  consta de aplicar \textit{ESP} sin autenticación, la segunda o exterior, consta de aplicar \textit{AH}
   en modo de transporte para que pueda cubrir tanto la parte del \textit{ESP} y la cabecera original del paquete.
 }
 
 \frame{\frametitle{Transport-Tunnel Bundle}
-  En este caso se utiliza primero autentificación y posteriormente cifrado.
+  En este caso se utiliza primero autenticación y posteriormente cifrado.
   Se aplica la asociación de seguridad \textit{AH} sobre la carga útil del paquete \textit{IP} junto con su cabecera. El paquete resultante
   se procesa con una segunda asociación de seguridad \textit{ESP} con modo de túnel. Al ser aplicado sobre todo el paquete, debe agregarse
   una nueva cabecera \textit{IP}.
@@ -310,14 +310,40 @@
   \includegraphics[scale=0.20]{PayloadTypes.jpg}    
 }
 \section{Suites criptográficas}
+
+\frame{\frametitle{Suites criptográficas}
+  Tanto \textbf{IPsec} como \textit{IKE}, ambos en sus versión 3, dependen de una gran variedad de
+  tipos de algoritmos criptográficos.\\
+  \vspace{0.3cm}
+  Dos \textbf{RFCs} (\textit{Request for comments}), definen suites de algoritmos criptográficos recomendados y
+  parámetros respectivos para diversas aplicaciones.
+}
+
 \subsection{RFC 4308}
 \frame{\frametitle{RFC 4308}
   \includegraphics[scale=0.18]{RFC1} 
 }
 
+\frame{\frametitle{RFC 4308}
+  \begin{itemize}
+  \item \textbf{Cifrado:} Cifrado de bloque con modo \textit{CBC}.
+  \item \textbf{Autenticación de mensajes:} \textit{VPN-A} $\to$ \textit{SHA-1} o \textit{HMAC} (96 \textit{bits}).
+  \item \textbf{Función pseudoaleatoria:} \textit{IKEv2} genera \textit{bits} pseudoaleatorios, a partir del uso del \textit{MAC}, utilizado en la autenticación del mensaje.
+  \end{itemize}
+}
+
 \subsection{RFC 4869}
 \frame{\frametitle{RFC 4869}
   \includegraphics[scale=0.19]{RFC2}
+}
+
+\frame{\frametitle{RFC 4869}
+  \begin{itemize}
+  \item \textbf{Cifrado:} Para \textit{ESP}, cifrado con autenticación se provee utilizando el modo
+    GCM con llaves de tamaño 128 o 256 \textit{bits}. Mientras que para cifrado en \textit{IKE}, se utiliza el modo \textit{CBC}.
+  \item \textbf{Autenticación de mensajes:} Para \textit{ESP}, si sólo se requiere autenticación, se utiliza el modo GMAC. Mientras que para \textit{IKE}, se provee mediante \textit{HMAC}, con \textit{SHA-3}.
+  \item \textbf{Función pseudoaleatoria:} \textit{IKEv2} genera \textit{bits} pseudoaleatorios, a partir del uso del \textit{MAC}, utilizado en la autenticación del mensaje.
+  \end{itemize}
 }
 \end{document}
 
