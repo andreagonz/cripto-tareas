@@ -5,6 +5,8 @@
 \usepackage[spanish,activeacute]{babel}
 \usepackage{graphicx}
 \graphicspath { {media/} }
+\newcommand\floor[1]{\lfloor#1\rfloor}
+\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
 
 %\hypersetup{pdfpagemode=FullScreen}
 \begin{document}
@@ -155,7 +157,7 @@
 \section{Internet Key Exchange (IKE)} 
 \subsection{Definición}
 \frame{\frametitle{Internet Key Exchange (IKE)}
-  Determinación y distribución de llaves secretas. Típicamente se requiere de cuatro llaves, dos pares para transmisión y recepción (para integridad y confidencialidad). \\
+  Determinación y distribución de llaves secretas. Típicamente se requiere de cuatro llaves, dos pares para transmisión y recepción (para integridad y confidencialidad). \\~\\
 
   Tipos de manejo de llaves:
   \begin{itemize}
@@ -164,8 +166,103 @@
   \end{itemize}
 }
 
+\frame{\frametitle{ISAKMP/Oakley}
+  Protocolo por defecto de manejamiento de llaves automatizado. Consiste en: \\
+  \begin{itemize}
+  \item \textbf{Protocolo de determinación de llaves Oakley}: Protocolo de intercambio de llaves basado en el algoritmo Diffie-Hellman con seguridad agregada.
+  \item \textbf{Asociación de seguridad de Internet y Protocolo de Manejo de Llaves (ISAKMP)}: ISAKMP provee un framework para el manejo de llaves por internet.
+  \end{itemize}  
+}
+
 \subsection{Protocolo de determinación de llaves}
+\frame{\frametitle{Protocolo de determinación de llaves}
+  Refinamiento del intercambio de llaves Diffie-Hellman: \\~\\
+  
+  A y B se ponen de acuerdo en $q$ y $\alpha$ (raíz primitiva). \\  
+  A selecciona $X_A$, B selecciona $X_B$ \\
+  A calcula $Y_A \equiv \alpha^{X_A} \Mod{q}$, B calcula $Y_B \equiv \alpha^{X_B} \Mod{q}$ \\
+  A y B calculan la llave secreta $K$: \\
+  $K \equiv (Y_B)^{X_A} \Mod{q} \equiv (Y_A)^{X_B} \Mod{q} \equiv \alpha^{X_AX_B} \Mod q$
+}
+
+\frame{\frametitle{Protocolo de determinación de llaves}
+  Beneficios de Diffie-Hellman: \\~\\
+  
+  \begin{itemize}
+  \item Las llaves se crean cuando se necesitan.
+  \item Sólo de necesita ponerse de acuerdo en los parámetros globales.
+  \end{itemize}  
+}
+
+\frame{\frametitle{Protocolo de determinación de llaves}
+  Debilidades de Diffie-Hellman: \\~\\
+  
+  \begin{itemize}
+  \item No provee información sobre los participantes.
+  \item Susceptible al ataque $man$-$in$-$the$-$middle$.
+  \item Es intenso computacionalmente, lo que lo hace vulnerable a ataques de $clogging$.
+  \end{itemize}
+}
+
 \subsubsection{Propiedades de IKE}
+
+\frame{\frametitle{Propiedades de IKE}
+  \begin{itemize}
+  \item Utiliza cookies para evitar ataques de $clogging$.
+  \item Permite negociar los parámetros globales.
+  \item Utiliza $nonces$ para evitar ataques de repetición.
+  \item Permite que se lleve acabo el intercambio de llaves públicas de Diffie-Helman.
+  \item Autentifica para evitar ataques $man$-$in$-$the$-$middle$.
+  \end{itemize}
+}
+
+\frame{\frametitle{Cookies}
+  \textbf{Problema}: Oponente se hace pasar por una fuente legítima y manda repetidamente llaves públicad de Diffie-Hellman a la víctima. \\~\\
+
+  \textbf{Solución}: Intercambio de $cookies$. Cada lado manda un número aleatorio ($cookie$) que es reconocido por el otro lado. Este reconocimiento se repite en el primer mensaje del intercabio Diffie-Hellman.
+}
+
+\frame{\frametitle{Cookies}
+  Carácterísticas del cookie: \\~\\
+
+  \begin{itemize}
+  \item Depende de los lados que se comunican.
+  \item No debe ser posible, más que para la entidad que le concierne, generar cookies que serán aceptadas por dicha entidad. Se usa información local secreta en el uso y verificación del cookie.
+  \item La generación y verificación de cookies debe ser rápida.
+  \end{itemize}
+}
+
+\frame{\frametitle{Grupos para D-H}
+  Exponenciación modular con módulo de 768 bits \\
+  $q = 2^{768} - 2^{704} - 1 + 2^{64} \times (\floor{2^{638} \times \pi} + 149686)$ \\
+  $\alpha = 2$ \\~\\
+
+  Exponenciación modular con módulo de 1024 bits \\
+  $q = 2^{1024} - 2^{960} - 1 + 2^{64} \times (\floor{2^{864} \times \pi} + 129093)$ \\
+  $\alpha = 2$ \\~\\
+
+  Exponenciación modular con módulo de 1536 bits.
+  
+}
+
+\frame{\frametitle{Grupos para D-H}
+  Curva elíptica sobre $2^{155}$ \\
+  Generador: (7B, 1C8) \\
+  Parámetros: A = 0, B = 1EE9 \\~\\
+
+  Curva elíptica sobre $2^{185}$ \\
+  Generador: (18, D) \\
+  Parámetros: A = 0, B = 1EE9
+}
+
+\frame{\frametitle{Métodos de Autenticación}
+  \begin{itemize}
+  \item \textbf{Firmas digitales}: Se firma un hash por ambos lados, cada uno con su propia llave privada. El hash se genera con el ID de usuario y $nonces$.
+  \item \textbf{Cifrado de llave publica}: Se cifran parámetros como IDs y $nonces$ con la llave privada del remitente.
+  \item \textbf{Cifrado con llave simétrica}: Se usa un sistema de cifrado simétrico.
+  \end{itemize} 
+}
+
 \subsubsection{IKEv2}
 \frame{\frametitle{}
   
