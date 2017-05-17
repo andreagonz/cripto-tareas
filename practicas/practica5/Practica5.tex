@@ -259,20 +259,55 @@
   \begin{itemize}
   \item \textbf{Firmas digitales}: Se firma un hash por ambos lados, cada uno con su propia llave privada. El hash se genera con el ID de usuario y $nonces$.
   \item \textbf{Cifrado de llave publica}: Se cifran parámetros como IDs y $nonces$ con la llave privada del remitente.
-  \item \textbf{Cifrado con llave simétrica}: Se usa un sistema de cifrado simétrico.
+  \item \textbf{Cifrado de llave simétrica}: Se usa un sistema de cifrado simétrico.
   \end{itemize} 
 }
 
 \subsubsection{IKEv2}
-\frame{\frametitle{}
-  
+\frame{\frametitle{IKEv2}
+  Se intercambian mensajes en pares. Los primeros pares son los \textsf{intercambios iniciales}. \\~\\
+  \begin{itemize}
+  \item \textbf{Primer intercambio}: Se intercambia información sobre los algoritmos criptográficos y otros parámetros de seguridad a usar, a demás de $nonces$ y valores para Diffie-Hellman. Se crea IKE SA.
+  \item \textbf{Segundo intercambio}: Los lados se autentican entre sí, se crea la primer SA de IPsec para proteger la comunicación ordinaria (se establece la SA de uso general).
+  \end{itemize}
 }
 
-\subsection{Formatos de encabezado y payload}
+\subsection{Formatos de encabezado y de carga útil}
+
 \subsubsection{Formato del encabezado IKE}
-\subsubsection{Tipos del payload IKE}
-\frame{\frametitle{}
-  
+\frame{\frametitle{Formato del encabezado de IKE}
+  IKE define procedimientos y formatos de paquete para establecer, negociar, modificar y eliminar asociaciones de seguridad. \\~\\
+  Un mensaje IKE consiste de un encabezado IKE seguido de una o más cargas útiles. Se manejan con el protocolo de transporte.
+}
+
+\frame{\frametitle{Formato del encabezado de IKE}
+  \begin{center}
+    \includegraphics[scale=0.20]{IKEheader.jpg}
+  \end{center}
+}
+
+\frame{\frametitle{Formato del encabezado de IKE}
+  \begin{itemize}
+  \item \textbf{Initiator SPI (64 bits)}: Valor escogido por el iniciador para identificar a una SA de IKE única.
+  \item \textbf{Responder SPI (64 bits)}: Valor escogido por el recibidor par aidentificar a una SA de IKE única.
+  \item \textbf{Next Payload (8 bits)}: Tipo de la primera carga útil en el mensaje.
+  \item \textbf{Major Version (4 bits)}: Versión mayor de IKE en uso.
+  \item \textbf{Minor Version (4 bits)}: Versión menor de IKE en uso.
+  \end{itemize}
+}
+
+\frame{\frametitle{Formato del encabezado de IKE}
+  \begin{itemize}
+  \item \textbf{Exchange Type (8 bits)}: Tipo de intercambio.
+  \item \textbf{Flags (8 bits)}: Opciones específicas dispuestas para el intercambio IKE.
+  \item \textbf{Message ID (32 bits)}: Se usa para controlar retransmisión de paquetes perdidos y para corresponder solicitudes y respuestas.
+  \item \textbf{Length (32 bits)}: Longitud total del mensaje en octetos.
+  \end{itemize}
+}
+
+\subsubsection{Tipos de carga útil de IKE}
+\frame{\frametitle{Tipos de carga útil de IKE}
+  \includegraphics[scale=0.20]{PayloadTypes.jpg}    
 }
 \section{Suites criptográficas}
 \subsection{RFC 4308}
