@@ -305,10 +305,59 @@
   \end{itemize}
 }
 
-\subsubsection{Tipos de carga útil de IKE}
-\frame{\frametitle{Tipos de carga útil de IKE}
-  \includegraphics[scale=0.20]{PayloadTypes.jpg}    
+\frame{\frametitle{Encabezdo de carga útil}
+  Todas las cargas útiles comienzan con el mismo encabezado genérico.
+  \begin{itemize}
+  \item \textbf{Next Payload}: Tiene valor 0 si es la última carga del mensaje, en otro caso tiene por valor el tipo de la siguiente carga.
+  \item \textbf{Next Payload}: Indica la longitud de la carga en octetos.
+  \end{itemize}
 }
+
+\subsubsection{Tipos de carga útil de IKE}
+
+\frame{\frametitle{Jerarquía de la carga útil}
+  Una carga puede contener muchas \textbf{propuestas}, cada propuesta muchos \textbf{protocolos}, cada protocolo muchas \textbf{transformaciones} y cada transformación muchos \textbf{atributos}. \\~\\
+
+  \begin{itemize}
+  \item \textbf{Propuesta}: Incluye un número de propuesta, el ID de un protocolo (AH, ESP, IKE), un indicador del número de transformaciones y una transformación.
+  \item \textbf{Transformación}: Primordialmente define los algoritmos criptográficos a ser usados con un protocolo particular.
+  \item \textbf{Atributo}: Cada transformación puede incluir atributos que modifican o completan la especificación de la transformación, como la longitud de llave.
+  \end{itemize}  
+}
+
+\frame{\frametitle{Tipos de carga útil de IKE}
+  \begin{center}
+    \includegraphics[scale=0.20]{PayloadTypes.jpg}
+  \end{center}
+}
+
+\frame{\frametitle{Tipos de carga útil de IKE}
+  \begin{itemize}
+  \item \textbf{Intercambio de llaves (Key exchange payload)}: Especifica la técnica de intercambio de llaves (Oakleay, Diffie-Hellman, PGP).
+  \item \textbf{Certificado (Certificate payload)}: Transfiere un certificado de llave pública.
+  \item \textbf{Autenticación (Authentication)}: Datos usados para autenticación de mensajes.
+  \end{itemize}
+
+}
+
+\frame{\frametitle{Tipos de carga útil de IKE}
+  \begin{itemize}
+  \item \textbf{Nonce}: Datos aleatorios usados para proteger contra ataques de repetición.
+  \item \textbf{Notificación (Notify)}: Contiene errores o información del estado asociado con la SA.
+  \item \textbf{Eliminar (Delete)}: Indica uno o mas SAs que el emisor ha eliminado de su base de datos.
+  \item \textbf{ID del vendedor (Vendor ID)}: Constante definida por el vendedor que éstos usan para identificar instancias remotas de sus implementaciones.
+  \end{itemize}
+}
+
+\frame{\frametitle{Tipos de carga útil de IKE}
+  \begin{itemize}
+  \item \textbf{Selector de tráfico (Traffic Selector)}: Permite a los pares (peers) identificar flujos de paquetes para ser procesados por servicios IPsec.
+  \item \textbf{Cifrado (Encrypted)}: Contiene otras cargas útiles cifradas. El formato de esta carga útil es similar el de ESP, puede contener un IV o un ICV.
+  \item \textbf{Configuración (Configuration)}: Se usa para intercambiar informacion de las cofiguraciones entre usuarios.
+  \item \textbf{Protocolo de autenticación extensible (Extensible Authentication Protocol EAP)}: Permite autenticar SAs de IKE usando EAP.
+  \end{itemize}
+}
+
 \section{Suites criptográficas}
 
 \frame{\frametitle{Suites criptográficas}
