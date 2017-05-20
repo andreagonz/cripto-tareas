@@ -130,7 +130,58 @@ Segunda parte:
   
 \end{enumerate}
 \subsubsection*{4. Sea $N = pq$, con $p$ y $q$ primos distintos. Encuentra $p$ y $q$ si $N$ = 172205490419 y $\varphi$ ($N$) = 172204660344. (Sin factorizar directamente.)}
+\textbf{R:} Para resolver este problema, nos auxiliamos de una ecuación cuadrática cuyas raíces son precisamente los primos $p$ y $q$ factores de $N$ que buscamos, por lo que simplemente es necesario
+calcular dichas raíces.\\
+En primer lugar, consideremos que una función de este estilo debería verse factorizada de la siguiente manera:
+\begin{equation}
+  f(x) = (x-p)(x-q)
+\end{equation}
+Procediendo con el producto de los binomios, obtenemos
+\begin{equation}
+  \begin{split}
+    f(x) &= x^2 -qx + px + pq \\
+    &= x^2 - (p+q)x + pq
+  \end{split}
+\end{equation}
+Teniendo la función cuadrática de esta forma, podemos obtener sus raíces calculando:
+\begin{equation}
+  r1 = \frac{(p+q)+ \sqrt{(p+q)^2-4pq}}{2}
+\end{equation}
+\begin{equation}
+  r2 = \frac{(p+q)- \sqrt{(p+q)^2-4pq}}{2}
+\end{equation}
 
+Claramente ya conocemos $pq$, pues se trata de $N$, sin embargo, falta ver qué valor tiene la suma de
+$p$ con $q$.\\
+Consideremos lo siguiente:
+\begin{equation}
+  \begin{split}
+    \varphi(N) &= (p-1)(q-1) \\
+    &= pq - p - q + 1\\
+    &= n - p - q + 1
+  \end{split}
+\end{equation}
+De ahí, podemos despejar lo que nos interesa que es $p+q$ para obtener:
+\begin{equation}
+  \begin{split}
+    p+q &= N - \varphi(N) + 1  \\
+    &= 830076
+  \end{split}
+\end{equation}
+
+Sustituyendo (6) en (3) y (4), obtendremos lo siguiente:
+\begin{equation}
+  \begin{split}
+    p = r1 = 422183\\
+    q = r2 = 407893
+  \end{split}
+\end{equation}
+
+Que en efecto son primos, y con eso hemos terminado\footnote{En la carpeta de \textit{src/ejercicio4}, hemos incluído
+  el pequeño programa con el que calculamos las raíces. No es interactivo, pero proporciona una
+evidencia del proceso de la obtención de los resultados que presentamos para este ejercicio}.
+
+    
 \subsubsection*{5. Se tiene el siguiente protocolo de intercambio de clave:}
 \begin{enumerate}[label=\Roman*)]
 \item Alicia escoge $k, r \rightarrow \{0, 1\}^n$ al azar y envía $s := k \oplus r$ a Bartolo.
@@ -155,7 +206,7 @@ Segunda parte:
 
 
 \subsubsection*{6. Lee la sección 1 del artículo Elliptic Curve Cryptography in Practice y escribe un resumen de lo que se exploró y los resultados.}
-\textbf{R:}
+\textbf{R:} 
 
 \subsubsection*{7. Para el sistema de ElGamal con curvas elípticas se tienen los siguientes parámetros de una curva $y^2 = x^3 + ax + b$}
 sobre $\mathbb{F}_p$ con generador $G$:
