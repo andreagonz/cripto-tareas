@@ -23,7 +23,7 @@
 %Preambulo
 \title{Criptografía y seguridad \\ Tarea 5}
 \author{Andrea Itzel González Vargas \\ Carlos Gerardo Acosta Hernández}
-\date{Entrega: 16/05/17 \\ Facultad de Ciencias UNAM}
+\date{Entrega: 19/05/17 \\ Facultad de Ciencias UNAM}
 
 \titleformat*{\subsubsection}{}
 \setlength\parindent{0pt}
@@ -206,7 +206,7 @@ evidencia del proceso de la obtención de los resultados que presentamos para es
 
 
 \subsubsection*{6. Lee la sección 1 del artículo Elliptic Curve Cryptography in Practice y escribe un resumen de lo que se exploró y los resultados.}
-\textbf{R:} 
+\textbf{R:} Resumen en \textsf{resumen.pdf}.
 
 \subsubsection*{7. Para el sistema de ElGamal con curvas elípticas se tienen los siguientes parámetros de una curva $y^2 = x^3 + ax + b$}
 sobre $\mathbb{F}_p$ con generador $G$:
@@ -255,7 +255,14 @@ ufgTNzdKS0Rc5Ti4zZUkCkQvpAgMBAAE=
 -----END PUBLIC KEY-----
 \end{verbatim}
 
-Descifra el mensaje y agrega los programas que hayas usado.
+Descifra el mensaje y agrega los programas que hayas usado. \\
+
+\textbf{R:} Utilizamos el programa \textsf{src/ejercicio8/rsa.sage} para encontrar $m$ = 195894762, o $m$ = 0xbad1dea. Para correr el programa:
+\begin{verbatim}
+  cd src/ejercicio8
+  sage
+  load("rsa.sage")
+\end{verbatim}
 
 \subsubsection*{9. Demuestra que si existe una función de un solo sentido, entonces P $\neq$ NP.}
 
