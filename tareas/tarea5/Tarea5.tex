@@ -206,7 +206,34 @@ evidencia del proceso de la obtención de los resultados que presentamos para es
 
 
 \subsubsection*{6. Lee la sección 1 del artículo Elliptic Curve Cryptography in Practice y escribe un resumen de lo que se exploró y los resultados.}
-\textbf{R:} Resumen en \textsf{resumen.pdf}.
+\textbf{R:} Las curvas elípticas y su reciente popularización en el ámbito de la criptografía de llave
+pública, despertaron el interés de los autores del artículo por contribuir con un análisis de las
+aplicaciones actuales de este paradigma y una exploración sobre las potenciales vulnerabilidades
+que pueden darse en sus implementaciones.\\
+Con el fin de recolectar información sobre el estado actual de los desarrollos con curvas elípticas, se estudiaron grandes colecciones de datos de protocolos de seguridad que se utilizan en cuatro aplicaciones muy reconocidas actualmente: \textit{Bitcoin, Secure Shell (SSH), Transport Layer Security (TLS),} y la \textit{e-ID card} austriaca.
+\begin{itemize}
+\item \textbf{Bitcoin}: Las direcciones de \textit{Bitcoin} (identificadores), son obtenidas a partir de llaves de curvas elípticas, mientras que las transacciones de valores monetarios, son autenticadas mediante firmas digitales. Tanto las llaves públicas como las firmas, son puestas a disposición del público como parte del \textit{block chain} auditable.
+\item \textbf{SSH}: Suites criptográficas de curvas elípticas para \textit{SSH} fueron publicadas desde el año 2009 y actualmente su uso es más común, conforme se ofrece mayor soporte de software para utilizarlas. 
+\item \textbf{TLS}: Desde 2006, han sido presentadas suites criptográficas de curvas elípticas que ofrecen ``forward secrecy'' (la seguridad de las llaves anteriores persiste) mediante llaves de sesión, utilizando el intercambio de llaves de \textit{Diffie-Hellman} -en su versión de curvas elípticas, claro-, mismas que se han utilizado con más frecuencia para la seguridad de la capa de transporte.
+\item \textbf{e-ID}: La \textit{e-ID} austriaca, que contiene llaves públicas para cifrado y firmas digitales, desde 2009 ofrece firmas digitales de curvas elípticas (ECDSA).
+\end{itemize}
+
+%datasets, mención
+
+Después del análisis de la información recolectada, se detectaron algunos problemas que
+potencialmente significan una vulnerabilidad criptográfica para las aplicaciones.
+La categorización de los resultados que ofrecen es la siguiente:
+\begin{itemize}
+\item \textbf{De implementación}\\
+  A pesar de que tres curvas de alta seguridad del \textit{NIST} (Instituto Nacional de Estándares y Tecnología, EEUU) han sido estandarizadas, muchos servidores prefieren utilizar curvas definidas sobre campos más pequeños, como la \textit{secp256r1}, que es significativamente más usada que las estandarizadas. Esto sitúa a la \textit{ECC}, lejos de ser una opción estándar para la mayoría de implementaciónes de criptografía y seguridad.
+\item \textbf{Llaves débiles}
+  Se observaron un número significativo de usuarios publicando llaves tanto de \textit{SSH} como de \textit{TLS}. Se le atribuye alguno de estos casos a llaves duplicadas generadas por máquinas virtuales en distintas instancias, mientras que otros casos posiblemente estén relacionados con llaves de baja entropía, provocada por dispositivos tales como servicios de \textit{firewall}.
+\item \textbf{Firmas vulnerables}
+  Se encontraron varios casos de baja aleatoriedad en firmas utilizadas por \textit{Bitcoin}, que permitieron a atacantes, robar dinero de varios clientes. Se le atribuye al \textit{ECDSA}, pues posee la misma propiedad que \textit{DSA} en cuanto a aleatoriedad durante la generación de firmas, que compromete las firmas de largo plazo.
+\end{itemize}
+
+La base teórica que fundamenta la seguridad en estos sistemas asimétricos otorgan cierta confianza a paradigmas como  la \textit{ECC}, sin embargo no son exentos de vulnerabilidades; las cuales se pueden ver ubicadas primordialmente en el lado de la implementación, más que en los problemas teóricos que los sustentan.  
+
 
 \subsubsection*{7. Para el sistema de ElGamal con curvas elípticas se tienen los siguientes parámetros de una curva $y^2 = x^3 + ax + b$}
 sobre $\mathbb{F}_p$ con generador $G$:
