@@ -36,7 +36,7 @@
 \subsubsection{Modos de uso en SA}
 \frame{\frametitle{Modo de transporte}
   \begin{itemize}
-  \item Utilizado para cifrar y opcionalmente autentificar los datos de IP.
+  \item Utilizado para cifrar y opcionalmente autenticar los datos de un paquete IP.
   \item Adecuado para proteger conexiones entre \textit{hosts}, que soportan \textit{ESP}.\\
 
     Ventaja: Provee confidencialidad para cualquier aplicación que la utilice.\\
@@ -74,7 +74,7 @@
 
 \frame{\frametitle{Transport Adjacency}
   Consiste en aplicar más de un protocolo de seguridad a un mismo paquete \textit{IP} sin invocar
-  un modo túnel. Se realiza sólo un nivel de anidamiento, pues el procesamiento es realzado
+  un modo túnel. Se realiza sólo un nivel de anidamiento, pues el procesamiento es realizado
   para una única instancia de \textit{IPsec}, el punto de destino del paquete.
 }
 \frame{\frametitle{Iterated Tunneling}
@@ -309,7 +309,7 @@
   Todas las cargas útiles comienzan con el mismo encabezado genérico.
   \begin{itemize}
   \item \textbf{Next Payload}: Tiene valor 0 si es la última carga del mensaje, en otro caso tiene por valor el tipo de la siguiente carga.
-  \item \textbf{Next Payload}: Indica la longitud de la carga en octetos.
+  \item \textbf{Payload Length}: Indica la longitud de la carga en octetos.
   \end{itemize}
 }
 
