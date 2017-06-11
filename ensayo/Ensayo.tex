@@ -18,11 +18,11 @@
 
 \section{Introducción}
 En nuestras experiencias tanto dentro como fuera del mundo académico,
-por lo general se nos exige (esto no aplica en el caso de Jorjona) que
+por lo general se nos exige  que
 cualquier proposición comunicada al otro, sea sustentada con evidencias
 claramente expuestas como acompañamiento de nuestra declaración. A fin de
 inducir en ella un carácter de verdad, la defensa de nuestros enunciados
-debe apoyarse de argumentos que conserven su validez dentro del objetivo que
+debe apoyarse de argumentos que conserven la validez dentro del objetivo que
 perseguimos. \\
 Pero, ¿qué ocurre cuando
 no podemos permitir que nuestra audiencia se entere de los detalles
@@ -30,7 +30,7 @@ del camino que nos condujo al resultado que le presentamos?, ¿es posible
 mantener la confiabilidad, sin necesidad de proveer información más allá
 de la afirmación de que lo que decimos es verdad?\\
 Sin cruzar apresuradamente al terreno de la magia o de la fe, consideremos primero
-la noción de las \textit{\textbf{pruebas de conocimiento cero}}.
+la noción de las \textit{\textbf{pruebas de conocimiento cero}} (\textit{ZPK}\footnote{Del inglés: \textit{Zero Knowledge Proofs}}).
 Imaginemos que estamos solicitando un trabajo para una organización o empresa y es
 necesario que les convenzamos de nuestra valía, sin embargo toda la experiencia con
 la que contamos ha sido obtenida en los círculos del bajo mundo o la clandestinidad y no
@@ -39,18 +39,27 @@ competencia. En ese caso la empresa podría someternos a un periodo de prueba qu
 resolver problemas o tareas que atañen a nuestras habilidades, aún sin conocer el proceso
 que estamos llevando a cabo para ninguna de ellas -ya que no podemos revelar dichas técnicas por su
 naturaleza secreta-, entre más labores sean requeridas
-más certeza tendrán de aceptar nuestra solicitud de trabajo y menor probabilidad de que estemos
-engañándolos.\\
-Así, en una prueba de conocimiento cero, si $A$ busca probar a $B$ que una proposición $X$ es verdadera, al término del proceso $A$ estará completamente convencida de $X$, pero no habrá obtendido nuevo conocimiento (not arora but barak \cite{arora}). De ahí el nombre.
+más certeza tendrán de aceptar nuestra solicitud de trabajo y menor probabilidad de que no estemos
+siendo honestos.\\
+Así, en una prueba de conocimiento cero, si $A$ (el ``demostrador'') busca probar a $B$ (el ``verificador'') que una proposición $X$ es verdadera, al término del proceso $A$ estará completamente convencida de $X$, pero no habrá obtendido ningún nuevo conocimiento (barak \cite{}). De ahí el nombre, propuesto por primera vez en
+1985 por los científicos de la computación Shafi Goldwasser, Silvio Micali, y Charles Rackoff en su
+artículo \textit{La complejidad del conocimiento de los sistemas de demostración interactivos}
+\footnote{Intento de traducción del inglés: \textit{The knowledge complexity of interactive
+    proof systems}}, en el que definieron una nueva jerarquía de para las pruebas de conocimiento
+interactivas -de las que hablaremos más adelante-; concibieron además el concepto de
+\textit{complejidad de conocimiento}\footnote{Del inglés: \textit{Knowledge complexity}, medida
+  de la cantidad de conocimiento que el demostrador transfiere al verificador} y presentaron el primer
+ejemplo de una prueba de conocimiento cero para un problema concreto. Sus esfuerzos en esta materia les valió a los tres autores un \textit{premio Gödel} en 1993\footnote{Premio anual otorgado por EATCS y la ACM SIGACT para artículos destacados en teoría de las ciencias de la computación. \href{https://en.wikipedia.org/wiki/G\%C3\%B6del\_Prize}{Lista de Ganadores del premio Gödel}}.
 
-l'histoire y la relevancia alv
+\subsection{Una pequeña historia}
+Estrictamente hablando, al contrario de una prueba matemática, 
 
-%\subsection{Antecedentes}
+\subsection{Características}
 
 \section{Sistemas de Demostración Interactivos}
 La clase de complejidad \emph{IP} \cite{arora}
 
-\section{Aplicaciones}
+
 \section{Instancia}
 \subsection{Protocolo de conocimiento cero para \emph{logaritmo discreto}}\cite{chris-chan}
 Sea $G = \langle g \rangle$ un grupo cíclico de orden $q$ con un generador $g$, ambos $q \; \mathrm{y} \; g$ conocidos, y sea $x \in G$ un elemento arbitrario del grupo que tiene el logaritmo discreto $w = log_g(x)$. Tanto el probador \emph{P}
