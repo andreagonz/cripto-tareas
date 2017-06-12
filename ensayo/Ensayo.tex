@@ -54,7 +54,7 @@ ejemplo de una prueba de conocimiento cero para un problema concreto. Sus esfuer
 \subsection{Una pequeña historia}
 En aras de entrar definitivamente en el tema de las pruebas de conocimiento cero, nos auxiliaremos
 de un ejemplo que aunque ficticio, bastante didáctico, inspirado en la clásica historia de
-\textit{Alí Babá y los cuarenta ladrones}\footnote{Perteneciente a la recopilación de \textit{Las mil y una noches}}. \\ En esta adecuación del cuento, presentada en el artículo \textit{Cómo explicar a tus hijos los protocolos de conocimiento cero}\cite{quisquater}}, Alí Babá se encuentra, como todos los
+\textit{Alí Babá y los cuarenta ladrones}\footnote{Perteneciente a la recopilación de \textit{Las mil y una noches}}. \\ En esta adecuación del cuento, presentada en el artículo \textit{Cómo explicar a tus hijos los protocolos de conocimiento cero}\cite{quisquater}, Alí Babá se encuentra, como todos los
   días, en el bazar de su pueblo al este de Bagdad, cuando de pronto es atracado y separado de sus
   pertenencias por un ladrón. Alí Babá sigue al malhechor hasta una cueva cuya entrada es tan obscura
   que lo pierde de vista. Al explorar su interior, se enfrenta a una encrucijada y debe tomar uno de
@@ -136,7 +136,7 @@ Veamos entonces que el protocolo satisfaga las tres propiedades de las pruebas d
 
 \subsection{Otras aplicaciones}
 \subsubsection{zk-SNARK}
-Las zk-SNARKs (zero knowledge Succint Non-Interactive Arguments of Knowledge) son herramientas criptográficas que consisten en pequeñas pero bien definidas pruebas de conocimiento cero que además de ser fáciles de verificar, no revelam ninguna información y no existe iteracción alguna entre demostrador y verificador. Podemos considerarlas como pequeños circuitos lógicos que necesitan generar una prueba de una sentencia para verificar cada una de las transacciones. La manera en la que logran esto es al tomar una muestra de cada transacción, generan una prueba y luego intentan convencer al receptor de que los calculos fueron hechos correctamente sin revelar ninguna información que no sea la prueba misma. La operación básica de una ejecución SNARK es una entrada códificada en este circuito que puede descifrarse.\\
+Las zk-SNARKs\cite{samman} (zero knowledge Succint Non-Interactive Arguments of Knowledge) son herramientas criptográficas que consisten en pequeñas pero bien definidas pruebas de conocimiento cero que además de ser fáciles de verificar, no revelam ninguna información y no existe iteracción alguna entre demostrador y verificador. Podemos considerarlas como pequeños circuitos lógicos que necesitan generar una prueba de una sentencia para verificar cada una de las transacciones. La manera en la que logran esto es al tomar una muestra de cada transacción, generan una prueba y luego intentan convencer al receptor de que los calculos fueron hechos correctamente sin revelar ninguna información que no sea la prueba misma. La operación básica de una ejecución SNARK es una entrada códificada en este circuito que puede descifrarse.\\
 La ventaja de que las zk-SNARKs puedan ser verificadas rápidamente y las pruebas son cortas, es que pueden proteger la integridad del cálculo sin sobrecargar a los no participantes. Tienen como desventaja su falta de escalabilidad pues son muy intensivas en uso de CPU para generar pruebas y les toma hasta 1 minuto generar una nueva prueba.\\
 Algunos de los protocolos que usan estas herramientas son \emph{Zcash} y \emph{Hawk}.
 \subsubsection{Zcash}
@@ -184,10 +184,17 @@ Sabemos que, por más eficientes que sean los sistemas criptográficos que usamo
   Peikert C,
   \emph{Proofs of Knowledge}
   \href{https://wiki.cc.gatech.edu/theory/images/5/54/Lec18.pdf}
-  {https://wiki.cc.gatech.edu/theory/images/5/54/Lec18.pdf}
+  {cc.gatech.edu/theory/images/5/54/Lec18.pdf}
   Theoretical Foundations of Cryptography.
   Georgia Tech.
   2010
+
+\bibitem{samman}
+  Samman, G.
+  \emph{The Trend Towards Blockchain Privacy: Zero Knowledge Proofs.}
+  \href{http://sammantics.com/blog/2016/8/23/the-trend-towards-privacy-how-blockchains-plan-to-accomplish-this}
+  {sammantics.com/blog/2016/8/23/the-trend-towards-privacy}
+  2016, Sep 06
 \end{thebibliography}
 
 \end{document}
