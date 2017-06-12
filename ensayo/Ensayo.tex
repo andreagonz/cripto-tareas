@@ -96,8 +96,6 @@ refiere a la imposibilidad de que Carlos convenza a un tercero de que Pablo cono
 dejando más claro la utilidad de que el verificador no obtenga conocimiento. Pero no nos adelantemos, primero un par de características más antes de tocar
 ese punto. 
 
-
-
 \subsection{Características}
 Las pruebas de conocimiento cero, poseen ciertas características que vale la pena puntualizar. Como
 en \cite{simari}, por lo general se habla de las siguientes:
@@ -138,43 +136,61 @@ La clase de complejidad \emph{IP} \cite{arora}
 
 \section{Instancia}
 \subsection{Protocolo de conocimiento cero para \emph{logaritmo discreto}}\cite{chris-chan}
-Sea $G = \langle g \rangle$ un grupo cíclico de orden $q$ con un generador $g$, ambos $q \; \mathrm{y} \; g$ conocidos, y sea $x \in G$ un elemento arbitrario del grupo que tiene el logaritmo discreto $w = log_g(x)$. Tanto el probador \emph{P}
-%¿cómo traduzco esto?%
-como el verificador \emph{V} reciben como entrada a \emph{x}, pero \emph{P} recibe además a \emph{w}.\\
+Sea $G = \langle g \rangle$ un grupo cíclico de orden $q$ con un generador $g$, ambos $q \; \mathrm{y} \; g$ conocidos, y sea $x \in G$ un elemento arbitrario del grupo que tiene el logaritmo discreto $w = log_g(x)$. Tanto el demostrador \emph{P} como el verificador \emph{V} reciben como entrada a \emph{x}, pero \emph{P} recibe además a \emph{w}.\\
 El protocolo entre $P \; \mathrm{y} \; V$ se describe a continuación.
 \begin{enumerate}
 \item $P(x,w)$ elige aleatoriamente a un elemento $ 0 \leq r < q-1$ y envia $z = g^r (\mathrm{mod}\; q) \; \mathrm{a} \; V$.
 \item $V(x)$ envia un bit  $b \in \{0,1\}$ aleatorio a \emph{P}. 
-\item \emph{P} responde con $a = r + b \cdot w \in Z_q$
+\item \emph{P} responde con $a = r + b \cdot w \;(\mathrm{mod}\; q)$
   %en algunos pdfs ponen mod q-1 (idk which one works tbh)
-\item \emph{V} acepta si $g^a = z \cdot x^b (\mathrm{mod}\; q)$
+\item \emph{V} acepta si $g^a = z \cdot x^b \;(\mathrm{mod}\; q)$
 \end{enumerate}
-La idea básica es que si el bit $b = 1$, entonces \emph{P} envia un número que parece aleatorio ($a = r + b \cdot x (\mathrm{mod}\; q-1)$) a \emph{V}, pero \emph{V} ya conoce $z = g^r (\mathrm{mod}\; q)$ y sabe que $x = g^w$ por lo que puede multiplicar estos y compararlos con $g^a$. \\
-En realidad, \emph{V} solo puede ver a \emph{z} y \emph{a} y lo que sabe es que $a = log_g(z) + w$. Como ambos conocen s, pero el probador además conoce a $w$, entonces solo le queda demostrarle al verificador que también sabe $log_q(z)$. \\
+La idea básica es que si el bit $b = 1$, entonces \emph{P} envia un número que parece aleatorio ($a = r + b \cdot x (\mathrm{mod}\; q)$) a \emph{V}, pero \emph{V} ya conoce $z = g^r (\mathrm{mod}\; q)$ y sabe que $x = g^w$ por lo que puede multiplicar estos y compararlos con $g^a$. \\
+En realidad, \emph{V} solo puede ver a \emph{z} y \emph{a} y lo que sabe es que $a = log_g(z) + w$. Como ambos conocen s, pero el demostrador además conoce a $w$, entonces solo le queda demostrarle al verificador que también sabe $log_q(z)$. \\
 Ahí es donde entra el bit aleatorio que envió \emph{V}. Si $b=0$, \emph{P} solo envia $s=r$ de vuelta a \emph{V} en el paso 3. \emph{V} revisa que $z=g^r (\mathrm{mod}\; q)$, es decir, $r = log_q(z)$. De este modo, dependiendo del valor de \emph{b}, el verificador obtendrá $r \; \mathrm{o} \; a$ pero jamás ambas (ya que su diferencia es precisamente \emph{w}). Por lo tanto \emph{V} no obtiene ninguna información acerca de \emph{w}.
 
-\subsection{Análisis}
+\subsubsection{Análisis}
 Veamos entonces que el protocolo satisfaga las tres propiedades de las pruebas de conocimiento cero.
 \begin{itemize}
 \item \textbf{Totalidad:}\\
   Si $P$ y $V$ actuan como está descrito en el protocolo, entonces tenemos que
   \[g^a = g^{r+b \cdot w} = g ^r \cdot (g^w)^b = z \cdot x^b \]
 \item \textbf{Solvencia:}\\
-  Hay que notar que todas las $x \in G$ tiene logaritmo discreto, entonces no puede haber ningún probador deshonesto que engañe al verificador de que su declaración es cierta cuando sea falsa. Podríamos decir que el concepto de \emph{solvencia} no es particularmente significativo en este caso.
+  Hay que notar que todas las $x \in G$ tiene logaritmo discreto, entonces no puede haber ningún demostrador deshonesto que engañe al verificador de que su declaración es cierta cuando sea falsa. Podríamos decir que el concepto de \emph{solvencia} no es particularmente significativo en este caso.
 \item \textbf{Conocimiento cero:}\\
-  Supongamos que existe un verificador engañoso $V^*$. Definimos entonces un simulador $mathcal{S}^{V^*}(x)$ del modo siguiente:
+  Supongamos que existe un verificador engañoso $V^*$. Definimos entonces un simulador $\mathcal{S}^{V^*}(x)$ del modo siguiente:
   \begin{enumerate}
   \item Elige un bit aleatorio $b$ y un elemento $a \in G$.
   \item Envia $z = g^a/x^b \;\mathrm{a}\; V^*$ y recupera un bit de desafío $b^*$. Si $V^*$ responde con un mensaje mal formado o aborta, solo muestra la salida de la vista hasta el momento.
-  \item Si $b^* = b$, completa la vista usando a $a$ como el último mensaje del probador, en caso contrario rebobina $V^*$ y repite la simulación.\\
+  \item Si $b^* = b$, completa la vista usando a $a$ como el último mensaje del demostrador, en caso contrario rebobina $V^*$ y repite la simulación.\\
 
     Es relativamente fácil demostrar que $S$ reproduce la vista de $V^*$ hasta una distancia estadística insignificante ya que el valor de $z$ calculado por $S$ es estadísticamente independiente de su bit $b$, por lo tanto, tenemos que \[Pr[b^* = \; b ] = \frac{1}{2}\] 
   \end{enumerate}
 \end{itemize}
+
+\subsection{Otras aplicaciones}
+\subsubsection{zk-SNARK}
+Las zk-SNARKs\cite{samman} (zero knowledge Succint Non-Interactive Arguments of Knowledge) son herramientas criptográficas que consisten en pequeñas pero bien definidas pruebas de conocimiento cero que además de ser fáciles de verificar, no revelam ninguna información y no existe iteracción alguna entre demostrador y verificador. Podemos considerarlas como pequeños circuitos lógicos que necesitan generar una prueba de una sentencia para verificar cada una de las transacciones. La manera en la que logran esto es al tomar una muestra de cada transacción, generan una prueba y luego intentan convencer al receptor de que los calculos fueron hechos correctamente sin revelar ninguna información que no sea la prueba misma. La operación básica de una ejecución SNARK es una entrada códificada en este circuito que puede descifrarse.\\
+La ventaja de que las zk-SNARKs puedan ser verificadas rápidamente y las pruebas son cortas, es que pueden proteger la integridad del cálculo sin sobrecargar a los no participantes. Tienen como desventaja su falta de escalabilidad pues son muy intensivas en uso de CPU para generar pruebas y les toma hasta 1 minuto generar una nueva prueba.\\
+Algunos de los protocolos que usan estas herramientas son \emph{Zcash} y \emph{Hawk}.
+\subsubsection{Zcash}
+\emph{Zcash} es una criptomoneda descentralizada y de código abierto que ofrece privacidad y transparencia selectiva de transacciones. Si bien los pagos de Zcash son publicados en una cadena de bloques pública, tanto el remitente como el destinatario y el monto de la transacción permanecen privados. \\
+A grandes rasgos. podemos considerar a \emph{Zcash} como una extensión del protocolo de \emph{Bitcoin} pues agrega algunos campos al formato de transacciones de \emph{Bitcoin} con la finalidad de que soporte transacciones cifradas. \emph{Zcash} usa zk-SNARKs para cifrar todos sus datos y solo otorga llaves de descifrado a las partes autorizadas a ver tales datos. \\
+Hasta el lanzamiento de \emph{Zcash}, en cadenas de bloques públicas no era posible cifrar todos los datos, pues eso impedía que los denominados ``mineros" de la cadena pudieran verificar si las transacciones eran válidas o no. Fue gracias a las pruebas de conocimiento cero que se le permitió al creador de una transacción poder probar que la transacción era válida sin que se le revelara la dirección del emisor, la dirección del receptor y el monto de la transacción.\\
+\emph{Zcash} también permite a los usuarios enviar pagos públicos que funcionan de forma similar a \emph{Bitcoin}. Con el soporte de direcciones tanto blindadas como transparentes, los usuarios pueden elegir enviar \emph{Zcash} en privado o en público. Los pagos de \emph{Zcash} enviados desde una dirección blindada a una dirección transparente revelan el saldo recibido, mientras que los pagos desde una dirección transparente a una dirección blindada blindan el valor recibido.
+
+\subsubsection{Hawk}
+\emph{Hawk} es un framework para generar contratos inteligentes que conserven la privacidad de los usuarios, funcionando de una manera similar a \emph{Zcash}. \\
+\emph{Hawk} no almacena las transacciones financieras en la cadena de bloques,sino que se encarga de mantener confidenciales tanto el código del contrato, como la información que le fue enviada y el monto de dinero que se envió y se recibió, permitiendo que lo único que sea visto sea la prueba. \\
+Mientras que la privacidad en cadena protege a ambas partes contractuales contra el público (aquellos no involucrados en el contrato finaciero) , la seguridad contractual protege a las partes involucradas entre sí.\\
+\emph{Hawk} asume que ambas partes contractuales actuan egoístamente para maximizar y beneficiar sus propios intereses financieros. En particular, pueden desviarse arbitrariamente del protocolo prescrito o incluso abortar prematuramente. Por lo tanto, la seguridad contractual es una noción multifacética que abarca no solo las nociones criptográficas de confidencialidad y autenticidad, sino también la equidad financiera en presencia de comportamientos de engaño y abandono. \\
+Para cada contrato, de manera similar con \emph{Zcash}, hay también paramétros públicos confiables. La única manera de generar estos paramétros es mediante un proceso que involucra generar un valor secreto en cada paso intermedio, el cual debe borrarse al final del protocolo. 
+Aún no hay una fecha de lanzamiento anunciada por parte de sus desarrolladores pues continuan trabajando en optimizaciones de sus herramientas de compilación para SNARK con el fin de mejorar el rendimiento de sus protocolos.
 \section{Conclusiones}
-  Estrictamente hablando, el concepto de  pruebas de conocimiento cero difiere de las pruebas formales o demostraciones. En lugar de presentar resultados obtenidos de demostraciones hechas de antemano para
-  sustentarse, son más parecidas al proceso humano de convencimiento y más aún, el demostrador
-  involucra al verificador en el esfuerzo por convencerlo de una proposición declarada como verdadera, manteniendo un corte interactivo y dinámico que contrasta con la demostración tradicional pasiva y estática. 
+Estrictamente hablando, el concepto de  pruebas de conocimiento cero difiere de las pruebas formales o demostraciones. En lugar de presentar resultados obtenidos de demostraciones hechas de antemano para sustentarse, son más parecidas al proceso humano de convencimiento y más aún, el demostrador involucra al verificador en el esfuerzo por convencerlo de una proposición declarada como verdadera, manteniendo un corte interactivo y dinámico que contrasta con la demostración tradicional pasiva y estática. \\
+% Pablo
+Sabemos que, por más eficientes que sean los sistemas criptográficos que usamos actualmente, el constante aumento del poder computacional de los equipos y la demanda de privacidad en bloques de información cada vez más grandes nos hacen considerar la búsqueda de nuevos estándares y fundamentos teóricos que nos permitan prevenir futuros ataques.  En ese sentido, el uso de pruebas de conocimiento cero en la criptografía actual podría significar no solo el mejoramiento de sistemas criptográficos conocidos y ampliamente usados, tal es el caso de RSA y los sistemas de llave pública en general, sino también de otorgar privacidad en donde la información de los usuarios se viera vulnerable a ser robada o falsificada, como en las cadenas de bloques. 
+% ya no se me ocurre nada sry
 %%%
 \begin{thebibliography}{99}
 
@@ -211,11 +227,16 @@ Veamos entonces que el protocolo satisfaga las tres propiedades de las pruebas d
   Peikert C,
   \emph{Proofs of Knowledge}
   \href{https://wiki.cc.gatech.edu/theory/images/5/54/Lec18.pdf}
+<<<<<<< HEAD
   {https://wiki.cc.gatech.edu/}
+=======
+  {cc.gatech.edu/theory/images/5/54/Lec18.pdf}
+>>>>>>> 0bc8d113952d9ca08ba3e35b8ad44ab0487ea8aa
   Theoretical Foundations of Cryptography.
   Georgia Tech.
   2010
 
+<<<<<<< HEAD
 \bibitem{simari}
   Simari G.,
   \emph{A Primer on Zero Knowledge Protocols}
@@ -224,6 +245,14 @@ Veamos entonces que el protocolo satisfaga las tres propiedades de las pruebas d
        Dpto en Ciencias e Ingeniería de la Computación.
        Universidad Nacional del Sur, Argentina.
        2002
+=======
+\bibitem{samman}
+  Samman, G.
+  \emph{The Trend Towards Blockchain Privacy: Zero Knowledge Proofs.}
+  \href{http://sammantics.com/blog/2016/8/23/the-trend-towards-privacy-how-blockchains-plan-to-accomplish-this}
+  {sammantics.com/blog/2016/8/23/the-trend-towards-privacy}
+  2016, Sep 06
+>>>>>>> 0bc8d113952d9ca08ba3e35b8ad44ab0487ea8aa
 \end{thebibliography}
 
 \end{document}
