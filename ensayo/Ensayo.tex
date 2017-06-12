@@ -23,12 +23,14 @@ cualquier proposición comunicada al otro, sea sustentada con evidencias
 claramente expuestas como acompañamiento de nuestra declaración. A fin de
 inducir en ella un carácter de verdad, la defensa de nuestros enunciados
 debe apoyarse de argumentos que conserven la validez dentro del objetivo que
-perseguimos. \\
+perseguimos.
+
 Pero, ¿qué ocurre cuando
 no podemos permitir que nuestra audiencia se entere de los detalles
 del camino que nos condujo al resultado que le presentamos?, ¿es posible
 mantener la confiabilidad, sin necesidad de proveer información más allá
-de la afirmación de que lo que decimos es verdad?\\
+de la afirmación de que lo que decimos es verdad?
+
 Sin cruzar apresuradamente al terreno de la magia o de la fe, consideremos primero
 la noción de las \textit{\textbf{pruebas de conocimiento cero}} (\textit{ZPK}\footnote{Del inglés: \textit{Zero Knowledge Proofs}}).
 Imaginemos que estamos solicitando un trabajo para una organización o empresa y es
@@ -40,61 +42,95 @@ resolver problemas o tareas que atañen a nuestras habilidades, aún sin conocer
 que estamos llevando a cabo para ninguna de ellas -ya que no podemos revelar dichas técnicas por su
 naturaleza secreta-, entre más labores sean requeridas
 más certeza tendrán de aceptar nuestra solicitud de trabajo y menor probabilidad de que no estemos
-siendo honestos.\\
-Así, en una prueba de conocimiento cero, si $A$ (el ``demostrador'') busca probar a $B$ (el ``verificador'') que una proposición $X$ es verdadera, al término del proceso $A$ estará completamente convencida de $X$, pero no habrá obtendido ningún nuevo conocimiento (barak \cite{}). De ahí el nombre, propuesto por primera vez en
+siendo honestos.
+
+Así, en una prueba de conocimiento cero, si $A$ (el ``demostrador'') busca probar a $B$ (el ``verificador'') que una proposición $X$ es verdadera, al término del proceso $A$ estará completamente convencida de $X$, pero no habrá obtendido ningún nuevo conocimiento (\cite{barak}). De ahí el nombre, propuesto por primera vez en
 1985 por los científicos de la computación Shafi Goldwasser, Silvio Micali, y Charles Rackoff en su
 artículo \textit{La complejidad del conocimiento de los sistemas de demostración interactivos}
 \footnote{Intento de traducción del inglés: \textit{The knowledge complexity of interactive
-    proof systems}}, en el que definieron una nueva jerarquía de para las pruebas de conocimiento
+    proof systems}}, en el que definieron una nueva jerarquía para las pruebas de conocimiento
 interactivas -de las que hablaremos más adelante-; concibieron además el concepto de
-\textit{complejidad de conocimiento}\footnote{Del inglés: \textit{Knowledge complexity}, medida
+\textit{complejidad del conocimiento}\footnote{Del inglés: \textit{Knowledge complexity}, medida
   de la cantidad de conocimiento que el demostrador transfiere al verificador} y presentaron el primer
 ejemplo de una prueba de conocimiento cero para un problema concreto. Sus esfuerzos en esta materia les valió a los tres autores un \textit{premio Gödel} en 1993\footnote{Premio anual otorgado por EATCS y la ACM SIGACT para artículos destacados en teoría de las ciencias de la computación. \href{https://en.wikipedia.org/wiki/G\%C3\%B6del\_Prize}{Lista de Ganadores del premio Gödel}}.
 
 \subsection{Una pequeña historia}
 En aras de entrar definitivamente en el tema de las pruebas de conocimiento cero, nos auxiliaremos
 de un ejemplo que aunque ficticio, bastante didáctico, inspirado en la clásica historia de
-\textit{Alí Babá y los cuarenta ladrones}\footnote{Perteneciente a la recopilación de \textit{Las mil y una noches}}. \\ En esta adecuación del cuento, presentada en el artículo \textit{Cómo explicar a tus hijos los protocolos de conocimiento cero}\cite{quisquater}}, Alí Babá se encuentra, como todos los
-  días, en el bazar de su pueblo al este de Bagdad, cuando de pronto es atracado y separado de sus
-  pertenencias por un ladrón. Alí Babá sigue al malhechor hasta una cueva cuya entrada es tan obscura
-  que lo pierde de vista. Al explorar su interior, se enfrenta a una encrucijada y debe tomar uno de
-  dos caminos. Al elegir el de la derecha, se encuentra con una pared al final de éste, sin hallar al
-  ladrón; regresando sobre sus pasos, camina sobre el camino que rechazó inicialmente hasta llegar a su pared final respectiva, sin pista del ladrón todavía. Decide entonces que tomó la decisión incorrecta y que gracias a ello el ladrón tuvo el tiempo de salir de la cueva y escapar. Sin embargo, lo mismo ocurre
-  durante los siguientes 39 días, y aún procurando alternar su decisión para hallar al responsable
-  de su desgracia, ``fallando'' una vez tras otra. Es entonces que decide revelar el misterio dentro de la cueva y entra
-  desde temprano por uno de los caminos, esperando por la llegada de uno de los ladrones a la pared de su elección. Por fin presencia a uno de ellos escapar de ese punto a lo que parecía el otro camino por un pasaje secreto en la pared, con sólo murmurar las palabras mágicas: ábrete sésamo. Luego de su hallazgo, se dedica a cambiar la clave por una propia para terminar con los robos en el bazar de su pueblo. Compartiría esta palabra a sus descendientes únicamente, para que su secreto y su buena acción no muriesen con él. \\
-  Supongamos ahora que Pablo, a pesar de tantas generaciones intermedias, clama conocer las palabras mágicas de la cueva. Carlos, un entusiasta del estudio de la 
-  genealogía de Alí Babá, quien no reconoce a Pablo entre los descendientes de Alí Babá, le pide que demuestre su conocimiento
-  sobre el secreto de su antecesor. Pablo naturalmente se niega, pues debe proteger años de esfuerzo
-  por mantener las palabras mágicas dentro de su línea sanguínea. Afortunadamente, antes de darse por
-  vencidos, consultan con una estudiante del curso de Criptografía en una mítica Facultad de
-  Ciencias por
-  un método o procedimiento que les permita probar que Pablo dice la verdad. Andrea les comenta sobre las pruebas de conocimiento cero y cómo pueden servir para lograr su objetivo. Luego de hacer los preparativos para su expedición, marchan juntos hasta la cueva misteriosa del relato.
-  Estando ahí, Andrea pide a Pablo (el demostrador) que entre a la cueva y sin que el resto lo pueda presenciar, lance una moneda y si le toca águila vaya por el camino derecho hasta el fondo, o por el camino izquierdo
-  en caso contrario. Luego de dar unos momentos a Pablo para llegar a su destino, a la altura de la encrucijada,  Andrea pide a Carlos (el verificador) que lance su propia moneda y le grite a Pablo el resultado. Pablo tendrá que regresar por el camino de la derecha si toca águila o por el camino de la izquierda si toca sol. Después de repetir esto 40 veces -en honor a su antecesor- con éxito, Pablo demuestra a Carlos que
-  conoce el secreto sin necesidad de revelarlo.\\
-  Con un pequeño análisis de probabilidad, el fundamento de la prueba puede ser explicado fácilmente.
-  Si Pablo dice la verdad, puede regresar de cualquiera de los caminos por el lado que le piden, con probabilidad $1$, sea necesario usar la palabra mágica o no, las veces que sean. En caso de que mienta, sólo podrá regresar
-  por el camino que le piden con probabilidad\footnote{Dado que el lanzamiento de las monedas son eventos independientes.}
-  \begin{equation}
-    Pr[sol_{m2}|sol_{m1}] = Pr[aguila_{m2}|aguila_{m1}] = 1 \cdot \frac{1}{2} = \frac{1}{2}
-  \end{equation}
-  pues Pablo podría regresar del lado correcto sólo si desde el inicio tomó ese camino. Luego de las
-  40 repeticiones del proceso en la cueva, la probabilidad de fallo de Pablo estará dada por
-  \begin{equation}
-    1 - \frac{1}{2^{40}} \approx 0.9999999999990905
-  \end{equation}
-  Pues también las repeticiones son independientes entre sí. En este punto, Carlos estaría más que convencido (probabilísticamente, al menos) de que Pablo dice la verdad si lo logra las 40 veces, -aunque con 8 repeticiones bastaría para
-  alcanzar la probabilidad de 99\% de fallo si Palo no es honesto.
+\textit{Alí Babá y los cuarenta ladrones}\footnote{Perteneciente a la recopilación de \textit{Las mil y una noches}}. \\ En esta adecuación del cuento, presentada en el artículo \textit{Cómo explicar a tus hijos los protocolos de conocimiento cero}\cite{quisquater}, Alí Babá se encuentra, como todos los
+días, en el bazar de su pueblo al este de Bagdad, cuando de pronto es atracado y separado de sus
+pertenencias por un ladrón. Alí Babá sigue al malhechor hasta una cueva cuya entrada es tan obscura
+que lo pierde de vista. Al explorar su interior, se enfrenta a una encrucijada y debe tomar uno de
+dos caminos. Al elegir el de la derecha, se encuentra con una pared al final de éste, sin hallar al
+ladrón; regresando sobre sus pasos, camina sobre el camino que rechazó inicialmente hasta llegar a su pared final respectiva, sin pista del ladrón todavía. Se dice a sí mismo que tomó la decisión incorrecta y que gracias a ello el ladrón tuvo el tiempo de salir de la cueva y escapar. Sin embargo, lo mismo ocurre
+durante los siguientes 39 días que es asaltado, y aún procurando alternar su decisión para hallar al responsable
+de su desgracia, ``falla'' una vez tras otra. Es entonces que decide revelar el misterio dentro de la cueva y entra
+desde temprano por uno de los caminos, esperando por la llegada de uno de los ladrones a la pared de su elección. Por fin presencia a uno de ellos escapar de ese punto a lo que parecía el otro camino por un pasaje secreto en la pared, con sólo murmurar las palabras mágicas: ábrete sésamo. Luego de su hallazgo, se dedica a cambiar la clave por una propia para terminar con los robos en el bazar de su pueblo. Compartiría esta palabra a sus descendientes únicamente, para que su secreto y su buena acción no muriesen con él. \\
 
-  En este ejemplo también se muestra una de las propiedades de las pruebas de conocimiento cero, que
-  refiere a la imposibilidad de que Carlos convenza a un tercero de que Pablo conoce el secreto,
-  dejando más claro la utilidad de que el verificador no obtenga conocimiento. Pero no nos adelantemos, primero un par de características más antes de tocar
-  ese punto. 
-  
+Supongamos ahora que Pablo, a pesar de tantas generaciones intermedias, clama conocer las palabras mágicas de la cueva. Carlos, un entusiasta del estudio de la 
+genealogía de Alí Babá, quien no reconoce a Pablo entre los descendientes registrados, le pide que demuestre su conocimiento
+sobre el secreto de su antecesor. Pablo naturalmente se niega, pues debe proteger años de esfuerzo
+por mantener las palabras mágicas dentro de su línea sanguínea. Afortunadamente, antes de darse por
+vencidos, consultan con una estudiante del curso de Criptografía en una mítica Facultad de
+Ciencias por
+un método o procedimiento que les permita probar que Pablo dice la verdad. Andrea les comenta sobre las pruebas de conocimiento cero y cómo pueden servir para lograr su objetivo. Luego de hacer los preparativos para su expedición, marchan juntos hasta la cueva misteriosa del relato.
+Estando ahí, Andrea pide a Pablo (el demostrador) que entre a la cueva y sin que el resto lo pueda presenciar, lance una moneda y si le toca águila vaya por el camino derecho hasta el fondo, o por el camino izquierdo
+en caso contrario. Luego de dar unos momentos a Pablo para llegar a su destino, a la altura de la encrucijada,  Andrea pide a Carlos (el verificador) que lance su propia moneda y le grite a Pablo el resultado. Pablo tendrá que regresar por el camino de la derecha si toca águila o por el camino de la izquierda si toca sol. Después de repetir esto 40 veces -en honor a su antecesor- con éxito, Pablo habrá demostrado a Carlos que
+conoce el secreto sin necesidad de revelarlo.\\
+Con un pequeño análisis de probabilidad, el fundamento de la prueba puede ser explicado fácilmente.
+Si Pablo dice la verdad, puede regresar de cualquiera de los caminos por el lado que le piden, con probabilidad $1$, sea necesario usar la palabra mágica o no, las veces que sean. En caso de que mienta, sólo podrá regresar
+por el camino que le piden con probabilidad\footnote{Dado que el lanzamiento de las monedas son eventos independientes.}
+\begin{equation}
+  Pr[sol_{m2}|sol_{m1}] = Pr[aguila_{m2}|aguila_{m1}] = 1 \cdot \frac{1}{2} = \frac{1}{2}
+\end{equation}
+pues Pablo podría regresar del lado correcto sólo si desde el inicio tomó ese camino. Luego de las
+40 repeticiones del proceso en la cueva, la probabilidad de fallo de Pablo estará dada por
+\begin{equation}
+  1 - \frac{1}{2^{40}} \approx 0.9999999999990905
+\end{equation}
+Pues también las repeticiones son independientes entre sí. En este punto, Carlos estaría más que convencido (probabilísticamente, al menos) de que Pablo dice la verdad si lo logra las 40 veces, -aunque con 8 repeticiones bastaría para
+alcanzar la probabilidad de 99\% de fallo si Palo no es honesto.
+
+En este ejemplo también se muestra una de las propiedades de las pruebas de conocimiento cero, que
+refiere a la imposibilidad de que Carlos convenza a un tercero de que Pablo conoce el secreto,
+dejando más claro la utilidad de que el verificador no obtenga conocimiento. Pero no nos adelantemos, primero un par de características más antes de tocar
+ese punto. 
+
 
 
 \subsection{Características}
+Las pruebas de conocimiento cero, poseen ciertas características que vale la pena puntualizar. Como
+en \cite{simari}, por lo general se habla de las siguientes:
+\begin{itemize}
+\item\textbf{{El verificador no aprenderá nada del proceso de prueba}} \\
+  Esta es la propiedad central de las pruebas de conocimiento cero. El verificador no puede obtener
+  información derivada de los datos públicos en el proceso de prueba por sí solo.
+  En nuestro pequeño relato, Carlos no se puede enterar de ninguna otra cosa más que del hecho que Pablo
+  en efecto conoce el secreto de la cueva.
+\item\textbf{{El demostrador no puede engañar al verificador}}\\
+  La probabilidad de que un impostor o un demostrador deshonesto pueda engañar al verificador puede fácilmente disminuirse hasta el punto que se desee mediante el incremento
+  de rondas ejecutadas en el protocolo. Si Pablo no conoce el secreto de la cueva, sólo podría engañar a Carlos con una cantidad rídicula de suerte. 
+\item\textbf{{El verificador no puede engañar al demostrador}}\\
+  El demostrador sólo puede revelar una de las varias soluciones, de esa manera está asegurado que
+  la información secreta se mantiene intacta. Entonces la única cosa que el verificador Carlos puede decir al respecto de la prueba, incluso si no es honesto, es decidir si la declaración de Pablo es verdadera, pero sin comprometer nada más que el resultado. Ya hablaremos más formalmente al respecto en las secciones siguientes. 
+\item\textbf{{El verificador no puede actuar como demostrador}}\\
+  Como habíamos señalado antes, dejamos este punto al último porque requiere de una explicación
+  ligeramente más extensa. Considerando el pequeño relato anterior, llegamos al desenlace
+  determinando que el verificador estaría convencido de la demostración. ¿Qué ocurriría si Carlos
+  deseara reproducirla para una tercera persona sin ayuda del demostrador? Supongamos que Carlos
+  diestramente
+  grabó todo con la cámara de su celular, desde la entrada de la cueva donde se encontraba, y después
+  mandó a sus amigos el video para demostrar que Pablo es el descendiente secreto de Alí Babá. Sin
+  embargo, tiempo después Andrea manda un video similar con José saliendo de la cueva 40 veces de la
+  misma manera que Pablo. A pesar de que Andrea y José se pusieron de acuerdo de antemano por cuál
+  camino debía entrar, ¿cómo podría la gente decidir cuál es el montaje? Por lo que ninguna evidencia resultará convincente. Es decir, el verificador,
+  al no obtener ninguna información a partir de la prueba, carecerá de medios para reproducirla esta vez
+  como el demostrador a un tercer interesado. De esa manera, se mantiene a salvo el secreto de Pablo al asegurar que Carlos
+  no puede hacerse pasar por un demostrador y convencer con la misma fiabilidad que hace Pablo.
+\end{itemize}
+
+Ahora entraremos en un terreno más formal para dar una especificación de las condiciones necesarias
+para asegurar el comportamiento de las pruebas de conocimiento cero que se ha prometido hasta ahora.
 
 \section{Sistemas de Demostración Interactivos}
 La clase de complejidad \emph{IP} \cite{arora}
@@ -148,6 +184,15 @@ Veamos entonces que el protocolo satisfaga las tres propiedades de las pruebas d
   Beijing: World Publishing Corporation.
   2012.
 
+\bibitem{barak}
+  Barak, B,
+  \emph{Zero Knowledge Proofs}
+  \href{https://www.cs.princeton.edu/courses/archive/fall07/cos433/lec15.pdf}
+       {https://www.cs.princeton.edu/}
+       Lecture.
+       Princeton, Department of Computer Science.
+       2007
+
 \bibitem{goldwasser}
   Goldwasser, S., Micali, S.,  Rackoff, C.
   \emph{The knowledge complexity of interactive proof-systems.}
@@ -166,10 +211,19 @@ Veamos entonces que el protocolo satisfaga las tres propiedades de las pruebas d
   Peikert C,
   \emph{Proofs of Knowledge}
   \href{https://wiki.cc.gatech.edu/theory/images/5/54/Lec18.pdf}
-  {https://wiki.cc.gatech.edu/theory/images/5/54/Lec18.pdf}
+  {https://wiki.cc.gatech.edu/}
   Theoretical Foundations of Cryptography.
   Georgia Tech.
   2010
+
+\bibitem{simari}
+  Simari G.,
+  \emph{A Primer on Zero Knowledge Protocols}
+  \href{http://www.cs.ox.ac.uk/people/gerardo.simari/personal/publications/zkp-simari2002.pdf}
+       {http://www.cs.ox.ac.uk/}
+       Dpto en Ciencias e Ingeniería de la Computación.
+       Universidad Nacional del Sur, Argentina.
+       2002
 \end{thebibliography}
 
 \end{document}
