@@ -190,11 +190,11 @@ Ahí es donde entra el bit aleatorio que envió \emph{V}. Si $b=0$, \emph{P} sol
 \subsubsection{Análisis}
 Veamos entonces que el protocolo satisfaga las tres propiedades de las pruebas de conocimiento cero.
 \begin{itemize}
-\item \textbf{Totalidad:}\\
+\item \textbf{Completitud:}\\
   Si $P$ y $V$ actuan como está descrito en el protocolo, entonces tenemos que
   \[g^a = g^{r+b \cdot w} = g ^r \cdot (g^w)^b = z \cdot x^b \]
-\item \textbf{Solvencia:}\\
-  Hay que notar que todas las $x \in G$ tiene logaritmo discreto, entonces no puede haber ningún demostrador deshonesto que engañe al verificador de que su declaración es cierta cuando sea falsa. Podríamos decir que el concepto de \emph{solvencia} no es particularmente significativo en este caso.
+\item \textbf{Solidez:}\\
+  Hay que notar que todas las $x \in G$ tiene logaritmo discreto, entonces no puede haber ningún demostrador deshonesto que engañe al verificador de que su declaración es cierta cuando sea falsa. Podríamos decir que el concepto de \emph{solidez} no es particularmente significativo en este caso.
 \item \textbf{Conocimiento cero:}\\
   Supongamos que existe un verificador engañoso $V^*$. Definimos entonces un simulador $\mathcal{S}^{V^*}(x)$ del modo siguiente:
   \begin{enumerate}
