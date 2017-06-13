@@ -131,10 +131,48 @@ Ahora entraremos en un terreno más formal para dar una especificación de las c
 para asegurar el comportamiento de las pruebas de conocimiento cero que se ha prometido hasta ahora.
 
 \section{Sistemas de Demostración Interactivos}
-La clase de complejidad \emph{IP} \cite{arora}
 
+\subsection{Clase de complejidad IP}
+La idea matemática de una demostración consiste en que para probar que algo es verdadero, se hace una serie de pasos estáticos que un verificador puede comprobar que son válidos (por medio de reglas lógicas) y por lo tanto se puede saber que lo que se quería demostrar efectivamente es verdadero. Los sistemas de demostración interactivos difieren de este concepto y sin embargo también sirven para probar la veracidad de alguna afirmación. \\
 
-\section{Instancia}
+En una demostración interactiva se tiene un demostrador (quien proveé la prueba de algo) y un verificador (quien verifica la prueba provista por el demostrador) que interactúan entre sí de manera intercalada, el verificador le hace una serie de preguntas al demostrador, quien a su vez las responde, con el objetivo de que el demostrador pueda convencer al verificador sobre alguna afirmación (por supuesto puede darse el caso de que no pueda convencerlo). Este proceso difiere del mencionado anteriormente en que es dinámico y se le mete un elemento de aleatoriedad. \\
+
+Un sistema de demostración tiene dos propiedades fundamentales, la solidez (el verificador rechaza afirmaciones falsas) y completitud (el demostrador puede convencer al verificador de afirmaciones verdaderas). \footnote{Podemos notar que estas propiedades concuerdan con las características exhibidas del ejemplo de la cueva enunciado previamente.} \\
+
+El demostrador puede tener un poder computacional sin límites, mientras que el poder del verificador está limitado a tiempo polinomial. \\
+
+Podemos ver  al demostrador y al verificador como dos funciones que en cada ronda de interacción regresan un resultado que depende de los resultados obtenidos en las rondas anteriores (siguiendo una estrategia). En cada ronda existe una probabilidad de error (que el verificador se convenza de algo falso), sin embargo al aumentar el número de rondas se disminuye esta probabilidad. \\
+
+Una estrategia es entonces una función de la entrada o afirmación que se quiere demostrar, un elemento aleatorio y los mensajes intercambiados en las rondas anteriores. Ambos lados que toman parte en el sistema tienen su propia estrategia que describe sus movimientos subsecuentes. \\
+
+Más formalmente se tienen la siguientes definiciones \cite{oded}: \\
+
+La interacción entre dos lados con estrategias $A$ y $B$ respectivamente, está determinada por una entrada $x$ y dos elementos aleatorios $r_A$ y $r_B$. Dado que $A$ tome el primer paso en la comunicación y $B$ el último, el \textsf{registro de interacción} de la ronda $t$ es $\alpha_1, \beta_1,...,\alpha_t, \beta_t$, donde $\alpha_i = A(x, r_A, \beta_1,...,\beta_{i-1})$ y $\beta_i = B(x, r_B, \alpha_1,...,\alpha_{i-1})$. La decisión final de $A$ está definida como $A(x,r_A,\beta_1,...,\beta_t)$. Una estrategia probabilistica polinomial es una etrategia que corre en tiempo polinomial en base a la entrada $x$. \\
+
+Un \textsf{sistema de demostración interactivo} para un conjunto $S$ es un juego entre dos contrincantes, un verificador $V$ y un demostrador $P$.
+$V$ ejecuta una estrategia probabilística polinomial, y $P$ ejecuta una estrategia con acceso a poder computacional infinito. Se satisfacen las siguientes condiciones: 
+\begin{itemize}
+\item \textbf{Completitud:} Para cada $x \in S$, el verificador $V$ siempre acepta despues de interactuar con el demostrador $P$ con la entrada $x$.
+\item \textbf{Solidez:} Para cada $x \notin S$ y cada estrategia $P^*$, el verificador $V$ rechaza con probabilidad de al menos $\frac {1}{2}$ después de interactuar con $P^*$ con la entrada $x$.
+\end{itemize}
+
+Todos los conjuntos que tienen sistemas de demostración interactivos conforman la clase de complejidad $IP$. \\
+
+Como ya se había mencionado anteriormente, la probabilidad de error definida en la propiedad de solidez disminuye con cada iteración, al repetir el proceso $k$ veces  ($k$ estando en función de la entrada $x$ polinomialmente) se reduce la probabilidad de que el verificador acepte una afirmación falsa a $2^{-k}$.
+
+\subsection{Sistemas de demostración con conocimiento cero}
+
+El conocimiento cero es una propiedad de algunas estrategias, tales que aplicadas en un sistema de demostración interactivo, el verificador no puede ganar ningún conocimento más allá del que podría haber obtenido sin haber hecho ninguna interacción con el demostrador. Un sistema de demostración de conocimiento cero es un sistema de demostración interactivo en el que se utilizan estrategias con conocimiento cero. \\
+
+Una estrategia de un demostrador $P$ se dice que es de conocimiento cero perfecto sobre un conjunto $S$ si para cada estrategia $V^*$ del verificador, existe un algoritmo polinomial probabilístico $A^*$ tal que
+\begin{equation} \label{eq:3}
+  (P,V^*)(x) \equiv A^*(x),\ \forall x \in S
+\end{equation}
+donde $(P,V^*)(x)$ es una variable aleatoria que representa la salida de la estrategia $V^*$ del verificador después de interactuar con el demostrador $P$ con la entrada $x$, y $A^*(x)$ es una variable aleatoria que representa la salida del algoritmo $A^*$ con la entrada $x$. \cite{oded} \\
+
+Esta definición nos dice que $A^*(x)$ puede simular las salidas de $(P,V^*)(x)$ aun sin haber interactuado con $P$, o sea que $V$ no gana ningún conocimento después de interactuar con $P$. La condición de conocimiento cero perfecto puede relajarse de manera que las distribuciones de las variables aleatorias en (\ref{eq:3}) tengan una pequeña distancia estadística o sean computacionalmente indistinguibles \cite{arora}.
+
+\section{Instancias de aplicación}
 \subsection{Protocolo de conocimiento cero para \emph{logaritmo discreto}}\cite{chris-chan}
 Sea $G = \langle g \rangle$ un grupo cíclico de orden $q$ con un generador $g$, ambos $q \; \mathrm{y} \; g$ conocidos, y sea $x \in G$ un elemento arbitrario del grupo que tiene el logaritmo discreto $w = log_g(x)$. Tanto el demostrador \emph{P} como el verificador \emph{V} reciben como entrada a \emph{x}, pero \emph{P} recibe además a \emph{w}.\\
 El protocolo entre $P \; \mathrm{y} \; V$ se describe a continuación.
@@ -200,6 +238,13 @@ Sabemos que, por más eficientes que sean los sistemas criptográficos que usamo
   Beijing: World Publishing Corporation.
   2012.
 
+\bibitem{oded}
+  Oded Goldreich
+  \emph{Computational complexity: A Conceptual Perspective.}
+  Deparment of Computer Science and Applied Mathematics.
+  Weizmann Institute of Science, Rehovot, Israel.
+  2006.
+  
 \bibitem{barak}
   Barak, B,
   \emph{Zero Knowledge Proofs}
@@ -227,32 +272,28 @@ Sabemos que, por más eficientes que sean los sistemas criptográficos que usamo
   Peikert C,
   \emph{Proofs of Knowledge}
   \href{https://wiki.cc.gatech.edu/theory/images/5/54/Lec18.pdf}
-<<<<<<< HEAD
-  {https://wiki.cc.gatech.edu/}
-=======
-  {cc.gatech.edu/theory/images/5/54/Lec18.pdf}
->>>>>>> 0bc8d113952d9ca08ba3e35b8ad44ab0487ea8aa
+  % {https://wiki.cc.gatech.edu/}
+  % {cc.gatech.edu/theory/images/5/54/Lec18.pdf}
   Theoretical Foundations of Cryptography.
   Georgia Tech.
   2010
 
-<<<<<<< HEAD
 \bibitem{simari}
   Simari G.,
   \emph{A Primer on Zero Knowledge Protocols}
   \href{http://www.cs.ox.ac.uk/people/gerardo.simari/personal/publications/zkp-simari2002.pdf}
-       {http://www.cs.ox.ac.uk/}
-       Dpto en Ciencias e Ingeniería de la Computación.
-       Universidad Nacional del Sur, Argentina.
-       2002
-=======
+  {http://www.cs.ox.ac.uk/}
+  Dpto en Ciencias e Ingeniería de la Computación.
+  Universidad Nacional del Sur, Argentina.
+  2002
+  
 \bibitem{samman}
   Samman, G.
   \emph{The Trend Towards Blockchain Privacy: Zero Knowledge Proofs.}
   \href{http://sammantics.com/blog/2016/8/23/the-trend-towards-privacy-how-blockchains-plan-to-accomplish-this}
   {sammantics.com/blog/2016/8/23/the-trend-towards-privacy}
   2016, Sep 06
->>>>>>> 0bc8d113952d9ca08ba3e35b8ad44ab0487ea8aa
+
 \end{thebibliography}
 
 \end{document}
